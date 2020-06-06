@@ -1,1 +1,511 @@
-It works!
+<!--
+Standalone OPTIMADE web-GUI
+Authors:
+Evgeny Blokhin
+2019-2020
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>OPTIMADE search</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<style>
+/* COMMON */
+
+*{margin:0;padding:0;}
+html, body{height:100%;text-size-adjust:100%;font-family:Arial;}
+sup, sub{font-size:12px;}
+.ui_screen{display:none;width:100%;}
+
+#overlay{position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;z-index:100;overflow:hidden;background-color:rgba(255,255,255,0.6);}
+#main{background:#fff;padding-top:15px;}
+
+#logo{position:absolute;width:300px;height:300px;margin-left:-150px;top:0;left:50%;z-index:200;transition-property:top left;transition-duration:0.5s;}
+#logo.view_cornered{position:fixed;left:0;width:100px;height:100px;margin-left:2%;cursor:pointer;background:#fff;border-radius:50px;transition-property:top left;transition-duration:0.5s;}
+#logo.view_spinner{position:fixed;top:33%;width:80px;height:80px;margin-left:-40px;transition-property:top left;transition-duration:0.5s;}
+#logo.view_spinner > #optimade_logo{-webkit-animation:spin 2s ease infinite;-moz-animation:spin 2s ease infinite;animation:spin 2s ease infinite;}
+@-moz-keyframes spin { 100% { -moz-transform:rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform:rotate(360deg); } }
+@keyframes spin { 100% { transform:rotate(360deg); } }
+
+/* LAYOUT */
+
+#landing{}
+#landing_search{width:700px;margin:300px auto 0;}
+#databrowser_search{width:700px;margin:5px auto 20px;}
+#landing_search > *, #databrowser_search > * {display:inline-block;}
+
+div.search_prefix{width:100px;font-weight:bold;font-size:1.5em;font-family:Courier;}
+input.ui_search_content{width:500px;font-size:1.5em;padding:2px 4px;font-family:Courier;}
+div.trigger{cursor:pointer;user-select:none;font-size:1.3em;text-align:center;border:1px solid #f00;background:#f00;color:#fff;line-height:1.4em;border-radius:3px;text-decoration:none;box-shadow:inset 0 2px 2px rgba(255,255,255,0.3), inset 0 -2px 2px rgba(0,0,0,0.3), inset 0 20px 10px rgba(255,255,255,0.3), 0 0 2px 1px rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.3);}
+div.ui_search_trigger{width:50px;font-size:1.4em;}
+
+#landing_statuses, #databrowser_statuses{width:750px;margin:75px auto 20px;text-align:center;}
+ul.statuses > li{list-style:none;display:inline-block;width:60px;height:45px;padding-top:15px;line-height:1.0;margin:0 3px 3px 0;border-radius:30px;cursor:pointer;overflow:hidden;font-size:0.8em;border:1px solid #eee;background:#fbfbfb;}
+ul.statuses > li.ui_available{border:1px solid #6cf;background:#cff;}
+ul.statuses > li.ui_active{border:1px solid #3c3;background:#cf9;}
+
+#databrowser{}
+#databrowser_output{clear:both;width:90%;margin:0 auto 50px;}
+#databrowser_output li{list-style:none;display:inline-block;width:100px;min-height:100px;margin:0 3px 6px 0;padding:20px;border:1px solid #ddd;line-height:2em;cursor:pointer;text-align:center;overflow:hidden;font-family:Courier;letter-spacing:-1px;}
+#databrowser_output li:hover{background:#f6f6f6;}
+#databrowser_output > div.new_provider{width:100%;border-top:1px solid #999;background:#fbfbfb;padding:20px;margin:20px 0;text-align:center;font-size:1.5em;letter-spacing:0.5em;}
+#databrowser_output > div.data_hidden{display:none;}
+
+/* FOOTER */
+
+#footer{position:fixed;bottom:0;left:0;z-index:999;width:100%;height:32px;line-height:32px;text-align:center;font-size:0.85em;color:#333;background:#f6f6f6;border-top:1px solid #999;}
+#footer a{text-decoration:none;color:#333;border-bottom:1px solid #333;}
+</style>
+</head>
+<body>
+
+<!-- STUB LAYER -->
+<div id="overlay"></div>
+
+<!-- DYNAMIC LOGO -->
+<div id="logo" class="view_spinner">
+    <svg id="optimade_logo" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55">
+        <line x1="27" y1="14.5" x2="38.0" y2="7.94744111674" stroke="#9ed700" stroke-width="1.15" />
+        <line x1="37.8253175473" y1="33.25" x2="38.0" y2="46.0525588833" stroke="#00acd9" stroke-width="1.15" />
+        <line x1="16.1746824527" y1="33.25" x2="5" y2="27" stroke="#7a2dd0" stroke-width="1.15" />
+        <line x1="49" y1="27" x2="38.0" y2="46.0525588833" stroke="#00acd9" stroke-width="1.15" />
+        <line x1="38.0" y1="46.0525588833" x2="16.0" y2="46.0525588833" stroke="#f1f1f1" stroke-width="2" />
+        <line x1="16.0" y1="46.0525588833" x2="5" y2="27" stroke="#7a2dd0" stroke-width="1.15" />
+        <line x1="5" y1="27" x2="16.0" y2="7.94744111674" stroke="#f1f1f1" stroke-width="2" />
+        <line x1="16.0" y1="7.94744111674" x2="38.0" y2="7.94744111674" stroke="#9ed700" stroke-width="1.15" />
+        <line x1="38.0" y1="7.94744111674" x2="49" y2="27" stroke="#f1f1f1" stroke-width="2" />
+        <circle cx="49" cy="27" r="3.5" fill="#00acd9" />
+        <circle cx="38.0" cy="46.0525588833" r="3.5" fill="#00acd9" />
+        <circle cx="16.0" cy="46.0525588833" r="3.5" fill="#7a2dd0" />
+        <circle cx="5" cy="27" r="3.5" fill="#7a2dd0" />
+        <circle cx="16.0" cy="7.94744111674" r="3.5" fill="#9ed700" />
+        <circle cx="38.0" cy="7.94744111674" r="3.5" fill="#9ed700" />
+        <line x1="27" y1="39.5" x2="16.1746824527" y2="33.25" stroke="#ff414d" stroke-width="1" />
+        <line x1="16.1746824527" y1="33.25" x2="16.1746824527" y2="20.75" stroke="#ff414d" stroke-width="1" />
+        <line x1="16.1746824527" y1="20.75" x2="27" y2="14.5" stroke="#ff414d" stroke-width="1" />
+        <line x1="27" y1="14.5" x2="37.8253175473" y2="20.75" stroke="#ff414d" stroke-width="1" />
+        <line x1="37.8253175473" y1="20.75" x2="37.8253175473" y2="33.25" stroke="#ff414d" stroke-width="1" />
+        <line x1="37.8253175473" y1="33.25" x2="27" y2="39.5" stroke="#ff414d" stroke-width="1" />
+        <circle cx="27" cy="39.5" r="2.5" fill="#ff414d" />
+        <circle cx="16.1746824527" cy="33.25" r="2.5" fill="#ff414d" />
+        <circle cx="16.1746824527" cy="20.75" r="2.5" fill="#ff414d" />
+        <circle cx="27" cy="14.5" r="2.5" fill="#ff414d" />
+        <circle cx="37.8253175473" cy="20.75" r="2.5" fill="#ff414d" />
+        <circle cx="37.8253175473" cy="33.25" r="2.5" fill="#ff414d" />
+    </svg>
+</div>
+
+<div id="main">
+
+    <!-- STARTING SCREEN -->
+    <div id="landing" class="ui_screen">
+        <div id="landing_search">
+            <div class="search_prefix">filter=</div>
+            <input type="text" class="ui_search_content" id="landing_search_content" maxlength="200" spellcheck="false" />
+            <div class="trigger ui_search_trigger">&#x23ce;</div>
+        </div>
+        <ul id="landing_statuses" class="statuses">
+        </ul>
+    </div>
+
+    <!-- DATA SCREEN -->
+    <div id="databrowser" class="ui_screen">
+        <div id="databrowser_search">
+            <div class="search_prefix">filter=</div>
+            <input type="text" class="ui_search_content" id="databrowser_search_content" maxlength="200" spellcheck="false" />
+            <div class="trigger ui_search_trigger">&#x23ce;</div>
+        </div>
+        <ul id="databrowser_statuses" class="statuses">
+        </ul>
+        <ul id="databrowser_output">
+        </ul>
+    </div>
+
+</div>
+
+<div id="footer">This search is possible thanks to the <a href="http://www.optimade.org" target="_blank">OPTIMADE</a> standard &mdash; Open Databases Integration for Materials Design.</div>
+
+<script type="text/javascript">
+"use strict";
+
+/**
+*
+* Settings
+*
+*/
+window.optimade_gui = {
+
+    active_providers: {}, // {short_name: main_search_url}
+
+    cors_url: 'https://cors.optimade.org', // NB we need to replace :// for just /
+
+    optimade_providers_url: 'https://providers.optimade.org/src/links/v1/providers.json',
+
+    formula_fields_mapping: {
+        'tcod': '_tcod_unreduced_formula',
+        'cod': 'chemical_formula_hill'
+    } // default: chemical_formula_reduced
+};
+
+/**
+*
+* Utils
+*
+*/
+function add_sub_tags(string){
+    var sub = false,
+        html_formula = '';
+    for (var i = 0, len = string.length; i < len; i++){
+        if (!isNaN(string[i]) || string[i] == '.'){
+            if (!sub){
+                html_formula += '<sub>';
+                sub = true;
+            }
+        } else {
+            if (sub){
+                html_formula += '</sub>';
+                sub = false;
+            }
+        }
+        html_formula += string[i];
+    }
+    if (sub) html_formula += '</sub>';
+    return html_formula;
+}
+
+/**
+*
+* View-controllers
+*
+*/
+function show_screen(state){
+    var screens = document.getElementsByClassName('ui_screen');
+
+    for (var i = 0; i < screens.length; i++){
+        screens[i].style.display = 'none';
+    }
+
+    if (state == 'loading'){
+        document.getElementById('overlay').style.display = 'block';
+        var logo = document.getElementById('logo');
+        logo.className = '';
+        logo.classList.add('view_spinner');
+
+    } else if (state == 'landing'){
+        document.getElementById('overlay').style.display = 'none';
+        var logo = document.getElementById('logo');
+        logo.className = '';
+        document.getElementById(state).style.display = 'block';
+
+    } else if (state == 'databrowser'){
+        document.getElementById('overlay').style.display = 'none';
+        var logo = document.getElementById('logo');
+        logo.className = '';
+        logo.classList.add('view_cornered');
+        document.getElementById(state).style.display = 'block';
+
+    } else alert('Wrong state: ' + state);
+}
+
+function ping_instances(list){
+    var landing_statuses_html = '',
+        databrowser_statuses_html = '',
+        n_real_responses = 0,
+        n_await_responses = 0;
+
+    for (var i = 0; i < list.data.length; i++){
+        if (!list.data[i].attributes.base_url || list.data[i].attributes.base_url.indexOf('example') !== -1) continue;
+        n_await_responses++;
+    }
+
+    list.data.forEach(function(provider){
+
+        landing_statuses_html += '<li id="landing_statuses_' + provider.id + '">' + provider.id + '</li>';
+        databrowser_statuses_html += '<li id="databrowser_statuses_' + provider.id + '">' + provider.id + '</li>';
+
+        if (!provider.attributes.base_url || provider.attributes.base_url.indexOf('example') !== -1) return;
+
+        // FIXME: why don't they use version prefix?
+        var version = (['cod', 'pcod', 'tcod'].indexOf(provider.id) == -1) ? '/v0' : '';
+
+        var ping_req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        // NB we need to replace :// for just /
+
+        ping_req.open('GET', window.optimade_gui.cors_url + '/' + provider.attributes.base_url.replace('://', '/') + version + '/info');
+        ping_req.send(1);
+        console.log(provider);
+        ping_req.onreadystatechange = function(){
+
+            if (ping_req.readyState == 4){
+
+                n_real_responses++;
+
+                if (ping_req.status == 200){
+
+                    if (!provider)
+                        return;
+
+                    var api_version = false,
+                        available_endpoints = false,
+                        search_url = null,
+                        data = JSON.parse(ping_req.responseText);
+                    console.log(data)
+                    data = data.data
+
+                    if (data.attributes){
+                        api_version = data.attributes.api_version;
+                        available_endpoints = data.attributes.available_endpoints;
+
+                    } else if (data[0].attributes){
+                        api_version = data[0].attributes.api_version;
+                        available_endpoints = data[0].attributes.available_endpoints;
+
+                    } else
+                        console.log('Error: unreadable answer received from ' + provider.attributes.base_url + ': ' + e);
+
+                    if (api_version && available_endpoints.indexOf('structures') !== -1){
+                        // FIXME: why don't they use version prefix?
+                        var version = (['cod', 'pcod', 'tcod'].indexOf(provider.id) == -1) ? '/v0' : '';
+                        search_url = provider.attributes.base_url + version + '/structures';
+                        activate_provider(provider.id, api_version, search_url);
+                    }
+                } else console.log('Error: HTTP error ' + ping_req.status + ' received during pinging ' + provider.attributes.base_url + version + '/info');
+
+                if (n_real_responses == n_await_responses){
+                    window.addEventListener('hashchange', handle_routes, false);
+                    window.location.hash ? handle_routes() : window.location.replace('#start');
+                }
+            }
+        }
+    });
+    document.getElementById('landing_statuses').innerHTML = landing_statuses_html;
+    document.getElementById('databrowser_statuses').innerHTML = databrowser_statuses_html;
+}
+
+function start_search(query){
+
+    if (!query) return alert('Search query is empty!');
+
+    console.log('Requested search for ' + query);
+
+    if (window.location.hash == '#filter=' + escape(query)){ // if hash is the same, we still need to trigger action
+        if (query.slice(-1) == ' ')
+            query = query.substr(0, query.length - 1);
+        else
+            query += ' ';
+    }
+    window.location.hash = '#filter=' + escape(query);
+}
+
+function serve_search(data, whose, notice){
+
+    console.log('Received items from ' + whose + ': ' + data.length);
+
+    var title_attr = window.optimade_gui.formula_fields_mapping[whose] || 'chemical_formula_reduced',
+        results_html = '',
+        closing_html = '';
+
+    data.forEach(function(item, index){
+        results_html += '<li data-id="' + whose + '/' + item.id + '" class="data_structure" title="' + item.id + '">' + add_sub_tags( item.attributes[title_attr] ? item.attributes[title_attr] : item.id ) + '</li>';
+        if (index == 100){
+            results_html += '<li class="data_show_more">...</li><div class="data_hidden">';
+            closing_html = '</div>';
+        }
+    });
+
+    if (!results_html){
+        results_html += '<center>' + (notice ? notice : 'Nothing found!') + '</center>';
+    }
+    var ref = document.getElementById('shelf_' + whose);
+    console.log(ref)
+    ref.insertAdjacentHTML('afterend', results_html + closing_html);
+}
+
+function activate_provider(which, how, where){
+    document.getElementById('landing_statuses_' + which).classList.add('ui_available');
+    document.getElementById('landing_statuses_' + which).innerHTML += ' ' + how;
+
+    document.getElementById('databrowser_statuses_' + which).classList.add('ui_available');
+    document.getElementById('databrowser_statuses_' + which).innerHTML += ' ' + how;
+
+    window.optimade_gui.active_providers[which] = where;
+
+    console.log('Added provider ' + which + ' API version ' + how + ' structure endpoint ' + where);
+}
+
+function deactivate_provider(which){
+    document.getElementById('landing_statuses_' + which).classList.remove('ui_available');
+    document.getElementById('databrowser_statuses_' + which).classList.remove('ui_available');
+
+    delete window.optimade_gui.active_providers[which];
+    console.log('Deactivated provider: ' + which);
+}
+
+/**
+*
+* Router
+*
+*/
+function handle_routes(){
+    var anchors = window.location.hash.substr(1).split('=');
+
+    if (!anchors.length)
+        return;
+
+    if (window['route__' + anchors[0]])
+        window['route__' + anchors[0]](anchors.slice(1).join('='));
+    else
+        alert('Unknown route: ' + window.location.hash);
+}
+
+/**
+*
+* Route: #start
+*
+*/
+function route__start(){
+    show_screen('landing');
+}
+
+/**
+*
+* Route: #filter
+*
+*/
+function route__filter(query){
+
+    var instances = Object.keys(window.optimade_gui.active_providers);
+    //console.log('Considering these providers for query: ' + instances.join(', '));
+
+    show_screen('loading');
+
+    var skeleton_html = '';
+    instances.forEach(function(who){
+        skeleton_html += '<div id="shelf_' + who + '" class="new_provider">' + who + '</div>';
+    })
+    document.getElementById('databrowser_output').innerHTML = skeleton_html;
+
+    instances.forEach(function(who){
+
+        if (!window.optimade_gui.active_providers[who]) return;
+
+        var search_req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        search_req.onreadystatechange = function(){
+            if (search_req.readyState == 4){
+
+                var output = [],
+                    notice = false;
+
+                if (search_req.status == 200){
+                    try {
+                        output = JSON.parse(search_req.responseText).data;
+                    } catch(error){
+                        notice = 'Misformatted result!';
+                    }
+                } else {
+                    notice = 'HTTP status ' + search_req.status + '!';
+                    console.log('Error: HTTP error ' + search_req.status + ' received during retrieving the data from ' + window.optimade_gui.active_providers[who]);
+                    //deactivate_provider(who);
+                }
+                serve_search(output, who, notice);
+            }
+        }
+        // NB we need to replace :// for just /
+        search_req.open('GET', window.optimade_gui.cors_url + '/' + window.optimade_gui.active_providers[who].replace('://', '/') + '?filter=' + query);
+        search_req.send(1);
+        console.log('Searching "' + query + '" at ' +  window.optimade_gui.active_providers[who]);
+    });
+
+    document.getElementById('databrowser_search_content').value = unescape(query);
+    show_screen('databrowser');
+}
+
+/**
+*
+* Events binding
+*
+*/
+(function(){
+    /**
+    *
+    * Search input Enter click
+    *
+    */
+    var search_fields = document.getElementsByClassName('ui_search_content');
+    for (var i = 0; i < search_fields.length; i++){
+        search_fields[i].onkeydown = function(evt){
+            var key = window.event ? evt.keyCode : evt.which;
+            if (key === 13) start_search(this.value);
+        }
+    }
+
+    /**
+    *
+    * Search button click
+    *
+    */
+    var search_triggers = document.getElementsByClassName('ui_search_trigger');
+    for (var i = 0; i < search_triggers.length; i++){
+        search_triggers[i].onclick = function(){
+            start_search(this.previousElementSibling.value);
+        }
+    }
+
+    /**
+    *
+    * Cornered logo click
+    *
+    */
+    document.getElementById('logo').onclick = function(){
+        if (!this.classList.contains('view_cornered')) return;
+        window.location.hash = '#start';
+    }
+
+    /**
+    *
+    * Individual entry click
+    *
+    */
+    document.querySelector('#databrowser_output').addEventListener('click', function(event){
+        if (event.target.tagName == 'SUB'){
+            // formula tag: re-dispatch to the parent
+            var dest = event.target.parentNode,
+                reevt = document.createEvent('Event');
+            reevt.initEvent('click', true, true);
+            dest.dispatchEvent(reevt);
+            return;
+        }
+
+        if (!event.target.classList.contains('data_structure')) return;
+
+        var ids = event.target.getAttribute('data-id').split('/'),
+            url = window.optimade_gui.active_providers[ids[0]] + '/?filter=id=' + ids.slice(1).join('/');
+        window.open(url);
+    });
+
+    /**
+    *
+    * Providers retrieval
+    *
+    */
+    //show_screen('loading');
+    var init_req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    init_req.onreadystatechange = function(){
+        if (init_req.readyState == 4){
+            if (init_req.status == 200){
+                ping_instances(JSON.parse(init_req.responseText));
+            } else if (init_req.status)
+                alert('Error: HTTP error ' + init_req.status + ' received during retrieving the data from local server');
+            else
+                alert('Error: no response received');
+        }
+    }
+    // NB we need to replace :// for just /
+    init_req.open('GET', window.optimade_gui.cors_url + '/' + window.optimade_gui.optimade_providers_url.replace('://', '/'));
+    init_req.send(1);
+})();
+</script>
+</body>
+</html>
