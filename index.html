@@ -137,11 +137,11 @@ ul.statuses > li.ui_active{border:1px solid #3c3;background:#cf9;}
 */
 window.optimade_gui = {
 
-    active_providers: {}, // {short_name: main_search_url}
+    active_providers: {}, // {short_name: main_search_url, ...}
 
-    cors_url: 'https://cors.optimade.org', // NB we need to replace :// for just /
+    cors_url: 'https://cors.optimade.science', // NB we need to replace :// for just /
 
-    optimade_providers_url: 'https://providers.optimade.org/src/links/v1/providers.json',
+    optimade_providers_url: 'https://raw.githubusercontent.com/tilde-lab/optimade.providers/master/providers.json',
 
     formula_fields_mapping: {
         'tcod': '_tcod_unreduced_formula',
