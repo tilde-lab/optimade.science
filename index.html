@@ -1,5 +1,5 @@
 <!--
-Standalone OPTIMADE web-GUI
+Standalone OPTIMADE aggregated search web-GUI
 Authors:
 Evgeny Blokhin
 2019-2020
@@ -7,7 +7,7 @@ Evgeny Blokhin
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>OPTIMADE search</title>
+<title>OPTIMADE aggregated search</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <style>
@@ -50,7 +50,7 @@ ul.statuses > li.ui_active{border:1px solid #3c3;background:#cf9;}
 #databrowser_output{clear:both;width:90%;margin:0 auto 50px;}
 #databrowser_output li{list-style:none;display:inline-block;width:100px;min-height:100px;margin:0 3px 6px 0;padding:20px;border:1px solid #ddd;line-height:2em;cursor:pointer;text-align:center;overflow:hidden;font-family:Courier;letter-spacing:-1px;}
 #databrowser_output li:hover{background:#f6f6f6;}
-#databrowser_output > div.new_provider{width:100%;border-top:1px solid #999;background:#fbfbfb;padding:20px;margin:20px 0;text-align:center;font-size:1.5em;letter-spacing:0.5em;}
+#databrowser_output > div.new_provider{width:100%;border-top:1px solid #999;color:#333;padding:20px;margin:20px 0;text-align:center;font-size:1.25em;font-weight:bold;}
 #databrowser_output > div.data_hidden{display:none;}
 
 /* FOOTER */
@@ -137,7 +137,7 @@ ul.statuses > li.ui_active{border:1px solid #3c3;background:#cf9;}
 */
 window.optimade_gui = {
 
-    active_providers: {}, // {short_name: main_search_url, ...}
+    active_providers: {}, // {short_name: {url: main_search_url, name: full_name} ...}
 
     cors_url: 'https://cors.optimade.science', // NB we need to replace :// for just /
 
@@ -173,6 +173,22 @@ function add_sub_tags(string){
     }
     if (sub) html_formula += '</sub>';
     return html_formula;
+}
+
+function str_to_rgb(input_str){
+    var baseRed = 0,
+        baseGreen = 256,
+        baseBlue = 256;
+    //lazy seeded random hack to get values from 0 - 256
+    //for seed just take bitwise XOR of first two chars
+    var seed = input_str.charCodeAt(0) ^ input_str.charCodeAt(1);
+    var rand_1 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+    var rand_2 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+    var rand_3 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+    var red = Math.round((rand_1 + baseRed) / 2);
+    var green = Math.round((rand_2 + baseGreen) / 2);
+    var blue = Math.round((rand_3 + baseBlue) / 2);
+    return [red, green, blue].join(',');
 }
 
 /**
@@ -235,7 +251,7 @@ function ping_instances(list){
 
         ping_req.open('GET', window.optimade_gui.cors_url + '/' + provider.attributes.base_url.replace('://', '/') + version + '/info');
         ping_req.send(1);
-        console.log(provider);
+        //console.log(provider);
         ping_req.onreadystatechange = function(){
 
             if (ping_req.readyState == 4){
@@ -251,7 +267,7 @@ function ping_instances(list){
                         available_endpoints = false,
                         search_url = null,
                         data = JSON.parse(ping_req.responseText);
-                    console.log(data)
+                    //console.log(data)
                     data = data.data
 
                     if (data.attributes){
@@ -269,7 +285,7 @@ function ping_instances(list){
                         // FIXME: why don't they use version prefix?
                         var version = (['cod', 'pcod', 'tcod'].indexOf(provider.id) == -1) ? '/v0' : '';
                         search_url = provider.attributes.base_url + version + '/structures';
-                        activate_provider(provider.id, api_version, search_url);
+                        activate_provider(provider.id, api_version, search_url, provider.attributes.name);
                     }
                 } else console.log('Error: HTTP error ' + ping_req.status + ' received during pinging ' + provider.attributes.base_url + version + '/info');
 
@@ -308,7 +324,7 @@ function serve_search(data, whose, notice){
         closing_html = '';
 
     data.forEach(function(item, index){
-        results_html += '<li data-id="' + whose + '/' + item.id + '" class="data_structure" title="' + item.id + '">' + add_sub_tags( item.attributes[title_attr] ? item.attributes[title_attr] : item.id ) + '</li>';
+        results_html += '<li data-id="' + whose + '/' + item.id + '" class="data_structure" title="id = ' + item.id + '">' + add_sub_tags( item.attributes[title_attr] ? item.attributes[title_attr] : item.id ) + '</li>';
         if (index == 100){
             results_html += '<li class="data_show_more">...</li><div class="data_hidden">';
             closing_html = '</div>';
@@ -319,18 +335,18 @@ function serve_search(data, whose, notice){
         results_html += '<center>' + (notice ? notice : 'Nothing found!') + '</center>';
     }
     var ref = document.getElementById('shelf_' + whose);
-    console.log(ref)
+    //console.log(ref)
     ref.insertAdjacentHTML('afterend', results_html + closing_html);
 }
 
-function activate_provider(which, how, where){
+function activate_provider(which, how, where, who){
     document.getElementById('landing_statuses_' + which).classList.add('ui_available');
     document.getElementById('landing_statuses_' + which).innerHTML += ' ' + how;
 
     document.getElementById('databrowser_statuses_' + which).classList.add('ui_available');
     document.getElementById('databrowser_statuses_' + which).innerHTML += ' ' + how;
 
-    window.optimade_gui.active_providers[which] = where;
+    window.optimade_gui.active_providers[which] = {'url': where, 'name': who};
 
     console.log('Added provider ' + which + ' API version ' + how + ' structure endpoint ' + where);
 }
@@ -366,6 +382,7 @@ function handle_routes(){
 *
 */
 function route__start(){
+    document.title = 'OPTIMADE aggregated search';
     show_screen('landing');
 }
 
@@ -382,14 +399,14 @@ function route__filter(query){
     show_screen('loading');
 
     var skeleton_html = '';
-    instances.forEach(function(who){
-        skeleton_html += '<div id="shelf_' + who + '" class="new_provider">' + who + '</div>';
+    instances.forEach(function(which){
+        skeleton_html += '<div id="shelf_' + which + '" class="new_provider" style="background:rgb(' + str_to_rgb(which) + ')">' + window.optimade_gui.active_providers[which].name + '</div>';
     })
     document.getElementById('databrowser_output').innerHTML = skeleton_html;
 
-    instances.forEach(function(who){
+    instances.forEach(function(which){
 
-        if (!window.optimade_gui.active_providers[who]) return;
+        if (!window.optimade_gui.active_providers[which]) return;
 
         var search_req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
         search_req.onreadystatechange = function(){
@@ -406,19 +423,20 @@ function route__filter(query){
                     }
                 } else {
                     notice = 'HTTP status ' + search_req.status + '!';
-                    console.log('Error: HTTP error ' + search_req.status + ' received during retrieving the data from ' + window.optimade_gui.active_providers[who]);
-                    //deactivate_provider(who);
+                    console.log('Error: HTTP error ' + search_req.status + ' received during retrieving the data from ' + window.optimade_gui.active_providers[which]);
+                    //deactivate_provider(which);
                 }
-                serve_search(output, who, notice);
+                serve_search(output, which, notice);
             }
         }
         // NB we need to replace :// for just /
-        search_req.open('GET', window.optimade_gui.cors_url + '/' + window.optimade_gui.active_providers[who].replace('://', '/') + '?filter=' + query);
+        search_req.open('GET', window.optimade_gui.cors_url + '/' + window.optimade_gui.active_providers[which].url.replace('://', '/') + '?filter=' + query);
         search_req.send(1);
-        console.log('Searching "' + query + '" at ' +  window.optimade_gui.active_providers[who]);
+        console.log('Searching "' + query + '" at ' +  window.optimade_gui.active_providers[which].url);
     });
 
     document.getElementById('databrowser_search_content').value = unescape(query);
+    document.title = unescape(query);
     show_screen('databrowser');
 }
 
@@ -481,7 +499,7 @@ function route__filter(query){
         if (!event.target.classList.contains('data_structure')) return;
 
         var ids = event.target.getAttribute('data-id').split('/'),
-            url = window.optimade_gui.active_providers[ids[0]] + '/?filter=id=' + ids.slice(1).join('/');
+            url = window.optimade_gui.active_providers[ids[0]].url + '/?filter=id=' + ids.slice(1).join('/');
         window.open(url);
     });
 
