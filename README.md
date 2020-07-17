@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science?ref=badge_shield)
+
 OPTIMADE dot Science
 ==========
 
@@ -17,3 +19,7 @@ License
 ------
 
 [MIT](https://en.wikipedia.org/wiki/MIT_License)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science?ref=badge_large)
