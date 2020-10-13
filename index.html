@@ -499,7 +499,7 @@ function route__filter(query){
         if (!event.target.classList.contains('data_structure')) return;
 
         var ids = event.target.getAttribute('data-id').split('/'),
-            url = window.optimade_gui.active_providers[ids[0]].url + '/?filter=id=' + ids.slice(1).join('/');
+            url = window.optimade_gui.active_providers[ids[0]].url + '?filter=id=' + ids.slice(1).join('/');
         window.open(url);
     });
 
