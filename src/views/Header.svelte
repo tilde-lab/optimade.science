@@ -1,4 +1,4 @@
-<div class="p-2">
+<div class="p-1">
     <Navbar>
         <nav slot="left">
             <Button href="#" variant="link">Link</Button>

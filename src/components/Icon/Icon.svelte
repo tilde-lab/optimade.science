@@ -1,4 +1,4 @@
-<i class="icon icon-{size} {icon}" />
+<i class="icon icon-{size} {icon}" {...$$restProps} />
 
 <script lang="ts" context="module">
     export type Size = '1x' | '2x' | '3x' | '4x';

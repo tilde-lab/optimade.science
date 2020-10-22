@@ -1,13 +1,16 @@
-<Input bind:value={search} size="lg" inline autofocus>
+<Input bind:value={$filter} size="lg" inline autofocus>
     <b class="float-right">filter=</b>
     <span slot="iconRight">
-        <Icon icon="loading" />
+        {#await $results}
+            <Icon icon="loading" />
+        {:then _}
+            <Icon icon="icon-search" />
+        {/await}
     </span>
 </Input>
 
 <script lang="ts">
     import Input from '@/components/Input';
     import Icon from '@/components/Icon';
-
-    export let search: string = '';
+    import results, { filter } from '@/stores/search';
 </script>

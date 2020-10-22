@@ -1,4 +1,4 @@
-<section class="my-2 py-2">
+<section class="mt-2 py-1">
     {#if heading}
         <div class="divider text-center" data-content={heading} />
     {/if}

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import asyncable from 'svelte-asyncable';
 
-import { getProviders } from '@/services/api';
+import { getProviders } from 'optimade';
 
 export const selected = writable([]);
 

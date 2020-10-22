@@ -1,3 +1,3 @@
-import { Sizes } from './enums';
+import { SIZE } from './const';
 
-export type Size = keyof typeof Sizes;
+export type Size = keyof typeof SIZE;

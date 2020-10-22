@@ -13,7 +13,7 @@
 <script lang="ts" context="module">
     import type { Size } from '@/types/size';
     import type { Weight } from '@/types/text';
-    import { Sizes } from '@/types/enums';
+    import { SIZE } from '@/types/const';
     export type { Size, Weight };
 </script>
 
@@ -34,7 +34,7 @@
     $: color = bg ? tinycolor(bg) : tinycolor.random();
     $: worlds = name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
     $: clip = len || worlds.length;
-    $: fontSize = Sizes[size] * (1 / clip);
+    $: fontSize = SIZE[size] * (1 / clip);
     $: initials = worlds.slice(0, clip).join('').toUpperCase();
 </script>
 

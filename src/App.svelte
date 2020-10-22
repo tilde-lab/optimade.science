@@ -1,23 +1,28 @@
 <svelte:window on:click={click} />
 
-<Main.Container width="800px">
+<Container size="md">
     <Header />
-    <Main.Section>
+    <Section>
         <Search />
-    </Main.Section>
-    <Main.Section heading="Providers">
+    </Section>
+    <Section>
         <Providers />
-    </Main.Section>
-</Main.Container>
+    </Section>
+    <main>
+        <Results />
+    </main>
+</Container>
 
 <script lang="ts">
     import { click } from 'svelte-pathfinder';
 
-    import * as Main from '@/layouts/Main';
+    import Container from '@/layouts/Container.svelte';
+    import Section from '@/layouts/Section.svelte';
 
     import Header from '@/views/Header.svelte';
     import Search from '@/views/Search.svelte';
-    import Providers from '@/views/Providers/Providers.svelte';
+    import Results from '@/views/Results.svelte';
+    import Providers from '@/views/Providers.svelte';
 </script>
 
 <style lang="scss" global>
