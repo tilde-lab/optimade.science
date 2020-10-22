@@ -12,7 +12,8 @@ module.exports = {
         'mjs',
         'js',
         'ts',
-        'svelte'
+        'svelte',
+        'svg'
     ],
     legacy: false,
     dev,

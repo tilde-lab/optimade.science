@@ -5,13 +5,15 @@
         class="btn btn-{variant} btn-{size}"
         class:btn-block={block}
         class:btn-action={!!shape}
-        class:s-circle={shape === 'circle'}
+        class:circle={shape === 'circle'}
         class:loading
         class:active
         on:click
         on:dblclick
     >
+        <slot name="iconRight" />
         <slot>Text</slot>
+        <slot name="iconLeft" />
     </a>
 {:else}
     <button
@@ -19,25 +21,25 @@
         class="btn btn-{variant} btn-{size}"
         class:btn-block={block}
         class:btn-action={!!shape}
-        class:s-circle={shape === 'circle'}
+        class:circle={shape === 'circle'}
         class:loading
         class:active
         on:click
         on:dblclick
     >
+        <slot name="iconRight" />
         <slot>Text</slot>
+        <slot name="iconLeft" />
     </button>
 {/if}
 
 <script lang="ts" context="module">
-    export type Variant =
-        | 'default'
-        | 'primary'
-        | 'link'
-        | 'success'
-        | 'error';
-    export type Size = 'nm' | 'lg' | 'sm';
-    export type Shape = 'square' | 'circle';
+    import type { Size } from '@/types/size';
+
+    type Variant = 'default' | 'primary' | 'link' | 'success' | 'error';
+    type Shape = 'square' | 'circle';
+
+    export type { Size, Variant, Shape };
 </script>
 
 <script lang="ts">
@@ -51,7 +53,24 @@
 </script>
 
 <style lang="scss">
-    @import "spectre.css/src/variables";
-    @import "spectre.css/src/mixins";
+    @import 'spectre.css/src/variables';
+    @import 'spectre.css/src/mixins';
     @import 'spectre.css/src/buttons';
+    .circle {
+        border-radius: 50%;
+    }
+    .btn.btn-xl {
+        @extend .btn.btn-lg;
+        height: $unit-12;
+    }
+    .btn.btn-action.btn-xl {
+        width: $unit-12;
+    }
+    .btn.btn-xs {
+        @extend .btn.btn-sm;
+        height: $unit-5;
+    }
+    .btn.btn-action.btn-xs {
+        width: $unit-5;
+    }
 </style>

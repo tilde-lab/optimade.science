@@ -4,12 +4,12 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
-
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import importResolver from 'rollup-plugin-import-resolver';
 import visualizer from 'rollup-plugin-visualizer';
-import html from 'rollup-plugin-bundle-html-thomzz-next';
+import html from 'rollup-plugin-bundle-html-thomzz';
+import svg from 'rollup-plugin-inline-svg';
 
 const {
 	dev,
@@ -34,6 +34,7 @@ export default {
 	},
 	plugins: [
 		svelte(svelteConfig),
+		svg(),
 		json(),
 		importResolver({ extensions, alias, }),
 		resolve({ browser: true, dedupe: ['svelte'], extensions, }),
