@@ -4,9 +4,9 @@
             <Button href="#" variant="link">Link</Button>
             <Button href="#">Button</Button>
         </nav>
-        <nav slot="center">
+        <div slot="center">
             {@html logo}
-        </nav>
+        </div>
         <nav slot="right">
             <Button href="#" variant="primary">Colored</Button>
             <Button href="#" shape="circle">
