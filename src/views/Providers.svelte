@@ -15,18 +15,20 @@
             style="justify-content: center;"
             let:item
         >
-            <Popover>
-                <label
-                    class:active={$selected.includes(item.id)}
-                    slot="trigger"
-                    class="c-hand"
-                >
+            <Popover pos="bottom">
+                <label slot="trigger">
                     <input
-                        bind:group={$selected}
+                        bind:group={$query.providers}
+                        name="providers"
                         value={item.id}
                         type="checkbox"
                     />
-                    <Avatar name={item.attributes.name} len={3} {size} />
+                    <Avatar
+                        status={$query.providers.includes(item.id) ? 'online' : 'offline'}
+                        name={item.attributes.name}
+                        len={3}
+                        {size}
+                    />
                 </label>
                 <Card>
                     <span slot="title" class="h6">{item.attributes.name}</span>
@@ -57,13 +59,15 @@
 <script lang="ts">
     import Grid from '@/layouts/Grid.svelte';
     import Popover from '@/layouts/Popover.svelte';
+    import Card from '@/layouts/Card.svelte';
 
-    import Card from '@/components/Card';
     import Avatar from '@/components/Avatar';
 
     import * as Loader from '@/components/loaders';
 
-    import providers, { selected } from '@/stores/providers';
+    import { query } from 'svelte-pathfinder';
+
+    import providers from '@/stores/providers';
 
     let width = 0;
 </script>
@@ -74,9 +78,6 @@
     }
     label {
         display: block;
-        opacity: 0.2;
-    }
-    label.active {
-        opacity: 1;
+        cursor: pointer;
     }
 </style>

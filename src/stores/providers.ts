@@ -1,13 +1,16 @@
-import { writable } from 'svelte/store';
 import asyncable from 'svelte-asyncable';
+import { query } from 'svelte-pathfinder';
 
 import { getProviders } from 'optimade';
-
-export const selected = writable([]);
 
 export default asyncable(async () => {
     const { data: providers } = await getProviders();
     const ids = providers.map(p => p.id);
-    selected.update($selected => $selected.length ? $selected.filter(id => ids.includes(id)) : ids);
+    query.update($query => {
+        $query.providers = $query.providers && $query.providers.length ?
+            $query.providers.filter(id => ids.includes(id)) :
+            ids;
+        return $query;
+    });
     return providers;
 });

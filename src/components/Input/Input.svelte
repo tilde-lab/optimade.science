@@ -67,7 +67,7 @@
     export let rows: number = 1;
     export let inline: boolean = false;
     export let validity: Validity = false;
-    export let size: Size = 'nm';
+    export let size: Size = 'md';
 
     const fid: number = Date.now();
 </script>
@@ -76,6 +76,7 @@
     @import 'spectre.css/src/variables';
     @import 'spectre.css/src/mixins';
     @import 'spectre.css/src/forms';
+    @import 'spectre.css/src/layout';
     .form-icon > :global(*) {
         display: flex;
     }

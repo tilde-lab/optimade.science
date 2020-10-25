@@ -4,7 +4,7 @@ const { dev, legacy } = require('./app.config.js');
 
 module.exports = {
     css: css => {
-        css.write('bundle.css');
+        css.write('bundle.css', dev);
     },
     preprocess: preprocess({
         sourceMap: dev,

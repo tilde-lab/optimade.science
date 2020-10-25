@@ -9,8 +9,8 @@ module.exports = {
         '@/*': './src/*'
     },
     extensions: [
-        'mjs',
         'js',
+        'mjs',
         'ts',
         'svelte',
         'svg'

@@ -1,12 +1,13 @@
 <i class="icon icon-{size} {icon}" {...$$restProps} />
 
 <script lang="ts" context="module">
-    export type Size = '1x' | '2x' | '3x' | '4x';
+    import type { Zoom } from '@/types/size';
+    export { Zoom };
 </script>
 
 <script lang="ts">
     export let icon: string = '';
-    export let size: Size = '1x';
+    export let size: Zoom = '1x';
 </script>
 
 <style lang="scss">

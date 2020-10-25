@@ -1,16 +1,23 @@
-<Input bind:value={$filter} type="search" size="lg" inline autofocus>
+<Input
+    bind:value={$query.filter}
+    name="filter"
+    type="search"
+    size="lg"
+    inline
+    autofocus
+>
     <b class="float-right">filter=</b>
     <span slot="iconRight">
         {#await $results}
             <Icon icon="loading" />
         {:then _}
-            {#if $filter}
+            {#if $query.filter}
                 <Button
                     size="sm"
                     shape="square"
                     variant="link"
                     style="display: flex;"
-                    on:click={() => ($filter = '')}
+                    on:click={() => ($query.filter = '')}
                 >
                     <Icon icon="icon-cross" />
                 </Button>
@@ -25,5 +32,6 @@
     import Input from '@/components/Input';
     import Button from '@/components/Button';
     import Icon from '@/components/Icon';
-    import results, { filter } from '@/stores/search';
+    import { query } from 'svelte-pathfinder';
+    import results from '@/stores/search';
 </script>

@@ -37,19 +37,19 @@
     import type { Size } from '@/types/size';
 
     type Variant = 'default' | 'primary' | 'link' | 'success' | 'error';
-    type Shape = 'square' | 'circle';
+    type Shape = 'square' | 'circle' | false;
 
     export type { Size, Variant, Shape };
 </script>
 
 <script lang="ts">
     export let variant: Variant = 'default';
-    export let size: Size = 'nm';
-    export let shape: Shape;
+    export let size: Size = 'md';
+    export let shape: Shape = false;
     export let active: boolean = false;
     export let loading: boolean = false;
     export let block: boolean = false;
-    export let href: string;
+    export let href: string = '';
 </script>
 
 <style lang="scss">

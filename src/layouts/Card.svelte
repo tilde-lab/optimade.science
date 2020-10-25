@@ -1,10 +1,10 @@
-<div class="card">
-    {#if $$slots.poster}
+<figure class="card">
+    {#if $$slots.img && pos === 'top'}
         <div class="card-image">
-            <slot name="poster" />
+            <slot name="img" />
         </div>
     {/if}
-    <div class="card-header">
+    <figcaption class="card-header">
         {#if $$slots.title}
             <div class="card-title">
                 <slot name="title" />
@@ -15,10 +15,20 @@
                 <slot name="subtitle" />
             </div>
         {/if}
-    </div>
+    </figcaption>
+    {#if $$slots.img && pos === 'middle'}
+        <div class="card-image">
+            <slot name="img" />
+        </div>
+    {/if}
     {#if $$slots.default}
         <div class="card-body">
             <slot />
+        </div>
+    {/if}
+    {#if $$slots.img && pos === 'bottom'}
+        <div class="card-image">
+            <slot name="img" />
         </div>
     {/if}
     {#if $$slots.footer}
@@ -26,18 +36,23 @@
             <slot name="footer" />
         </div>
     {/if}
-</div>
+</figure>
+
+<script lang="ts" context="module">
+    export type Position = 'top' | 'middle' | 'bottom';
+</script>
 
 <script lang="ts">
-    export let img: string = '';
-    export let title: string = '';
-    export let subtitle: string = '';
+    export let pos: Position = 'top';
 </script>
 
 <style lang="scss">
     @import 'spectre.css/src/variables';
     @import 'spectre.css/src/mixins';
     @import 'spectre.css/src/cards';
+    .card {
+        margin: 0;
+    }
     .card-title,
     .card-subtitle {
         word-break: break-all;
