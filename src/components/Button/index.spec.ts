@@ -6,13 +6,15 @@ import Button, { ButtonGroup } from './index';
 
 describe('Button', () => {
     test('check button variants', () => {
-        const { container } = render(Button, { variant: 'primary' });
+        const variant = 'primary';
+        const { container } = render(Button, { variant });
         const button = container.querySelector('button');
         expect(button.classList.contains(`btn-${variant}`)).toBeTruthy();
     });
 
     test('check button sizes', () => {
-        const { container } = render(Button, { size: 'lg' });
+        const size = 'lg';
+        const { container } = render(Button, { size });
         const button = container.querySelector('button');
         expect(button.classList.contains(`btn-${size}`)).toBeTruthy();
     });

@@ -2,11 +2,11 @@
   "name": "optimade.science",
   "version": "1.0.0",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run test && npm run clean && rollup -c && npm run size",
     "dev": "rollup -c -w",
     "start": "sirv dist --single",
     "validate": "svelte-check",
-    "size": "npm run build && size-limit",
+    "size": "size-limit",
     "lint": "eslint src",
     "test": "jest src",
     "test:watch": "npm run test -- --watch",

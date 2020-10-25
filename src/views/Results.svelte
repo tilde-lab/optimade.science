@@ -29,7 +29,7 @@
                         <a
                             id="{provider.id}-{rowIndex}-{colIndex}"
                             href="#{provider.id}-{rowIndex}-{colIndex}"
-                            on:click|preventDefault={() => open(`#${provider.id}-${rowIndex}-${colIndex}`)}
+                            on:click|preventDefault={() => ($fragment = `#${provider.id}-${rowIndex}-${colIndex}`)}
                             in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
                         >
                             <Card>
@@ -77,10 +77,6 @@
         return i * m * 10 + j * cols * m + k * m;
     }
 
-    function open(hash) {
-        $fragment = hash;
-    }
-
     async function scrollTo(e) {
         if (e.detail) return;
         await tick();
@@ -88,6 +84,7 @@
             const anchor = document.getElementById($fragment.replace('#', ''));
             anchor &&
                 anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            $fragment = '';
         });
     }
 </script>
