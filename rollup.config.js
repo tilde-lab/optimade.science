@@ -69,7 +69,8 @@ export default {
 		dev && serve(),
 		dev && livereload(output),
 	],
-	watch: { clearScreen: false, }
+	watch: { clearScreen: false, },
+	onwarn,
 };
 
 function serve() {
@@ -92,3 +93,8 @@ function serve() {
 		}
 	};
 }
+
+function onwarn(warning, onwarn) {
+	if (warning.pluginCode === 'css-unused-selector') return;
+	onwarn(warning);
+};
