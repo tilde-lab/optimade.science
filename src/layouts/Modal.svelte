@@ -1,19 +1,20 @@
 <MorphingModal
     {...$$restProps}
     width="{SIZE[size]}px"
+    {height}
     bind:open
     on:toggle
     on:adjust
 >
     <slot />
     <div slot="content" class="modal-{size}" id="modal-{mid}">
-        <div class="modal-container">
+        <div class="modal-container" style="min-height: {height}">
             <div class="modal-header">
                 <div class="modal-title h5">
                     <slot name="header" />
                 </div>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="min-height: {height}">
                 <div class="content">
                     <slot name="content" />
                 </div>
@@ -40,6 +41,7 @@
 
     export let open: boolean = false;
     export let size: Size = 'md';
+    export let height: string = '100%';
 
     const mid: number = Date.now();
 </script>

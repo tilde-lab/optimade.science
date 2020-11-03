@@ -13,48 +13,58 @@
             />
         </Section>
     {:then results}
-        {#each results as [provider, results], index}
+        {#each results as [structures, provider], index}
             <Section heading={provider.attributes.name}>
-                <Grid
-                    items={[...Array(10).keys()]}
-                    {cols}
-                    let:rowIndex
-                    let:colIndex
-                >
-                    <Modal
-                        open={$fragment === `#${provider.id}-${rowIndex}-${colIndex}`}
-                        height="80vh"
-                        on:toggle={scrollTo}
+                {#if structures && structures.data.length}
+                    <Grid
+                        items={structures.data}
+                        {cols}
+                        let:rowIndex
+                        let:colIndex
+                        let:item
                     >
-                        <a
-                            id="{provider.id}-{rowIndex}-{colIndex}"
-                            href="#{provider.id}-{rowIndex}-{colIndex}"
-                            on:click|preventDefault={() => ($fragment = `#${provider.id}-${rowIndex}-${colIndex}`)}
-                            in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
+                        <Modal
+                            open={$fragment === `#${provider.id}-${item.id}`}
+                            size="lg"
+                            height="80vh"
+                            on:toggle={clearFragmentOnClose}
                         >
-                            <Card>
-                                <span slot="title" class="h6">CI<sub
-                                    >{colIndex}</sub></span>
-                                <span
-                                    slot="subtitle"
-                                    class="text-small text-gray"
-                                >
-                                    {results}
-                                </span>
-                            </Card>
-                        </a>
-                        <div slot="content">
-                            <Result result={{ result: results }} />
-                        </div>
-                    </Modal>
-                </Grid>
+                            <a
+                                id="{provider.id}-{item.id}"
+                                href="#{provider.id}-{item.id}"
+                                on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
+                                in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
+                            >
+                                <Card style="min-height: 130px;">
+                                    <var
+                                        slot="title"
+                                        class:text-xtiny={getTitle(item).length >= 150}
+                                    >
+                                        {@html getTitle(item)}
+                                    </var>
+                                </Card>
+                            </a>
+                            <div slot="content">
+                                <IconButton
+                                    icon="icon-cross"
+                                    style="float: right; margin-top: -0.8rem;"
+                                    on:click={() => ($fragment = '')}
+                                />
+                                <Result data={item} />
+                            </div>
+                        </Modal>
+                    </Grid>
+                {:else}
+                    <div class="text-mute text-tiny text-center">
+                        No results
+                    </div>
+                {/if}
             </Section>
         {/each}
     {/await}
 </div>
 
 <script lang="ts">
-    import { tick } from 'svelte';
     import { fade } from 'svelte/transition';
 
     import Section from '@/layouts/Section.svelte';
@@ -62,7 +72,9 @@
     import Card from '@/layouts/Card.svelte';
     import Modal from '@/layouts/Modal.svelte';
 
+    import { IconButton } from '@/components/Button';
     import * as Loader from '@/components/loaders';
+
     import Result from '@/views/Result.svelte';
 
     import { fragment } from 'svelte-pathfinder';
@@ -77,15 +89,38 @@
         return i * m * 10 + j * cols * m + k * m;
     }
 
-    async function scrollTo(e) {
-        if (e.detail) return;
-        await tick();
-        setTimeout(() => {
-            const anchor = document.getElementById($fragment.replace('#', ''));
-            anchor &&
-                anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            $fragment = '';
-        });
+    function clearFragmentOnClose({ detail: open }) {
+        !open && ($fragment = '');
+    }
+
+    function getTitle(item) {
+        return addSubTags(
+            item.attributes.chemical_formula_hill ||
+                item.attributes._tcod_unreduced_formula ||
+                item.attributes.chemical_formula_reduced ||
+                item.id
+        );
+    }
+
+    function addSubTags(string) {
+        let sub = false,
+            html = '';
+        for (let i = 0, len = string.length; i < len; i++) {
+            if (!isNaN(string[i]) || string[i] == '.') {
+                if (!sub) {
+                    html += '<sub>';
+                    sub = true;
+                }
+            } else {
+                if (sub) {
+                    html += '</sub>';
+                    sub = false;
+                }
+            }
+            html += string[i];
+        }
+        if (sub) html += '</sub>';
+        return html;
     }
 </script>
 
@@ -104,5 +139,8 @@
     }
     a:hover {
         transform: scale(1.1);
+    }
+    .text-xtiny {
+        font-size: 0.7em;
     }
 </style>

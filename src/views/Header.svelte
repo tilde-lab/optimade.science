@@ -8,7 +8,14 @@
             {@html logo}
         </div>
         <nav slot="right">
-            <Button href="#" variant="primary">Colored</Button>
+            <Modal bind:open size="lg" height="80vh">
+                <Button on:click={e => open = true} variant="primary">
+                    JSON
+                </Button>
+                <div slot="content">
+                    <Result />
+                </div>
+            </Modal>
             <Button href="#" shape="circle">
                 <Icon icon="icon-people" />
             </Button>
@@ -18,10 +25,14 @@
 
 <script lang="ts">
     import Navbar from '@/layouts/Navbar.svelte';
+    import Modal from '@/layouts/Modal.svelte';
     import Button from '@/components/Button';
     import Icon from '@/components/Icon';
+    import Result from '@/views/Result.svelte';
 
     import logo from '@/assets/logo.svg';
+
+    let open = false;
 </script>
 
 <style lang="scss">

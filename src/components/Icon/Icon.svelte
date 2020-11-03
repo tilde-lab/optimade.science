@@ -2,7 +2,7 @@
 
 <script lang="ts" context="module">
     import type { Zoom } from '@/types/size';
-    export { Zoom };
+    export type { Zoom };
 </script>
 
 <script lang="ts">

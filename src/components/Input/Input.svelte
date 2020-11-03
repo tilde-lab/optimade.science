@@ -9,7 +9,8 @@
     <div
         class:has-icon-left={$$slots.iconLeft}
         class:has-icon-right={$$slots.iconRight}
-        class="col-8 col-{size}-12"
+        class:col-8={$$slots.default}
+        class="col col-{size}-12"
     >
         {#if rows > 1}
             <textarea
@@ -76,7 +77,6 @@
     @import 'spectre.css/src/variables';
     @import 'spectre.css/src/mixins';
     @import 'spectre.css/src/forms';
-    @import 'spectre.css/src/layout';
     .form-icon > :global(*) {
         display: flex;
     }

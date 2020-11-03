@@ -1,6 +1,6 @@
-const {
-    extensions: moduleFileExtensions,
-} = require('./app.config.js');
+const { extensions } = require('./app.config.js');
+
+const moduleFileExtensions = extensions.map(ext => ext.substring(1));
 
 module.exports = {
     transform: {

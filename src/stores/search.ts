@@ -1,15 +1,23 @@
 import asyncable from 'svelte-asyncable';
-import debounce from 'debounce-promise';
-
 import { query } from 'svelte-pathfinder';
+import { getStructures } from 'optimade';
+import type { Types } from 'optimade';
 
-import providers from '@/stores/providers';
+import { apis } from '@/stores/providers';
 
-export default asyncable(debounce(async ($providers, $query) => {
+import { allSettled, debounce } from '@/helpers/async';
+
+export default asyncable(debounce(async ($apis, $query) => {
     if (!$query.filter) return [];
 
-    const providers = (await $providers).filter(p => $query.providers.includes(p.id));
-    const results = providers.map(provider => [provider, $query.filter]);
+    const apis = (await $apis).filter(api => {
+        if (!api) return false;
+        return $query.providers.includes(api.provider.id);
+    });
+    console.log('apis', apis.length);
+    return Promise.all(apis.map(api => allSettled([
+        getStructures(api.data, $query.filter),
+        Promise.resolve(api.provider)
+    ])));
 
-    return new Promise(resolve => setTimeout(() => resolve(results), 1000));
-}, 1000), null, [providers, query]);
+}, 1000), null, [apis, query]);

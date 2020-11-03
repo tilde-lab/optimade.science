@@ -9,11 +9,11 @@ module.exports = {
         '@/*': './src/*'
     },
     extensions: [
-        'js',
-        'mjs',
-        'ts',
-        'svelte',
-        'svg'
+        '.js',
+        '.mjs',
+        '.ts',
+        '.svelte',
+        '.svg'
     ],
     legacy: false,
     dev,

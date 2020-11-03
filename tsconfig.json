@@ -9,6 +9,9 @@
     "dist/*"
   ],
   "compilerOptions": {
+    "typeRoots": [
+      "src/**/*"
+    ],
     "types": [
       "svelte"
     ],

@@ -32,9 +32,3 @@
         items.map((_, i, items) => (i % cols ? [] : [items.slice(i, i + cols)]))
     );
 </script>
-
-<style lang="scss" global>
-    @import 'spectre.css/src/variables';
-    @import 'spectre.css/src/mixins';
-    @import 'spectre.css/src/layout';
-</style>

@@ -14,7 +14,7 @@
 </Container>
 
 <script lang="ts">
-    import { click } from 'svelte-pathfinder';
+    import { click, prefs } from 'svelte-pathfinder';
 
     import Container from '@/layouts/Container.svelte';
     import Section from '@/layouts/Section.svelte';
@@ -23,6 +23,8 @@
     import Search from '@/views/Search.svelte';
     import Results from '@/views/Results.svelte';
     import Providers from '@/views/Providers.svelte';
+
+    prefs.query.array.format = 'separator';
 </script>
 
 <style lang="scss" global>
@@ -31,6 +33,7 @@
     @import 'spectre.css/src/normalize';
     @import 'spectre.css/src/base';
     @import 'spectre.css/src/typography';
+    @import 'spectre.css/src/layout';
     @import 'spectre.css/src/animations';
     @import 'spectre.css/src/utilities';
 </style>

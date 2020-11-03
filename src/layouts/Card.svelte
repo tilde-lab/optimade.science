@@ -1,4 +1,4 @@
-<figure class="card">
+<figure {...$$restProps} class="card">
     {#if $$slots.img && pos === 'top'}
         <div class="card-image">
             <slot name="img" />

@@ -8,19 +8,15 @@
             {height}
             {width}
         />
-    {:then providers}
-        <Grid
-            items={providers}
-            {cols}
-            style="justify-content: center;"
-            let:item
-        >
+    {:then { data: items }}
+        <Grid {items} {cols} style="justify-content: center;" let:item>
             <Popover pos="bottom">
                 <label slot="trigger">
                     <input
                         bind:group={$query.providers}
                         name="providers"
                         value={item.id}
+                        disabled={!item.attributes.base_url}
                         type="checkbox"
                     />
                     <Avatar
@@ -57,17 +53,16 @@
 </script>
 
 <script lang="ts">
+    import { query } from 'svelte-pathfinder';
+
     import Grid from '@/layouts/Grid.svelte';
     import Popover from '@/layouts/Popover.svelte';
     import Card from '@/layouts/Card.svelte';
 
     import Avatar from '@/components/Avatar';
-
     import * as Loader from '@/components/loaders';
 
-    import { query } from 'svelte-pathfinder';
-
-    import providers from '@/stores/providers';
+    import { providers } from '@/stores/providers';
 
     let width = 0;
 </script>
