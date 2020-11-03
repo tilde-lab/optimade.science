@@ -10,6 +10,7 @@ import importResolver from 'rollup-plugin-import-resolver';
 import visualizer from 'rollup-plugin-visualizer';
 import html from 'rollup-plugin-bundle-html-thomzz';
 import svg from 'rollup-plugin-inline-svg';
+import builtins from 'rollup-plugin-node-builtins';
 
 const {
 	dev,
@@ -33,12 +34,13 @@ export default {
 		name,
 	},
 	plugins: [
+		builtins(),
 		svelte(svelteConfig),
 		svg(),
 		json(),
 		importResolver({ extensions, alias, }),
 		resolve({ browser: true, dedupe: ['svelte'], extensions, }),
-		commonjs({ sourceMap: dev, }),
+		commonjs({ sourceMap: dev, extensions, }),
 		typescript({ sourceMap: dev, inlineSources: dev, }),
 		!dev && legacy && babel({
 			extensions,
