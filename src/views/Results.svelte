@@ -15,9 +15,9 @@
     {:then results}
         {#each results as [structures, provider], index}
             <Section heading={provider.attributes.name}>
-                {#if structures && structures.data.length}
+                {#if structures && structures.length}
                     <Grid
-                        items={structures.data}
+                        items={structures}
                         {cols}
                         let:rowIndex
                         let:colIndex
@@ -66,6 +66,7 @@
 
 <script lang="ts">
     import { fade } from 'svelte/transition';
+    import { fragment } from 'svelte-pathfinder';
 
     import Section from '@/layouts/Section.svelte';
     import Grid from '@/layouts/Grid.svelte';
@@ -76,8 +77,6 @@
     import * as Loader from '@/components/loaders';
 
     import Result from '@/views/Result.svelte';
-
-    import { fragment } from 'svelte-pathfinder';
 
     import results from '@/stores/search';
 

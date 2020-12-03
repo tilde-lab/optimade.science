@@ -11,6 +11,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import html from 'rollup-plugin-bundle-html-thomzz';
 import svg from 'rollup-plugin-inline-svg';
 import builtins from 'rollup-plugin-node-builtins';
+import css from 'rollup-plugin-css-only';
 
 const {
 	dev,
@@ -68,6 +69,7 @@ export default {
 			inline: !dev,
 			minifyCss: !dev,
 		}),
+		dev && css({ output: 'bundle.css' }),
 		dev && serve(),
 		dev && livereload(output),
 	],

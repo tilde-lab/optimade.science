@@ -6,22 +6,36 @@
   "exclude": [
     "node_modules/*",
     "__sapper__/*",
-    "dist/*"
+    "dist/*",
+    "src/**/*.spec.ts"
   ],
   "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "downlevelIteration": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "removeComments": true,
+    "declaration": false,
+    "diagnostics": false,
+    "sourceMap": true,
+    "noLib": false,
     "typeRoots": [
-      "src/**/*"
+      "src/**/*",
+      "/.node_modules/@types"
     ],
     "types": [
       "svelte"
     ],
-    "target": "es2017",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "lib": [
-      "dom",
-      "es2017"
+      "es2015",
+      "es2016",
+      "es2017",
+      "dom"
     ],
     "baseUrl": ".",
     "paths": {

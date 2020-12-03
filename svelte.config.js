@@ -3,8 +3,10 @@ const preprocess = require('svelte-preprocess');
 const { dev, legacy } = require('./app.config.js');
 
 module.exports = {
-    css: css => {
-        css.write('bundle.css', dev);
+    compilerOptions: {
+        immutable: true,
+        legacy,
+        dev
     },
     preprocess: preprocess({
         sourceMap: dev,
@@ -12,7 +14,4 @@ module.exports = {
         postcss: true,
         typescript: true
     }),
-    immutable: true,
-    legacy,
-    dev
 };

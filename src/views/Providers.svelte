@@ -8,7 +8,7 @@
             {height}
             {width}
         />
-    {:then { data: items }}
+    {:then items}
         <Grid {items} {cols} style="justify-content: center;" let:item>
             <Popover pos="bottom">
                 <label slot="trigger">
@@ -62,7 +62,7 @@
     import Avatar from '@/components/Avatar';
     import * as Loader from '@/components/loaders';
 
-    import { providers } from '@/stores/providers';
+    import providers from '@/stores/providers';
 
     let width = 0;
 </script>

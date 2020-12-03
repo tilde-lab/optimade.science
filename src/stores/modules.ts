@@ -1,7 +1,22 @@
+import { derived } from 'svelte/store';
 import asyncable from 'svelte-asyncable';
 
-export default asyncable(async () => {
-    return localStorage.getItem('optimade-modules') || [];
-}, (modules) => {
-    localStorage.setItem('optimade-modules', modules);
-});
+import { getJSON } from '@/services/optimade';
+import { supportedModulesUrl, lsModulesKey } from '@/config';
+
+export const builtinModules = asyncable(() => getJSON(supportedModulesUrl), null);
+
+export const builtinModulesSync = derived(builtinModules, ($builtinModules, set) => {
+    $builtinModules.then(set);
+}, []);
+
+export default asyncable(async ($builtinModules) => {
+
+    const builtinModules = await $builtinModules;
+
+    const localModules = JSON.parse(localStorage.getItem(lsModulesKey) || '[]');
+
+    return localModules.concat(builtinModules.filter(m => !localModules.includes(m)));
+}, (modules = []) => {
+    localStorage.setItem(lsModulesKey, JSON.stringify(modules));
+}, [builtinModules]);

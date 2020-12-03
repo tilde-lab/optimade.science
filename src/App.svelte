@@ -2,6 +2,11 @@
 
 <Container size="md">
     <Header />
+    {#if $ready && !$query.filter}
+        <div class="my-2">
+            <Logo size="4x" />
+        </div>
+    {/if}
     <Section>
         <Search />
     </Section>
@@ -14,7 +19,7 @@
 </Container>
 
 <script lang="ts">
-    import { click, prefs } from 'svelte-pathfinder';
+    import { click, prefs, query } from 'svelte-pathfinder';
 
     import Container from '@/layouts/Container.svelte';
     import Section from '@/layouts/Section.svelte';
@@ -23,6 +28,10 @@
     import Search from '@/views/Search.svelte';
     import Results from '@/views/Results.svelte';
     import Providers from '@/views/Providers.svelte';
+
+    import Logo from '@/components/Logo.svelte';
+
+    import { ready } from '@/stores/providers';
 
     prefs.query.array.format = 'separator';
 </script>

@@ -1,23 +1,26 @@
 import asyncable from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
-import { getStructures } from 'optimade';
+import debounce from 'debounce-promise';
+
 import type { Types } from 'optimade';
 
-import { apis } from '@/stores/providers';
+import optimade from '@/services/optimade';
+import providers from '@/stores/providers';
 
-import { allSettled, debounce } from '@/helpers/async';
-
-export default asyncable(debounce(async ($apis, $query) => {
+export default asyncable(debounce(async ($query) => {
     if (!$query.filter) return [];
 
-    const apis = (await $apis).filter(api => {
-        if (!api) return false;
-        return $query.providers.includes(api.provider.id);
-    });
-    console.log('apis', apis.length);
-    return Promise.all(apis.map(api => allSettled([
-        getStructures(api.data, $query.filter),
-        Promise.resolve(api.provider)
-    ])));
+    const $providers: Types.Provider[] = (await providers.get()).filter
+        (provider => {
+            if (!provider) return false;
+            return $query.providers.includes(provider.id);
+        });
 
-}, 1000), null, [apis, query]);
+    const results = await optimade.getStructuresAll($providers, $query.filter) || [];
+
+    return results.sort((a, b) => {
+        if ((a[0] && a[0].length) && (!b[0] || !b[0].length)) return -1;
+        if ((!a[0] || !a[0].length) && (b[0] && b[0].length)) return 1;
+        return 0;
+    });
+}), null, [query]);

@@ -1,64 +1,54 @@
 <div class="mb-2 pb-2">
-    <Steps {steps}/>
+    <Steps {steps} />
 </div>
 <div class="columns pt-2">
-  <div class="column">
-    {#if data}
-        <Input bind:value={filterText} placeholder="Field name..." />
+    <div class="column col-6">
+        {#if data}
+            <Input bind:value={filterText} placeholder="Field name..." />
+            <small class="form-text text-muted">
+                You can filter data object by field name.
+            </small>
+            <Hero size="sm">
+                <JSON.Viewer value={data} {filterText} />
+            </Hero>
+        {:else}
+            <JSON.Editor
+                style="width: 100%; height: 400px; margin-top: 0;"
+                on:change={(e) => (code = e.detail)}
+            />
+        {/if}
+    </div>
+    <div class="divider-vert" data-content="&rarr;" />
+    <div class="column">
+        <ModuleSelect bind:selected={module} />
         <small class="form-text text-muted">
-            You can filter data object by field name.
+            Use
+            <code>window.__OPRIMADE_DATA__</code>
+            to access JSON
         </small>
         <Hero size="sm">
-            <JSON.Viewer value={data} {filterText} />
+            <div class="module">
+                <iframe bind:this={iframe} src={module?.value} />
+            </div>
         </Hero>
-    {:else}
-        <JSON.Editor 
-            style="width: 100%; height: 400px; margin-top: 0;" 
-            on:change={e => code = e.detail} 
-        />
-    {/if}
-  </div>
-  <div class="divider-vert" data-content="&rarr;"></div>
-  <div class="column">
-    {#await $modules then items}
-        <Select 
-            {items} 
-            bind:selectedValue={src} 
-            placeholder="Select exisitng module or enter an URL"
-            noOptionsMessage="No modules added"
-        />
-    {/await}
-    <small class="form-text text-muted">
-        Use <code>window.__OPRIMADE_DATA__</code> to access JSON
-    </small>
-    <Hero size="sm">
-        <div class="module">
-            <iframe bind:this={iframe} {src}></iframe>
-        </div>
-    </Hero>
-  </div>
+    </div>
 </div>
 
 <script lang="ts" context="module">
-    const steps = [
-        { label: 'JSON' },
-        { label: 'Module' }
-    ];
+    const steps = [{ label: 'JSON' }, { label: 'Module' }];
 </script>
 
 <script lang="ts">
     import Hero from '@/layouts/Hero.svelte';
+    import ModuleSelect from '@/views/ModuleSelect/ModuleSelect.svelte';
     import Input from '@/components/Input';
     import Steps from '@/components/Steps';
-    import Select from '@/components/Select';
     import * as JSON from '@/components/JSON';
-
-    import modules from '@/stores/modules';
 
     export let data = null;
 
     let code: string;
-    let src: string;
+    let module: any;
     let filterText: string = '';
 
     let iframe;
