@@ -23,7 +23,7 @@
         <ModuleSelect bind:selected={module} />
         <small class="form-text text-muted">
             Use
-            <code>window.__OPRIMADE_DATA__</code>
+            <code>window.{moduleDataKey}</code>
             to access JSON
         </small>
         <Hero size="sm">
@@ -35,6 +35,8 @@
 </div>
 
 <script lang="ts" context="module">
+    import { moduleDataKey } from '@/config';
+
     const steps = [{ label: 'JSON' }, { label: 'Module' }];
 </script>
 
@@ -53,10 +55,10 @@
 
     let iframe;
     $: if (iframe) {
-        iframe.contentWindow.__OPRIMADE_DATA__ = data;
+        iframe.contentWindow[moduleDataKey] = data;
     }
     $: if (iframe) {
-        iframe.contentWindow.__OPRIMADE_DATA__ = code;
+        iframe.contentWindow[moduleDataKey] = code;
     }
 </script>
 
