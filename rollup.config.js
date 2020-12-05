@@ -35,13 +35,19 @@ export default {
 		name,
 	},
 	plugins: [
-		builtins(),
+		//builtins(),
 		svelte(svelteConfig),
 		css({ output: 'bundle.css' }),
 		svg(),
 		json(),
 		importResolver({ extensions, alias, }),
-		resolve({ browser: true, dedupe: ['svelte'], extensions, }),
+		resolve({
+			preferBuiltins: true,
+			browser: true,
+			mainFields: ['browser', 'module', 'main'],
+			dedupe: ['svelte'],
+			extensions,
+		}),
 		commonjs({ sourceMap: dev, extensions, }),
 		typescript({ sourceMap: dev, inlineSources: dev, }),
 		!dev && legacy && babel({
