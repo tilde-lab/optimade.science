@@ -42,7 +42,7 @@ export default {
 		json(),
 		importResolver({ extensions, alias, }),
 		resolve({
-			preferBuiltins: true,
+			preferBuiltins: false,
 			browser: true,
 			mainFields: ['browser', 'module', 'main'],
 			dedupe: ['svelte'],
