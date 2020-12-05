@@ -23,7 +23,8 @@ export const ready = derived(providers, ($providers, set) => {
 
 function retrieveProviderSelections(providers: Types.Provider[]) {
 
-    const ids = JSON.parse(localStorage.getItem(lsProviderKey) || '[]') ||
+    const ids = localStorage[lsProviderKey] ?
+        JSON.parse(localStorage.getItem(lsProviderKey)) :
         providers.map(p => p.id);
 
     query.update($query => {

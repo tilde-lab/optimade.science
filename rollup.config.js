@@ -35,7 +35,7 @@ export default {
 		name,
 	},
 	plugins: [
-		builtins(),
+		//builtins(),
 		svelte(svelteConfig),
 		css({ output: 'bundle.css' }),
 		svg(),
