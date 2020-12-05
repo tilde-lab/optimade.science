@@ -15,6 +15,11 @@ module.exports = {
         '.svelte',
         '.svg'
     ],
+    mainFields: [
+        'browser',
+        'module',
+        'main'
+    ],
     legacy: false,
     dev,
 };

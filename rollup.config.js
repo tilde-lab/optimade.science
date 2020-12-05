@@ -20,6 +20,7 @@ const {
 	input,
 	legacy,
 	output,
+	mainFields,
 	extensions,
 } = require('./app.config.js');
 
@@ -35,17 +36,16 @@ export default {
 		name,
 	},
 	plugins: [
-		//builtins(),
+		builtins(),
 		svelte(svelteConfig),
 		css({ output: 'bundle.css' }),
 		svg(),
 		json(),
 		importResolver({ extensions, alias, }),
 		resolve({
-			preferBuiltins: false,
 			browser: true,
-			mainFields: ['browser', 'module', 'main'],
 			dedupe: ['svelte'],
+			mainFields,
 			extensions,
 		}),
 		commonjs({ sourceMap: dev, extensions, }),
