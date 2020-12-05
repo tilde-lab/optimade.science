@@ -37,6 +37,7 @@ export default {
 	plugins: [
 		builtins(),
 		svelte(svelteConfig),
+		css({ output: 'bundle.css' }),
 		svg(),
 		json(),
 		importResolver({ extensions, alias, }),
@@ -69,7 +70,6 @@ export default {
 			inline: !dev,
 			minifyCss: !dev,
 		}),
-		dev && css({ output: 'bundle.css' }),
 		dev && serve(),
 		dev && livereload(output),
 	],

@@ -35,5 +35,5 @@ function retrieveProviderSelections(providers: Types.Provider[]) {
 }
 
 query.subscribe($query => {
-    localStorage.setItem(lsProviderKey, JSON.stringify($query.providers || []));
+    $query.providers && localStorage.setItem(lsProviderKey, JSON.stringify($query.providers));
 });

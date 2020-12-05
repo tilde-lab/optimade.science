@@ -24,7 +24,7 @@
     export let item;
     export let filterText;
 
-    $: label = item.isCreator ? `Create \"${filterText}\"` : item.label;
+    $: label = item.isCreator ? `Add \"${filterText}\"` : item.label;
 
     $: removable = !item.isCreator && !$builtinModulesSync.includes(item.value);
 

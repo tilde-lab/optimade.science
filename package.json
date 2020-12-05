@@ -67,7 +67,7 @@
     "rollup-plugin-visualizer": "^4.1.1",
     "size-limit": "^4.6.0",
     "spectre.css": "^0.5.9",
-    "svelte": "3.29.7",
+    "svelte": "^3.31.0",
     "svelte-asyncable": "^1.3.1",
     "svelte-check": "^1.0.0",
     "svelte-code-editor": "^1.0.1",
