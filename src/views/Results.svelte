@@ -25,8 +25,6 @@
                     >
                         <Modal
                             open={$fragment === `#${provider.id}-${item.id}`}
-                            size="lg"
-                            height="80vh"
                             on:toggle={clearFragmentOnClose}
                         >
                             <a

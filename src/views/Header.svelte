@@ -6,7 +6,7 @@
             {/if}
         </div>
         <nav slot="right">
-            <Modal bind:open size="lg" height="80vh">
+            <Modal bind:open>
                 <Button on:click={(e) => (open = true)} variant="primary">
                     JSON
                 </Button>

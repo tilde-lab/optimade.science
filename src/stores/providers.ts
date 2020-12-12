@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 import { derived } from 'svelte/store';
 import asyncable from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
@@ -8,7 +9,7 @@ import optimade from '@/services/optimade';
 import { lsProviderKey } from '@/config';
 
 const providers = asyncable(async (): Promise<Types.Provider[]> => {
-    const providers: Types.Provider[] = Object.values(await optimade.getProviders());
+    const providers: Types.Provider[] = Object.values(optimade.providers || await optimade.getProviders());
 
     retrieveProviderSelections(providers);
 
@@ -21,7 +22,10 @@ export const ready = derived(providers, ($providers, set) => {
     $providers.then(() => set(true));
 }, false);
 
-function retrieveProviderSelections(providers: Types.Provider[]) {
+async function retrieveProviderSelections(providers: Types.Provider[]) {
+
+    // move next operations to the next tick to be sure all changes already applied
+    await tick(); 
 
     const ids = localStorage[lsProviderKey] ?
         JSON.parse(localStorage.getItem(lsProviderKey)) :

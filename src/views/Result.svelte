@@ -8,9 +8,7 @@
             <small class="form-text text-muted">
                 You can filter data object by field name.
             </small>
-            <Hero size="sm">
-                <JSON.Viewer value={data} {filterText} />
-            </Hero>
+            <JSON.Viewer value={data} {filterText} />
         {:else}
             <JSON.Editor
                 style="width: 100%; height: 400px; margin-top: 0;"

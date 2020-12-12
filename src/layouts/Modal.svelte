@@ -1,20 +1,26 @@
 <MorphingModal
     {...$$restProps}
-    width="{SIZE[size]}px"
+    {fullscreen}
+    {width}
     {height}
     bind:open
     on:toggle
     on:adjust
 >
     <slot />
-    <div slot="content" class="modal-{size}" id="modal-{mid}">
-        <div class="modal-container" style="min-height: {height}">
+    <div
+        slot="content"
+        class:modal-fs={fullscreen}
+        class="modal-{size}"
+        id="modal-{mid}"
+    >
+        <div class="modal-container" {style}>
             <div class="modal-header">
                 <div class="modal-title h5">
                     <slot name="header" />
                 </div>
             </div>
-            <div class="modal-body" style="min-height: {height}">
+            <div class="modal-body" {style}>
                 <div class="content">
                     <slot name="content" />
                 </div>
@@ -41,9 +47,13 @@
 
     export let open: boolean = false;
     export let size: Size = 'md';
+    export let fullscreen: boolean = true;
     export let height: string = '100%';
 
     const mid: number = Date.now();
+
+    $: width = fullscreen ? '100%' : `${SIZE[size]}px`;
+    $: style = `min-width: ${width}; min-height: ${height};`;
 </script>
 
 <style lang="scss">
@@ -55,5 +65,9 @@
     }
     .modal-lg {
         @extend .modal.modal-lg;
+    }
+    [slot='content'] {
+        width: 100%;
+        height: 100%;
     }
 </style>
