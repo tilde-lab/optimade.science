@@ -5,3 +5,4 @@ export const moduleGroups = { builtin: 'Built-in modules', local: 'Local modules
 export const moduleDataKey = '__OPRIMADE_DATA__';
 export const lsProviderKey = 'optimade-providers';
 export const lsModulesKey = 'optimade-modules';
+export const searchDelay = 2000;
