@@ -33,13 +33,13 @@
                                 on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
                                 in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
                             >
-                                <Card style="min-height: 130px;">
-                                    <var
+                                <Card style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;">
+                                    <span
                                         slot="title"
                                         class:text-xtiny={getTitle(item).length >= 150}
                                     >
                                         {@html getTitle(item)}
-                                    </var>
+                                    </span>
                                 </Card>
                             </a>
                             <div slot="content">
