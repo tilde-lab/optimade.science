@@ -26,7 +26,7 @@
     </span>
 </Input>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
 
     import Input from '@/components/Input';

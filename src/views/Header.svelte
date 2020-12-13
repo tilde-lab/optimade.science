@@ -23,7 +23,7 @@
     </Navbar>
 </div>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
 
     import Navbar from '@/layouts/Navbar.svelte';
@@ -34,6 +34,8 @@
     import Logo from '@/components/Logo.svelte';
 
     import { ready } from '@/stores/providers';
+</script>
 
-    let open = false;
+<script lang="ts">
+    let open: boolean = false;
 </script>

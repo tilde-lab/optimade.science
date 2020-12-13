@@ -15,14 +15,22 @@
     </div>
 {/if}
 
-<script>
+<script lang="ts" context="module">
     import Tile from '@/layouts/Tile.svelte';
     import { IconButton } from '@/components/Button';
 
     import modules, { builtinModulesSync } from '@/stores/modules';
 
-    export let item;
-    export let filterText;
+    export interface Item {
+        label: string;
+        value: string;
+        isCreator?: boolean;
+    }
+</script>
+
+<script lang="ts">
+    export let item: Item;
+    export let filterText: string;
 
     $: label = item.isCreator ? `Add \"${filterText}\"` : item.label;
 

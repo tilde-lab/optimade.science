@@ -10,14 +10,16 @@
     />
 {/await}
 
-<script lang="ts">
+<script lang="ts" context="module">
     import Select from '@/components/Select';
     import Item from './components/Item.svelte';
 
     import modules, { builtinModulesSync } from '@/stores/modules';
 
     import { moduleGroups } from '@/config';
+</script>
 
+<script lang="ts">
     export let selected = null;
 
     $: if (selected) {

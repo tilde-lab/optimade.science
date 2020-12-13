@@ -13,9 +13,11 @@
     {/each}
 </ContentLoader>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import ContentLoader from 'svelte-content-loader';
+</script>
 
+<script lang="ts">
     export let width: number = 100;
     export let height: number = 100;
     export let rows: number = 1;

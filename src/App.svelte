@@ -29,7 +29,7 @@
     standard &mdash; Open Databases Integration for Materials Design.
 </footer>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import { click, prefs, query } from 'svelte-pathfinder';
 
     import Container from '@/layouts/Container.svelte';

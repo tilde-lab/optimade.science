@@ -4,9 +4,11 @@
     {/each}
 </ContentLoader>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import ContentLoader from 'svelte-content-loader';
+</script>
 
+<script lang="ts">
     export let width: number = 100;
     export let count: number = 10;
     export let radius: number = 16;

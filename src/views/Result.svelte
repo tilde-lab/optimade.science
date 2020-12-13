@@ -8,7 +8,7 @@
             <small class="form-text text-muted">
                 You can filter data object by field name.
             </small>
-            <JSON.Viewer value={data} {filterText} />
+            <JSON.Viewer value={data} caption="Optimade" {filterText} />
         {:else}
             <JSON.Editor
                 style="width: 100%; height: 400px; margin-top: 0;"
@@ -33,30 +33,27 @@
 </div>
 
 <script lang="ts" context="module">
-    import { moduleDataKey } from '@/config';
-
-    const steps = [{ label: 'JSON' }, { label: 'Module' }];
-</script>
-
-<script lang="ts">
     import Hero from '@/layouts/Hero.svelte';
     import ModuleSelect from '@/views/ModuleSelect/ModuleSelect.svelte';
     import Input from '@/components/Input';
     import Steps from '@/components/Steps';
     import * as JSON from '@/components/JSON';
 
+    import { moduleDataKey } from '@/config';
+
+    const steps = [{ label: 'JSON' }, { label: 'Module' }];
+</script>
+
+<script lang="ts">
     export let data = null;
 
     let code: string;
     let module: any;
     let filterText: string = '';
-
     let iframe;
+
     $: if (iframe) {
-        iframe.contentWindow[moduleDataKey] = data;
-    }
-    $: if (iframe) {
-        iframe.contentWindow[moduleDataKey] = code;
+        iframe.contentWindow[moduleDataKey] = data || code;
     }
 </script>
 

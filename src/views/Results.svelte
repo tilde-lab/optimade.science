@@ -62,7 +62,7 @@
     {/await}
 </div>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import { fade } from 'svelte/transition';
     import { fragment } from 'svelte-pathfinder';
 
@@ -77,7 +77,9 @@
     import Result from '@/views/Result.svelte';
 
     import results from '@/stores/search';
+</script>
 
+<script lang="ts">
     export let cols: number = 6;
 
     let width;

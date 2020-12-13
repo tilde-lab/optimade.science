@@ -15,9 +15,8 @@
     </code>
 </pre>
 
-<script context="module">
+<script lang="ts" context="module">
     import copy from 'copy-to-clipboard';
-
     import TreeView from 'svelte-json-tree-view';
 
     import { IconButton } from '@/components/Button';

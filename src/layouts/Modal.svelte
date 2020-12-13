@@ -33,6 +33,8 @@
 </MorphingModal>
 
 <script lang="ts" context="module">
+    import MorphingModal from 'svelte-morphing-modal';
+
     export const SIZE = {
         sm: 320,
         md: 640,
@@ -43,8 +45,6 @@
 </script>
 
 <script lang="ts">
-    import MorphingModal from 'svelte-morphing-modal';
-
     export let open: boolean = false;
     export let size: Size = 'md';
     export let fullscreen: boolean = true;

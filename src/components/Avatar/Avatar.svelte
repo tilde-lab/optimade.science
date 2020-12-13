@@ -22,6 +22,8 @@
 </figure>
 
 <script lang="ts" context="module">
+    import tinycolor from 'tinycolor2';
+
     import type { Size } from '@/types/size';
     import type { Weight } from '@/types/text';
     import { SIZE } from '@/types/const';
@@ -31,8 +33,6 @@
 </script>
 
 <script lang="ts">
-    import tinycolor from 'tinycolor2';
-
     export let name: string = '';
     export let bg: string = '';
     export let len: number = 0;

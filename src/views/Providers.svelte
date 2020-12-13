@@ -41,6 +41,17 @@
 </div>
 
 <script lang="ts" context="module">
+    import { query } from 'svelte-pathfinder';
+
+    import Grid from '@/layouts/Grid.svelte';
+    import Popover from '@/layouts/Popover.svelte';
+    import Card from '@/layouts/Card.svelte';
+
+    import Avatar from '@/components/Avatar';
+    import * as Loader from '@/components/loaders';
+
+    import providers from '@/stores/providers';
+
     import type { Size } from '@/types/size';
     import type { Cols } from '@/layouts/Grid.svelte';
 
@@ -53,18 +64,7 @@
 </script>
 
 <script lang="ts">
-    import { query } from 'svelte-pathfinder';
-
-    import Grid from '@/layouts/Grid.svelte';
-    import Popover from '@/layouts/Popover.svelte';
-    import Card from '@/layouts/Card.svelte';
-
-    import Avatar from '@/components/Avatar';
-    import * as Loader from '@/components/loaders';
-
-    import providers from '@/stores/providers';
-
-    let width = 0;
+    let width: number = 0;
 </script>
 
 <style>

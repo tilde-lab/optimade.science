@@ -2,9 +2,11 @@
     <Select {...$$restProps} {items} bind:selectedValue />
 </div>
 
-<script lang="ts">
+<script lang="ts" context="module">
     import Select from 'svelte-select';
+</script>
 
+<script lang="ts">
     export let items: [] = [];
     export let selectedValue;
 </script>
