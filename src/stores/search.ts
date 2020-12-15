@@ -15,6 +15,10 @@ export default asyncable(async ($query) => {
 
     await providers.get(); // just wait until providers loaded
 
+    if (typeof $query.providers === 'string') {
+        $query.providers = [$query.providers];
+    }
+
     const results = await getStructuresAll($query.providers, $query.filter);
 
     return results.sort((a, b) => {
