@@ -19,19 +19,23 @@ const providers = asyncable(async (): Promise<Types.Provider[]> => {
 export default providers;
 
 export const ready = derived(providers, ($providers, set) => {
-    $providers.then(() => set(true));
+    $providers.then(() => set(true), () => set(false));
 }, false);
 
 async function retrieveProviderSelections(providers: Types.Provider[]) {
 
     // move next operations to the next tick to be sure all changes already applied
-    await tick(); 
+    await tick();
 
     const ids = localStorage[lsProviderKey] ?
         JSON.parse(localStorage.getItem(lsProviderKey)) :
         providers.map(p => p.id);
 
     query.update($query => {
+        if (typeof $query.providers === 'string') {
+            $query.providers = [$query.providers];
+        }
+
         $query.providers = $query.providers && $query.providers.length ?
             $query.providers.filter(id => ids.includes(id)) :
             ids;
