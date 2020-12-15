@@ -1,0 +1,21 @@
+name: compile
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: debian-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v2
+    - name: employ node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: install npm dependencies
+      run: npm install
+    - name: build
+      run: npm run build
+    - name: artifact dist/
+      uses: actions/upload-artifact@v1
+      with:
+        name: optimade.science
+        path: dist/
