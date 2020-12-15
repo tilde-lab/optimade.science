@@ -2,7 +2,7 @@ name: compile
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
     - uses: actions/checkout@v2
