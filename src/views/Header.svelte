@@ -8,7 +8,7 @@
         <nav slot="right">
             <Modal bind:open>
                 <Button on:click={(e) => (open = true)} variant="primary">
-                    JSON
+                    My modules
                 </Button>
                 <div slot="content">
                     <IconButton

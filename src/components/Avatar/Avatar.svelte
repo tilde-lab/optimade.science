@@ -34,23 +34,23 @@
 
 <script lang="ts">
     export let name: string = '';
-    export let bg: string = '';
+    export let bg: string = '#f6f6f6';
     export let len: number = 0;
     export let caption: boolean = false;
     export let size: Size = 'md';
     export let weight: Weight = 'normal';
     export let status: Status = false;
 
-    let worlds: RegExpMatchArray;
+    let words: RegExpMatchArray;
     let clip: number;
     let fontSize: number;
     let initials: string;
 
     $: color = bg ? tinycolor(bg) : tinycolor.random();
-    $: worlds = name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
-    $: clip = len || worlds.length;
+    $: words = name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
+    $: clip = len || words.length;
     $: fontSize = SIZE[size] * (1 / clip);
-    $: initials = worlds.slice(0, clip).join('').toUpperCase();
+    $: initials = words.slice(0, clip).join('').toUpperCase();
 </script>
 
 <style lang="scss">
