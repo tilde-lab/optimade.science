@@ -9,7 +9,7 @@ import { searchDelay } from '@/config';
 import type { Types } from '@/services/optimade';
 import type { Asyncable } from '@/types/asyncable';
 
-type StructuresByProviders = Array<[Types.Structure, Types.Provider][]>;
+type StructuresByProviders = Array<Array<[Types.Structure, Types.Provider]>>;
 
 const getStructuresAll = debounce((providers, filter) => {
     return optimade.getStructuresAll(providers, filter) || [];
