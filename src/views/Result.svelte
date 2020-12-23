@@ -6,7 +6,7 @@
         {#if data}
             <Input bind:value={filterText} placeholder="Field name..." />
             <small class="form-text text-muted">
-                You can filter data object by field name.
+                Filter data object by field name.
             </small>
             <JSON.Viewer value={data} caption="Optimade" {filterText} />
         {:else}
@@ -22,7 +22,7 @@
         <small class="form-text text-muted">
             Use
             <code>window.{moduleDataKey}</code>
-            to access JSON
+            to access Optimade JSON.
         </small>
         <Hero size="sm">
             <div class="module">
@@ -45,7 +45,7 @@
 
     import { moduleDataKey } from '@/config';
 
-    const steps = [{ label: 'JSON' }, { label: 'Module' }];
+    const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade client module' }];
 </script>
 
 <script lang="ts">

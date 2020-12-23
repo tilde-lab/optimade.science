@@ -68,7 +68,7 @@ export default {
 			],
 		}),
 		!dev && terser(),
-		!dev && visualizer({ filename: `${output}/stats.html`, }),
+		dev && visualizer({ filename: `${output}/stats.html`, }),
 		html({
 			template: 'src/index.html',
 			dest: output,

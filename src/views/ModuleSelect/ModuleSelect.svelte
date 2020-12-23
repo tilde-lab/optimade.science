@@ -5,7 +5,7 @@
         {groupBy}
         {Item}
         isCreatable={true}
-        placeholder="Select exisitng module or enter an URL"
+        placeholder="Select existing module or enter an URL"
         noOptionsMessage="No modules added"
     />
 {/await}

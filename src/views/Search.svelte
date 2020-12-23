@@ -1,13 +1,13 @@
 <Input
     bind:value={$query.filter}
-    placeholder="Start typing to perform the search..."
+    placeholder="Start typing..."
     name="filter"
     type="search"
     size="lg"
     inline
     autofocus
 >
-    <b class="float-right">filter=</b>
+    <span class="float-right" style="font-family:Courier;letter-spacing:0.5px;">filter=</span>
     <span slot="iconRight">
         {#await $results}
             <Icon icon="loading" />
