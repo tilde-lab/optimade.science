@@ -7,7 +7,7 @@
 <script lang="ts" context="module">
     import type { Color } from '@/types/bg';
     import type { Size } from '@/types/size';
-    export { Size, Color };
+    export type { Size, Color };
 </script>
 
 <script lang="ts">

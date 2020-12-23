@@ -2,13 +2,16 @@ import { tick } from 'svelte';
 import { derived } from 'svelte/store';
 import asyncable from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
+
+import type { Readable } from 'svelte/store';
 import type { Types } from 'optimade';
+import type { Asyncable } from '@/types/asyncable';
 
 import optimade from '@/services/optimade';
 
 import { lsProviderKey } from '@/config';
 
-const providers = asyncable(async (): Promise<Types.Provider[]> => {
+const providers: Asyncable<Types.Provider[]> = asyncable(async (): Promise<Types.Provider[]> => {
     const providers: Types.Provider[] = Object.values(optimade.providers || await optimade.getProviders());
 
     retrieveProviderSelections(providers);
@@ -18,7 +21,7 @@ const providers = asyncable(async (): Promise<Types.Provider[]> => {
 
 export default providers;
 
-export const ready = derived(providers, ($providers, set) => {
+export const ready: Readable<boolean> = derived(providers, ($providers, set) => {
     $providers.then(() => set(true), () => set(false));
 }, false);
 

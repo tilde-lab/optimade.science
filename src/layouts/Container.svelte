@@ -4,7 +4,7 @@
 
 <script lang="ts" context="module">
     import type { Size } from '@/types/size';
-    export { Size };
+    export type { Size };
 </script>
 
 <script lang="ts">

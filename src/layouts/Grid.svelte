@@ -18,7 +18,7 @@
 </script>
 
 <script lang="ts">
-    export let items: [] = [];
+    export let items: any[] = [];
     export let cols: Cols = 12;
     export let gapless: boolean = false;
     export let oneline: boolean = false;

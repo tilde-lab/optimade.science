@@ -7,7 +7,7 @@
         </div>
         <nav slot="right">
             <Modal bind:open>
-                <Button on:click={(e) => (open = true)} variant="primary">
+                <Button on:click={() => (open = true)} variant="primary">
                     My modules
                 </Button>
                 <div slot="content">

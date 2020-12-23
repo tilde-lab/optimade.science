@@ -26,7 +26,11 @@
         </small>
         <Hero size="sm">
             <div class="module">
-                <iframe bind:this={iframe} src={module?.value} />
+                <iframe
+                    bind:this={iframe}
+                    src={module?.value}
+                    title="Module window"
+                />
             </div>
         </Hero>
     </div>
@@ -50,7 +54,7 @@
     let code: string;
     let module: any;
     let filterText: string = '';
-    let iframe;
+    let iframe: HTMLIFrameElement | null;
 
     $: if (iframe) {
         iframe.contentWindow[moduleDataKey] = data || code;
