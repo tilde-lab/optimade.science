@@ -6,11 +6,16 @@ import optimade from '@/services/optimade';
 import providers from '@/stores/providers';
 import { searchDelay } from '@/config';
 
+import type { Types } from '@/services/optimade';
+import type { Asyncable } from '@/types/asyncable';
+
+type StructuresByProviders = [Types.Structure, Types.Provider][][];
+
 const getStructuresAll = debounce((providers, filter) => {
     return optimade.getStructuresAll(providers, filter) || [];
 }, searchDelay);
 
-export default asyncable(async ($query) => {
+const search: Asyncable<StructuresByProviders> = asyncable(async ($query) => {
     if (!$query.filter) return [];
 
     await providers.get(); // just wait until providers loaded
@@ -19,11 +24,11 @@ export default asyncable(async ($query) => {
         $query.providers = [$query.providers];
     }
 
-    const results = await getStructuresAll($query.providers, $query.filter);
-
+    const results: StructuresByProviders = await getStructuresAll($query.providers, $query.filter);
     return results.sort((a, b) => {
         if ((a[0] && a[0].length) && (!b[0] || !b[0].length)) return -1;
         if ((!a[0] || !a[0].length) && (b[0] && b[0].length)) return 1;
         return 0;
     });
 }, null, [query]);
+export default search;

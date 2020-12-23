@@ -33,7 +33,9 @@
                                 on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
                                 in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
                             >
-                                <Card style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;">
+                                <Card
+                                    style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;"
+                                >
                                     <span
                                         slot="title"
                                         class:text-xtiny={getTitle(item).length >= 150}
@@ -77,14 +79,17 @@
     import Result from '@/views/Result.svelte';
 
     import results from '@/stores/search';
+
+    import type { Cols } from '@/layouts/Grid.svelte';
+    import type { Types } from '@/services/optimade';
 </script>
 
 <script lang="ts">
-    export let cols: number = 6;
+    export let cols: Cols = 6;
 
-    let width;
+    let width: number;
 
-    function delay(i, j, k, m = 100) {
+    function delay(i: number, j: number, k: number, m: number = 100) {
         return i * m * 10 + j * cols * m + k * m;
     }
 
@@ -92,7 +97,7 @@
         !open && ($fragment = '');
     }
 
-    function getTitle(item) {
+    function getTitle(item: Types.Structure) {
         return addSubTags(
             item.attributes.chemical_formula_hill ||
                 item.attributes._tcod_unreduced_formula ||
@@ -101,11 +106,11 @@
         );
     }
 
-    function addSubTags(string) {
+    function addSubTags(string: string) {
         let sub = false,
             html = '';
         for (let i = 0, len = string.length; i < len; i++) {
-            if (!isNaN(string[i]) || string[i] == '.') {
+            if (!isNaN(+string[i]) || string[i] == '.') {
                 if (!sub) {
                     html += '<sub>';
                     sub = true;

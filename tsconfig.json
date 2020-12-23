@@ -17,6 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
     "noImplicitReturns": true,
+    "resolveJsonModule": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "removeComments": true,

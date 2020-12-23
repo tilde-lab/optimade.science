@@ -23,7 +23,7 @@
     export let selected = null;
 
     $: if (selected) {
-        modules.update(($modules) => {
+        modules.update(($modules: string[]) => {
             if (!$modules.includes(selected.value)) {
                 $modules.unshift(selected.value);
             }

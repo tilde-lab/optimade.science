@@ -12,3 +12,5 @@ optimade.apis = prefetched.apis;
 export default optimade;
 
 export const getJSON = Optimade.getJSON;
+
+export type { Types } from 'optimade';
