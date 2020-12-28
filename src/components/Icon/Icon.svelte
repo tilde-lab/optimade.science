@@ -11,8 +11,6 @@
 </script>
 
 <style lang="scss">
-    @import 'spectre.css/src/variables';
-    @import 'spectre.css/src/mixins';
     @import 'spectre.css/src/icons/icons-core';
     @import 'spectre.css/src/icons/icons-navigation';
     @import 'spectre.css/src/icons/icons-action';
