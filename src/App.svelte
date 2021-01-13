@@ -49,8 +49,6 @@
 
 <style lang="scss">
     :global {
-        @import 'spectre.css/src/variables';
-        @import 'spectre.css/src/mixins';
         @import 'spectre.css/src/normalize';
         @import 'spectre.css/src/base';
         @import 'spectre.css/src/typography';

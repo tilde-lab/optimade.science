@@ -10,7 +10,12 @@ module.exports = {
     },
     preprocess: preprocess({
         sourceMap: dev,
-        scss: true,
+        scss: {
+            prependData: `
+                @import './node_modules/spectre.css/src/variables';
+                @import './node_modules/spectre.css/src/mixins';
+            `,
+        },
         postcss: true,
         typescript: true
     }),
