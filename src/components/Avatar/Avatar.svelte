@@ -1,10 +1,15 @@
 <figure
-    class="avatar avatar-{size} text-{weight}"
+    class="avatar text-{weight}"
     data-initial={initials}
     style="
         background-color: {color};
-        font-size: {fontSize}px;
-        color: {color.isLight() ? '#000' : '#fff'}
+        font-size: 0.5rem;
+        height: 3.6rem;
+        width: 3.6rem;
+        margin: 0.5rem;
+        color: {color.isLight()
+        ? '#000'
+        : '#fff'}
     "
 >
     <slot />
@@ -41,16 +46,32 @@
     export let weight: Weight = 'normal';
     export let status: Status = false;
 
-    let words: RegExpMatchArray;
+    let words: string;
     let clip: number;
     let fontSize: number;
     let initials: string;
 
-    $: color = bg ? tinycolor(bg) : tinycolor.random();
-    $: words = name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
-    $: clip = len || words.length;
+    function str_to_rgb(input_str) {
+        var baseRed = 0,
+            baseGreen = 256,
+            baseBlue = 256;
+        //lazy seeded random hack to get values from 0 - 256
+        //for seed just take bitwise XOR of first two chars
+        var seed = input_str.charCodeAt(0) ^ input_str.charCodeAt(1);
+        var rand_1 = Math.abs(Math.sin(seed++) * 10000) % 256;
+        var rand_2 = Math.abs(Math.sin(seed++) * 10000) % 256;
+        var rand_3 = Math.abs(Math.sin(seed++) * 10000) % 256;
+        var red = Math.round((rand_1 + baseRed) / 2);
+        var green = Math.round((rand_2 + baseGreen) / 2);
+        var blue = Math.round((rand_3 + baseBlue) / 2);
+        return `rgb(${[red, green, blue].join(',')})`;
+    }
+
+    $: color = tinycolor(str_to_rgb(name));
+    $: words = 'as';
+    $: clip = len || 2;
     $: fontSize = SIZE[size] * (1 / clip);
-    $: initials = words.slice(0, clip).join('').toUpperCase();
+    $: initials = name;
 </script>
 
 <style lang="scss">
@@ -60,6 +81,11 @@
     .avatar .avatar-icon {
         border-radius: 50%;
         padding: $unit-o $unit-h;
+    }
+
+    figure {
+        width: 60px;
+        height: 60px;
     }
 
     figcaption {
