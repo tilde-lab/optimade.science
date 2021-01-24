@@ -4,8 +4,6 @@
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
             count={cols}
-            {radius}
-            {height}
             {width}
         />
     {:then items}
@@ -20,8 +18,11 @@
                         type="checkbox"
                     />
                     <Avatar
-                        status={$query.providers.includes(item.id) ? 'online' : 'offline'}
+                        status={$query.providers.includes(item.id)
+                            ? 'online'
+                            : 'offline'}
                         name={item.attributes.name}
+                        apiVersion={item.attributes.api_version}
                         len={3}
                         {size}
                     />
@@ -31,9 +32,8 @@
                     <span slot="subtitle" class="text-small text-gray">
                         {item.attributes.homepage || ''}
                     </span>
-                    <span
-                        class="text-small"
-                    >{item.attributes.description}</span>
+                    <span class="text-small">{item.attributes.description}</span
+                    >
                 </Card>
             </Popover>
         </Grid>
@@ -59,8 +59,8 @@
 
     const cols: Cols = 12;
     const size: Size = 'lg';
-    const height: number = SIZE[size];
-    const radius: number = height / 2;
+    // const height: number = SIZE[size];
+    // const radius: number = height / 2;
 </script>
 
 <script lang="ts">
