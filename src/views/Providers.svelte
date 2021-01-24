@@ -17,12 +17,12 @@
                         disabled={!item.attributes.base_url}
                         type="checkbox"
                     />
-                    {console.log(item)}
                     <Avatar
                         status={$query.providers.includes(item.id)
                             ? 'online'
                             : 'offline'}
-                        name={item.id}
+                        name={item.attributes.name}
+                        apiVersion={item.attributes.api_version}
                         len={3}
                         {size}
                     />
