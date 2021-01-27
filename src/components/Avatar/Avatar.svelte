@@ -54,6 +54,7 @@
     $: clip = len || words.length;
     $: fontSize = SIZE[size] * (1 / (clip + 2));
     $: initials = getPredefinedInitials(
+        name,
         words.slice(0, clip).join('').toUpperCase()
     );
 </script>
