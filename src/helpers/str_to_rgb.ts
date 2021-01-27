@@ -1,4 +1,4 @@
-export function str_to_rgb(input_str) {
+export function str_to_rgb(input_str: string): string {
 	const baseRed = 0,
 		baseGreen = 256,
 		baseBlue = 256;
