@@ -59,8 +59,8 @@
 
     const cols: Cols = 12;
     const size: Size = 'lg';
-    // const height: number = SIZE[size];
-    // const radius: number = height / 2;
+    const height: number = SIZE[size];
+    const radius: number = height / 2;
 </script>
 
 <script lang="ts">
