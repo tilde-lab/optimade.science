@@ -15,12 +15,99 @@
                     <input
                         bind:group={$query.providers}
                         name="providers"
+                        class={`provider-checkbox`}
+                        id={item.id}
                         value={item.id}
+                        on:click={(event) => {
+                            let classList = event.target.classList;
+                            if (augmentation_mode) {
+                                if (
+                                    classList.contains('active') ||
+                                    classList.contains('exclusive')
+                                ) {
+                                    var all = document.getElementsByClassName(
+                                        'provider-checkbox'
+                                    );
+                                    $query.providers = [$query.providers];
+                                    for (var i = 0; i < all.length; i++) {
+                                        all[i].classList.remove('exclusive');
+                                        all[i].classList.add('active');
+
+                                        if (
+                                            typeof $query.providers === 'string'
+                                        ) {
+                                            $query.providers = [
+                                                $query.providers,
+                                                all[i].id,
+                                            ];
+                                        } else {
+                                            $query.providers.push(all[i].id);
+                                        }
+                                    }
+                                    augmentation_mode = false;
+                                } else {
+                                    var all = document.getElementsByClassName(
+                                        'provider-checkbox'
+                                    );
+                                    for (var i = 0; i < all.length; i++) {
+                                        all[i].classList.remove('exclusive');
+                                    }
+                                    event.target.classList.add('exclusive');
+                                    if (typeof $query.providers === 'string') {
+                                        $query.providers = [
+                                            $query.providers,
+                                            item.id,
+                                        ];
+                                    } else {
+                                        $query.providers.push(item.id);
+                                    }
+                                }
+                            } else {
+                                if (classList.contains('active')) {
+                                    event.target.classList.remove('active');
+                                    $query.providers = $query.providers.filter(
+                                        (id) => id !== item.id
+                                    );
+                                } else if (classList.contains('exclusive')) {
+                                    var all = document.getElementsByClassName(
+                                        'provider-checkbox'
+                                    );
+                                    $query.providers = [];
+                                    for (var i = 0; i < all.length; i++) {
+                                        all[i].classList.remove('exclusive');
+                                        all[i].classList.add('active');
+                                        if (
+                                            typeof $query.providers === 'string'
+                                        ) {
+                                            $query.providers = [
+                                                $query.providers,
+                                                all[i].id,
+                                            ];
+                                        } else {
+                                            $query.providers.push(all[i].id);
+                                        }
+                                    }
+                                } else {
+                                    var all = document.getElementsByClassName(
+                                        'provider-checkbox'
+                                    );
+                                    for (var i = 0; i < all.length; i++) {
+                                        all[i].classList.remove('exclusive');
+                                        all[i].classList.remove('active');
+                                    }
+                                    event.target.classList.add('exclusive');
+                                    $query.providers = [item.id];
+                                    augmentation_mode = true;
+                                }
+                            }
+                        }}
                         disabled={!item.attributes.base_url}
                         type="checkbox"
                     />
                     <Avatar
-                        status={$query.providers.includes(item.id) ? 'online' : 'offline'}
+                        status={$query.providers.includes(item.id)
+                            ? 'online'
+                            : 'offline'}
                         name={item.attributes.name}
                         len={3}
                         {size}
@@ -31,9 +118,8 @@
                     <span slot="subtitle" class="text-small text-gray">
                         {item.attributes.homepage || ''}
                     </span>
-                    <span
-                        class="text-small"
-                    >{item.attributes.description}</span>
+                    <span class="text-small">{item.attributes.description}</span
+                    >
                 </Card>
             </Popover>
         </Grid>
@@ -61,6 +147,7 @@
     const size: Size = 'lg';
     const height: number = SIZE[size];
     const radius: number = height / 2;
+    let augmentation_mode = false;
 </script>
 
 <script lang="ts">
