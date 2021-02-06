@@ -4,6 +4,8 @@
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
             count={cols}
+            {radius}
+            {height}
             {width}
         />
     {:then items}

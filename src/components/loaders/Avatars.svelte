@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-    export let width: number = 200;
+    export let width: number = 100;
     export let count: number = 10;
     export let radius: number = 16;
 
