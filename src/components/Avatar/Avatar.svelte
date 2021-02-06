@@ -43,7 +43,7 @@
     export let bg: string = '#f6f6f6';
     export let len: number = 0;
     export let caption: boolean = false;
-    export let size: Size = 'xs';
+    export let size: Size = 'md';
     export let weight: Weight = 'normal';
     export let status: Status = false;
     let words: RegExpMatchArray;
@@ -75,5 +75,9 @@
         font-size: 80%;
         color: black;
         text-align: center;
+    }
+    .avatar-presence {
+        width: 0.7em !important;
+        height: 0.7em !important;
     }
 </style>
