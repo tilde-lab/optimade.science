@@ -22,6 +22,7 @@
                             ? 'online'
                             : 'offline'}
                         name={item.attributes.name}
+                        id={item.id}
                         apiVersion={item.attributes.api_version}
                         len={3}
                         {size}

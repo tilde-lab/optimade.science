@@ -1,6 +1,6 @@
 export function getPredefinedInitials(str: string, defaultInitials: string) {
 	switch (str) {
-		case 'The Materials Project':
+		case 'mp':
 			return "MP";
 		case 'odbx':
 			return "odbx";
