@@ -27,6 +27,7 @@
         <Hero size="sm">
             <div class="module">
                 <iframe
+                    name="visualisationFrame"
                     bind:this={iframe}
                     src={module?.value}
                     title="Module window"
@@ -45,7 +46,10 @@
 
     import { moduleDataKey } from '@/config';
 
-    const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade client module' }];
+    const steps = [
+        { label: 'Optimade JSON' },
+        { label: 'Optimade client module' },
+    ];
 </script>
 
 <script lang="ts">
@@ -57,7 +61,20 @@
     let iframe: HTMLIFrameElement | null;
 
     $: if (iframe) {
+        const message = data || code;
         iframe.contentWindow[moduleDataKey] = data || code;
+        iframe.onload = function () {
+            // We wait untill we get a link with a visualisation file
+            const timer = setInterval(() => {
+                const visualisationFrame = window.frames.visualisationFrame;
+
+                // If we get a frame we send a custom message and clear interval
+                if (visualisationFrame) {
+                    visualisationFrame.postMessage('message', '*');
+                    clearInterval(timer);
+                }
+            }, 100);
+        };
     }
 </script>
 
