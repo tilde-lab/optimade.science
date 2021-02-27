@@ -16,15 +16,15 @@ const getStructuresAll = debounce((providers, filter) => {
 }, searchDelay);
 
 const search: Asyncable<StructuresByProviders> = asyncable(async ($query) => {
-    if (!$query.filter) return [];
+    if (!$query.params.filter) return [];
 
     await providers.get(); // just wait until providers loaded
 
-    if (typeof $query.providers === 'string') {
-        $query.providers = [$query.providers];
+    if (typeof $query.params.providers === 'string') {
+        $query.params.providers = [$query.params.providers];
     }
 
-    const results: StructuresByProviders = await getStructuresAll($query.providers, $query.filter);
+    const results: StructuresByProviders = await getStructuresAll($query.params.providers, $query.params.filter);
     return results.sort((a, b) => {
         if ((a[0] && a[0].length) && (!b[0] || !b[0].length)) return -1;
         if ((!a[0] || !a[0].length) && (b[0] && b[0].length)) return 1;

@@ -1,5 +1,5 @@
 <Input
-    bind:value={$query.filter}
+    bind:value={$query.params.filter}
     placeholder="Start typing..."
     name="filter"
     type="search"
@@ -12,12 +12,12 @@
         {#await $results}
             <Icon icon="loading" />
         {:then _}
-            {#if $query.filter}
+            {#if $query.params.filter}
                 <IconButton
                     size="sm"
                     icon="icon-cross"
                     style="display: flex;"
-                    on:click={() => ($query.filter = '')}
+                    on:click={() => ($query.params.filter = '')}
                 />
             {:else}
                 <Icon icon="icon-search" />

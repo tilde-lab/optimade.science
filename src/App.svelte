@@ -2,7 +2,7 @@
 
 <Container size="md">
     <Header />
-    {#if $ready && !$query.filter}
+    {#if $ready && !$query.params.filter}
         <div class="my-2">
             <Logo size="4x" />
         </div>
@@ -44,7 +44,7 @@
 
     import { ready } from '@/stores/providers';
 
-    prefs.query.array.format = 'separator';
+    prefs.array.format = 'separator';
 </script>
 
 <style lang="scss">
