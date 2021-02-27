@@ -1,7 +1,7 @@
 <div class="p-1">
     <Navbar>
         <div slot="center">
-            {#if !$ready || $query.filter}
+            {#if !$ready || $query.params.filter}
                 <Logo spin={!$ready} />
             {/if}
         </div>

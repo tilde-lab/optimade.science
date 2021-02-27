@@ -35,17 +35,17 @@ async function retrieveProviderSelections(providers: Types.Provider[]) {
         providers.map(p => p.id);
 
     query.update($query => {
-        if (typeof $query.providers === 'string') {
-            $query.providers = [$query.providers];
+        if (typeof $query.params.providers === 'string') {
+            $query.params.providers = [$query.params.providers];
         }
 
-        $query.providers = $query.providers && $query.providers.length ?
-            $query.providers.filter(id => ids.includes(id)) :
+        $query.params.providers = $query.params.providers && $query.params.providers.length ?
+            $query.params.providers.filter(id => ids.includes(id)) :
             ids;
         return $query;
     });
 }
 
 query.subscribe($query => {
-    $query.providers && localStorage.setItem(lsProviderKey, JSON.stringify($query.providers));
+    $query.params.providers && localStorage.setItem(lsProviderKey, JSON.stringify($query.params.providers));
 });

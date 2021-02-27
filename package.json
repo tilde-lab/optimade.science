@@ -75,7 +75,7 @@
     "svelte-jester": "^1.1.5",
     "svelte-json-tree-view": "^1.0.0",
     "svelte-morphing-modal": "^2.2.0",
-    "svelte-pathfinder": "^2.1.1",
+    "svelte-pathfinder": "^3.0.1",
     "svelte-preprocess": "^4.0.0",
     "svelte-select": "^3.13.0",
     "ts-jest": "^26.4.1",

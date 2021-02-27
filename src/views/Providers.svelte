@@ -13,7 +13,7 @@
             <Popover pos="bottom">
                 <label slot="trigger">
                     <input
-                        bind:group={$query.providers}
+                        bind:group={$query.params.providers}
                         name="providers"
                         class={`provider-checkbox`}
                         id={item.id}
@@ -105,9 +105,7 @@
                         type="checkbox"
                     />
                     <Avatar
-                        status={$query.providers.includes(item.id)
-                            ? 'online'
-                            : 'offline'}
+                        status={$query.params.providers.includes(item.id) ? 'online' : 'offline'}
                         name={item.attributes.name}
                         len={3}
                         {size}
