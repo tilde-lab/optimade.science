@@ -1,6 +1,7 @@
 {
   "name": "optimade.science",
-  "version": "1.0.0",
+  "private": true,
+  "version": "1.0.5",
   "scripts": {
     "build": "npm run clean && rollup -c && npm run size",
     "dev": "rollup -c -w",
