@@ -23,78 +23,76 @@
                                     classList.contains('active') ||
                                     classList.contains('exclusive')
                                 ) {
-                                    var all = document.getElementsByClassName(
+                                    const all = document.getElementsByClassName(
                                         'provider-checkbox'
                                     );
-                                    $query.providers = [$query.providers];
-                                    for (var i = 0; i < all.length; i++) {
+                                    $query.params.providers = [$query.params.providers];
+                                    for (let i = 0; i < all.length; i++) {
                                         all[i].classList.remove('exclusive');
                                         all[i].classList.add('active');
 
-                                        if (
-                                            typeof $query.providers === 'string'
-                                        ) {
-                                            $query.providers = [
-                                                $query.providers,
+                                        if (typeof $query.params.providers === 'string') {
+                                            $query.params.providers = [
+                                                $query.params.providers,
                                                 all[i].id,
                                             ];
                                         } else {
-                                            $query.providers.push(all[i].id);
+                                            $query.params.providers.push(all[i].id);
                                         }
                                     }
                                     augmentation_mode = false;
                                 } else {
-                                    var all = document.getElementsByClassName(
+                                    const all = document.getElementsByClassName(
                                         'provider-checkbox'
                                     );
-                                    for (var i = 0; i < all.length; i++) {
+                                    for (let i = 0; i < all.length; i++) {
                                         all[i].classList.remove('exclusive');
                                     }
                                     event.target.classList.add('exclusive');
-                                    if (typeof $query.providers === 'string') {
-                                        $query.providers = [
-                                            $query.providers,
+                                    if (typeof $query.params.providers === 'string') {
+                                        $query.params.providers = [
+                                            $query.params.providers,
                                             item.id,
                                         ];
                                     } else {
-                                        $query.providers.push(item.id);
+                                        $query.params.providers.push(item.id);
                                     }
                                 }
                             } else {
                                 if (classList.contains('active')) {
                                     event.target.classList.remove('active');
-                                    $query.providers = $query.providers.filter(
+                                    $query.params.providers = $query.params.providers.filter(
                                         (id) => id !== item.id
                                     );
                                 } else if (classList.contains('exclusive')) {
-                                    var all = document.getElementsByClassName(
+                                    const all = document.getElementsByClassName(
                                         'provider-checkbox'
                                     );
-                                    $query.providers = [];
-                                    for (var i = 0; i < all.length; i++) {
+                                    $query.params.providers = [];
+                                    for (let i = 0; i < all.length; i++) {
                                         all[i].classList.remove('exclusive');
                                         all[i].classList.add('active');
                                         if (
-                                            typeof $query.providers === 'string'
+                                            typeof $query.params.providers === 'string'
                                         ) {
-                                            $query.providers = [
-                                                $query.providers,
+                                            $query.params.providers = [
+                                                $query.params.providers,
                                                 all[i].id,
                                             ];
                                         } else {
-                                            $query.providers.push(all[i].id);
+                                            $query.params.providers.push(all[i].id);
                                         }
                                     }
                                 } else {
-                                    var all = document.getElementsByClassName(
+                                    let all = document.getElementsByClassName(
                                         'provider-checkbox'
                                     );
-                                    for (var i = 0; i < all.length; i++) {
+                                    for (let i = 0; i < all.length; i++) {
                                         all[i].classList.remove('exclusive');
                                         all[i].classList.remove('active');
                                     }
                                     event.target.classList.add('exclusive');
-                                    $query.providers = [item.id];
+                                    $query.params.providers = [item.id];
                                     augmentation_mode = true;
                                 }
                             }

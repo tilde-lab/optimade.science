@@ -1,6 +1,6 @@
 <figure
     class="avatar avatar-{size} text-{weight}"
-    data-initial={`${initials} (${apiVersion})`}
+    data-initial={`${initials} v${apiVersion}`}
     style="
         background-color: {color};
         font-size: {fontSize}px;
