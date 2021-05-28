@@ -15,6 +15,7 @@
     {:then results}
         {#each results as [structures, provider], index}
             <Section heading={provider.attributes.name}>
+
                 {#if structures && structures.length}
                     <Grid
                         items={structures}
@@ -23,6 +24,8 @@
                         let:colIndex
                         let:item
                     >
+
+                        {#if item}
                         <Modal
                             open={$fragment === `#${provider.id}-${item.id}`}
                             on:toggle={clearFragmentOnClose}
@@ -53,6 +56,8 @@
                                 <Result data={item} />
                             </div>
                         </Modal>
+                        {/if}
+
                     </Grid>
                 {:else}
                     <div class="text-mute text-tiny text-center">
