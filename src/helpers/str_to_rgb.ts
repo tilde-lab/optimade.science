@@ -1,5 +1,5 @@
 export function str_to_rgb(input_str: string): string {
-	const baseRed = 0,
+	const baseRed = 256,
 		baseGreen = 256,
 		baseBlue = 256;
 	//lazy seeded random hack to get values from 0 - 256

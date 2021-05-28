@@ -86,7 +86,7 @@
   "dependencies": {
     "copy-to-clipboard": "^3.3.1",
     "debounce-promise": "^3.1.2",
-    "optimade": "^1.1.0",
+    "optimade": "^1.1.4",
     "sirv-cli": "^1.0.0",
     "tinycolor2": "^1.4.2"
   }
