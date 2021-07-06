@@ -7,10 +7,12 @@
             {width}
         />
     {:then items}
+    <label>{$query.params.providers}</label>
         <Grid {items} {cols} style="justify-content: center;" let:item>
             <Popover pos="bottom">
                 <label slot="trigger" on:click={onClick}>
                     <input
+                        bind:group={$query.params.providers}
                         name="providers"
                         class={`provider-checkbox`}
                         id={item.id}
@@ -63,24 +65,25 @@
     const radius: number = height / 2;
     let augmentation_mode = false;
 
-    
+    function onClick(e){
+        const id = e.target.id;
+        if(!id) return;
+        query.update(q => {
+            let providersList =  q.params.providers;
+            if(providersList.includes(id)){
+                providersList = providersList.filter(p => p !== id);
+            } else {
+                providersList = [...providersList, id]
+            }
+            q.params.providers = providersList;
+            console.log(providersList);
+            return q;
+        });
+    }
 </script>
 
 <script lang="ts">
     let width: number = 0;
-    // const providersList =  $providers;
-
-    async function onClick(e){
-        const id = e.target.id;
-        if(!id) return;
-        // const p = await $providers;
-        if($query.params.providers.includes(e.target.id)){
-            $query.params.providers = $query.params.providers.filter(p => p !== id);
-        } else {
-            $query.params.providers = [...$query.params.providers, id]
-        }
-        console.log($query.params.providers);
-    }
 </script>
 
 <style>
