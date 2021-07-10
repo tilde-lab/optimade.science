@@ -7,96 +7,15 @@
             {width}
         />
     {:then items}
+    <label>{$query.params.providers}</label>
         <Grid {items} {cols} style="justify-content: center;" let:item>
             <Popover pos="bottom">
-                <label slot="trigger">
+                <label slot="trigger" on:click={(e)=>onClick(e, items)}>
                     <input
-                        bind:group={$query.params.providers}
                         name="providers"
-                        class={`provider-checkbox`}
+                        class={'provider-checkbox'}
                         id={item.id}
                         value={item.id}
-                        on:click={(event) => {
-                            let classList = event.target.classList;
-                            if (augmentation_mode) {
-                                if (
-                                    classList.contains('active') ||
-                                    classList.contains('exclusive')
-                                ) {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    $query.params.providers = [$query.params.providers];
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.add('active');
-
-                                        if (typeof $query.params.providers === 'string') {
-                                            $query.params.providers = [
-                                                $query.params.providers,
-                                                all[i].id,
-                                            ];
-                                        } else {
-                                            $query.params.providers.push(all[i].id);
-                                        }
-                                    }
-                                    augmentation_mode = false;
-                                } else {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                    }
-                                    event.target.classList.add('exclusive');
-                                    if (typeof $query.params.providers === 'string') {
-                                        $query.params.providers = [
-                                            $query.params.providers,
-                                            item.id,
-                                        ];
-                                    } else {
-                                        $query.params.providers.push(item.id);
-                                    }
-                                }
-                            } else {
-                                if (classList.contains('active')) {
-                                    event.target.classList.remove('active');
-                                    $query.params.providers = $query.params.providers.filter(
-                                        (id) => id !== item.id
-                                    );
-                                } else if (classList.contains('exclusive')) {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    $query.params.providers = [];
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.add('active');
-                                        if (
-                                            typeof $query.params.providers === 'string'
-                                        ) {
-                                            $query.params.providers = [
-                                                $query.params.providers,
-                                                all[i].id,
-                                            ];
-                                        } else {
-                                            $query.params.providers.push(all[i].id);
-                                        }
-                                    }
-                                } else {
-                                    let all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.remove('active');
-                                    }
-                                    event.target.classList.add('exclusive');
-                                    $query.params.providers = [item.id];
-                                    augmentation_mode = true;
-                                }
-                            }
-                        }}
                         disabled={!item.attributes.base_url}
                         type="checkbox"
                     />
@@ -143,11 +62,67 @@
     const size: Size = 'lg';
     const height: number = SIZE[size];
     const radius: number = height / 2;
-    let augmentation_mode = false;
 </script>
 
 <script lang="ts">
     let width: number = 0;
+    let augmentation_mode = false;
+    let providersMap = new Map();
+    const INACTIVE = 'INACTIVE';
+    const ACTIVE = 'ACTIVE';
+    const EXCLUSIVE = 'EXCLUSIVE';
+
+
+    function onClick(e, allProviders){
+        const id = e.target.id;
+        if(!id) return;
+
+        query.update(q => {
+            let queryParams = [];
+            if (typeof q.params.providers === 'string') {
+                queryParams = [q.params.providers];
+            }
+
+            allProviders.forEach(({id: providerKey})=>{
+                // If don't have a provider in providers map
+                if(!providersMap.get(providerKey)){
+                    console.log('add', providerKey)
+                    // If a provider in the params list than it is active
+                    const state = queryParams.includes(providerKey) ? ACTIVE : INACTIVE;
+                    providersMap.set(providerKey, state);
+                }
+            })
+
+            const state = providersMap.get(id);
+            if (augmentation_mode){
+                if (state === ACTIVE || state === EXCLUSIVE){
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, ACTIVE);
+                    })
+                    augmentation_mode = false;
+                } else {
+                    providersMap.set(id, EXCLUSIVE);
+                }
+            } else {
+                if (state === ACTIVE){
+                    providersMap.set(id, INACTIVE);
+                } else if (state === EXCLUSIVE){
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, ACTIVE);
+                    })
+                } else {
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, INACTIVE);
+                    })
+                    providersMap.set(id, EXCLUSIVE);
+                    augmentation_mode = true;
+                }
+            }   
+
+            q.params.providers = Array.from(providersMap).filter(([_, value])=> value !== INACTIVE).map(([key])=>key);
+            return q;
+        });
+    }
 </script>
 
 <style>
