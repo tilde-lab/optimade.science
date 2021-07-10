@@ -10,11 +10,10 @@
     <label>{$query.params.providers}</label>
         <Grid {items} {cols} style="justify-content: center;" let:item>
             <Popover pos="bottom">
-                <label slot="trigger" on:click={onClick}>
+                <label slot="trigger" on:click={(e)=>onClick(e, items)}>
                     <input
-                        bind:group={$query.params.providers}
                         name="providers"
-                        class={`provider-checkbox`}
+                        class={'provider-checkbox'}
                         id={item.id}
                         value={item.id}
                         disabled={!item.attributes.base_url}
@@ -63,27 +62,67 @@
     const size: Size = 'lg';
     const height: number = SIZE[size];
     const radius: number = height / 2;
-    let augmentation_mode = false;
-
-    function onClick(e){
-        const id = e.target.id;
-        if(!id) return;
-        query.update(q => {
-            let providersList =  q.params.providers;
-            if(providersList.includes(id)){
-                providersList = providersList.filter(p => p !== id);
-            } else {
-                providersList = [...providersList, id]
-            }
-            q.params.providers = providersList;
-            console.log(providersList);
-            return q;
-        });
-    }
 </script>
 
 <script lang="ts">
     let width: number = 0;
+    let augmentation_mode = false;
+    let providersMap = new Map();
+    const INACTIVE = 'INACTIVE';
+    const ACTIVE = 'ACTIVE';
+    const EXCLUSIVE = 'EXCLUSIVE';
+
+
+    function onClick(e, allProviders){
+        const id = e.target.id;
+        if(!id) return;
+
+        query.update(q => {
+            let queryParams = [];
+            if (typeof q.params.providers === 'string') {
+                queryParams = [q.params.providers];
+            }
+
+            allProviders.forEach(({id: providerKey})=>{
+                // If don't have a provider in providers map
+                if(!providersMap.get(providerKey)){
+                    console.log('add', providerKey)
+                    // If a provider in the params list than it is active
+                    const state = queryParams.includes(providerKey) ? ACTIVE : INACTIVE;
+                    providersMap.set(providerKey, state);
+                }
+            })
+
+            const state = providersMap.get(id);
+            if (augmentation_mode){
+                if (state === ACTIVE || state === EXCLUSIVE){
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, ACTIVE);
+                    })
+                    augmentation_mode = false;
+                } else {
+                    providersMap.set(id, EXCLUSIVE);
+                }
+            } else {
+                if (state === ACTIVE){
+                    providersMap.set(id, INACTIVE);
+                } else if (state === EXCLUSIVE){
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, ACTIVE);
+                    })
+                } else {
+                    providersMap.forEach((_, key)=>{
+                        providersMap.set(key, INACTIVE);
+                    })
+                    providersMap.set(id, EXCLUSIVE);
+                    augmentation_mode = true;
+                }
+            }   
+
+            q.params.providers = Array.from(providersMap).filter(([_, value])=> value !== INACTIVE).map(([key])=>key);
+            return q;
+        });
+    }
 </script>
 
 <style>
