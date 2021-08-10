@@ -1,11 +1,11 @@
 import { tick } from 'svelte';
 import { derived } from 'svelte/store';
-import asyncable from 'svelte-asyncable';
+import { asyncable } from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
 
 import type { Readable } from 'svelte/store';
 import type { Types } from 'optimade';
-import type { Asyncable } from '@/types/asyncable';
+import type { Asyncable } from 'svelte-asyncable';
 
 import optimade from '@/services/optimade';
 
