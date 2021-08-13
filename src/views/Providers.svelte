@@ -1,3 +1,5 @@
+<svelte:options immutable={false} />
+
 <div bind:clientWidth={width}>
     {#await $providers}
         <Loader.Avatars
@@ -13,92 +15,11 @@
                     <input
                         bind:group={$query.params.providers}
                         name="providers"
-                        class={`provider-checkbox`}
                         id={item.id}
                         value={item.id}
-                        on:click={(event) => {
-                            let classList = event.target.classList;
-                            if (augmentation_mode) {
-                                if (
-                                    classList.contains('active') ||
-                                    classList.contains('exclusive')
-                                ) {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    $query.params.providers = [$query.params.providers];
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.add('active');
-
-                                        if (typeof $query.params.providers === 'string') {
-                                            $query.params.providers = [
-                                                $query.params.providers,
-                                                all[i].id,
-                                            ];
-                                        } else {
-                                            $query.params.providers.push(all[i].id);
-                                        }
-                                    }
-                                    augmentation_mode = false;
-                                } else {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                    }
-                                    event.target.classList.add('exclusive');
-                                    if (typeof $query.params.providers === 'string') {
-                                        $query.params.providers = [
-                                            $query.params.providers,
-                                            item.id,
-                                        ];
-                                    } else {
-                                        $query.params.providers.push(item.id);
-                                    }
-                                }
-                            } else {
-                                if (classList.contains('active')) {
-                                    event.target.classList.remove('active');
-                                    $query.params.providers = $query.params.providers.filter(
-                                        (id) => id !== item.id
-                                    );
-                                } else if (classList.contains('exclusive')) {
-                                    const all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    $query.params.providers = [];
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.add('active');
-                                        if (
-                                            typeof $query.params.providers === 'string'
-                                        ) {
-                                            $query.params.providers = [
-                                                $query.params.providers,
-                                                all[i].id,
-                                            ];
-                                        } else {
-                                            $query.params.providers.push(all[i].id);
-                                        }
-                                    }
-                                } else {
-                                    let all = document.getElementsByClassName(
-                                        'provider-checkbox'
-                                    );
-                                    for (let i = 0; i < all.length; i++) {
-                                        all[i].classList.remove('exclusive');
-                                        all[i].classList.remove('active');
-                                    }
-                                    event.target.classList.add('exclusive');
-                                    $query.params.providers = [item.id];
-                                    augmentation_mode = true;
-                                }
-                            }
-                        }}
                         disabled={!item.attributes.base_url}
                         type="checkbox"
+                        on:click={onProviderSelect}
                     />
                     <Avatar
                         status={$query.params.providers.includes(item.id) ? 'online' : 'offline'}
@@ -123,6 +44,7 @@
 </div>
 
 <script lang="ts" context="module">
+    import { tick } from 'svelte';
     import { query } from 'svelte-pathfinder';
 
     import Grid from '@/layouts/Grid.svelte';
@@ -143,11 +65,44 @@
     const size: Size = 'lg';
     const height: number = SIZE[size];
     const radius: number = height / 2;
-    let augmentation_mode = false;
 </script>
 
 <script lang="ts">
     let width: number = 0;
+
+    let exclusiveId = null;
+    let augmentationMode = false;
+
+    async function onProviderSelect(e) {
+        const id = e.target.id;
+        if (!id) return;
+
+        await tick();
+
+        const allProviders = await $providers;
+        const selectedProviders = Array.isArray($query.params.providers) ? 
+                                    $query.params.providers : 
+                                    [$query.params.providers];
+
+        const selected = selectedProviders.includes(id);
+
+        if (augmentationMode) {
+            if (selected && exclusiveId === id) {
+                exclusiveId = null;
+                $query.params.providers = allProviders.map(({ id }) => id);
+                augmentationMode = false;
+            }
+        } else if ( ! selected) {
+            if (exclusiveId === id) {
+                exclusiveId = null;
+                $query.params.providers = allProviders.map(({ id }) => id);
+            } else {
+                $query.params.providers = [id];
+                exclusiveId = id;
+                augmentationMode = true;
+            }
+        }
+    }
 </script>
 
 <style>

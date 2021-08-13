@@ -1,4 +1,4 @@
-import asyncable from 'svelte-asyncable';
+import { asyncable } from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
 import debounce from 'debounce-promise';
 
@@ -7,7 +7,7 @@ import providers from '@/stores/providers';
 import { searchDelay } from '@/config';
 
 import type { Types } from '@/services/optimade';
-import type { Asyncable } from '@/types/asyncable';
+import type { Asyncable } from 'svelte-asyncable';
 
 type StructuresByProviders = Array<Array<[Types.Structure, Types.Provider]>>;
 

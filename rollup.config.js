@@ -8,9 +8,10 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import importResolver from 'rollup-plugin-import-resolver';
 import visualizer from 'rollup-plugin-visualizer';
-import html from 'rollup-plugin-bundle-html-thomzz';
+import html from 'rollup-plugin-bundle-html-plus';
 import svg from 'rollup-plugin-inline-svg';
 import builtins from 'rollup-plugin-node-builtins';
+import globals from 'rollup-plugin-node-globals';
 import css from 'rollup-plugin-css-only';
 
 const {
@@ -36,7 +37,7 @@ export default {
 		name,
 	},
 	plugins: [
-		builtins(),
+
 		svelte(svelteConfig),
 		css({ output: 'bundle.css' }),
 		svg(),
@@ -49,6 +50,8 @@ export default {
 			extensions,
 		}),
 		commonjs({ sourceMap: dev, extensions, }),
+		globals(),
+		builtins(),
 		typescript({ sourceMap: dev, inlineSources: dev, }),
 		!dev && legacy && babel({
 			extensions,
