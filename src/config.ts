@@ -1,5 +1,5 @@
 export const providersUrl = 'https://providers.optimade.org/providers.json';
-export const corsProxyUrl = 'https://cors.optimade.org';
+export const corsProxyUrl = 'https://cors.optimade.science'; // org blocked by Vercel
 export const supportedModulesUrl = 'https://optimade.science/supported-modules.json';
 export const moduleGroups = { builtin: 'Built-in modules', local: 'Local modules' };
 export const moduleDataKey = 'OPTIMADE_STRUCT_ITEM';
