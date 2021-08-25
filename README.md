@@ -47,6 +47,18 @@ npm run dev
 
 Don't close the terminal window to watch file changes and automatically apply to and reload the page.
 
+Sources file layout
+------
+
+`assets` - static files etc.
+`components` - low-level modules
+`helpers` - auxiliary utils
+`layouts` - CSS framework modules
+`services` - Optimade API consumption
+`stores` - functionality extensions
+`types` - TS definitions
+`views` - high-level (smarter) modules, cf. `components`
+
 License
 ------
 
