@@ -1,6 +1,6 @@
 <Input
     bind:value={$query.params.filter}
-    placeholder="Start typing..."
+    placeholder="start typing..."
     name="filter"
     type="search"
     size="lg"
@@ -27,8 +27,8 @@
 </Input>
 
 {#if !$query.params.filter}
-    <div>
-        e.g. <Button variant="link" on:click={() => $query.params.filter = example}>{example}</Button>
+    <div class="examples">
+        <i>e.g.</i><Button variant="link" on:click={() => $query.params.filter = example}>{example}</Button>
     </div>
 {/if}
 
@@ -45,6 +45,8 @@
     const examples = [
         'nelements=1',
         'elements HAS "Ti"',
+        'elements HAS ALL "C","N","O","H"',
+        'spacegroup="I4/mcm"',
         'elements HAS "Ti" AND nelements>3',
         'chemical_formula_reduced="Li7Sn2"',
         'chemical_formula_anonymous="ABC"'
@@ -54,9 +56,14 @@
 <script lang="ts">
     let example = examples[0];
     onMount(() => {
-        const interval = setInterval(() => {
+        const interval: number = setInterval(() => {
             example = examples[Math.floor(Math.random() * examples.length)];
-        }, 1000);
+        }, 2000);
         return () => clearInterval(interval);
     });
 </script>
+
+<style>
+    div.examples { padding-left: 9em; font-family:Courier;letter-spacing:0.5px; }
+    /* NB to align div.examples > i & div.examples > button by height */
+</style>

@@ -67,7 +67,7 @@
         height: 32px;
         line-height: 32px;
         text-align: center;
-        font-size: 0.85em;
+        font-size: 0.95em;
         color: #333;
         background: #f6f6f6;
         border-top: 1px solid #999;
