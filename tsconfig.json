@@ -25,6 +25,8 @@
     "diagnostics": false,
     "sourceMap": true,
     "noLib": false,
+    "strictNullChecks": true,
+    "strict": true,
     "typeRoots": [
       "src/**/*",
       "/.node_modules/@types"
