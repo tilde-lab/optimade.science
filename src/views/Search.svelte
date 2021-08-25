@@ -26,12 +26,37 @@
     </span>
 </Input>
 
+{#if !$query.params.filter}
+    <div>
+        e.g. <Button variant="link" on:click={() => $query.params.filter = example}>{example}</Button>
+    </div>
+{/if}
+
 <script lang="ts" context="module">
+    import { onMount } from 'svelte';
     import { query } from 'svelte-pathfinder';
 
     import Input from '@/components/Input';
-    import { IconButton } from '@/components/Button';
+    import Button, { IconButton } from '@/components/Button';
     import Icon from '@/components/Icon';
 
     import results from '@/stores/search';
+
+    const examples = [
+        'nelements=1',
+        'elements HAS "Ti"',
+        'elements HAS "Ti" AND nelements>3',
+        'chemical_formula_reduced="Li7Sn2"',
+        'chemical_formula_anonymous="ABC"'
+    ];
+</script>
+
+<script lang="ts">
+    let example = examples[0];
+    onMount(() => {
+        const interval = setInterval(() => {
+            example = examples[Math.floor(Math.random() * examples.length)];
+        }, 1000);
+        return () => clearInterval(interval);
+    });
 </script>
