@@ -46,7 +46,7 @@
         'nelements=1',
         'elements HAS "Ti"',
         'elements HAS ALL "C","N","O","H"',
-        'spacegroup="I4/mcm"',
+        //'spacegroup="I4/mcm"',
         'elements HAS "Ti" AND nelements>3',
         'chemical_formula_reduced="Li7Sn2"',
         'chemical_formula_anonymous="ABC"'
