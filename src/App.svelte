@@ -2,7 +2,7 @@
 
 <Container size="md">
     <Header />
-    {#if $ready && !$query.params.filter}
+    {#if $providersSync.length && !$query.params.filter}
         <div class="my-2">
             <Logo size="4x" />
         </div>
@@ -42,7 +42,7 @@
 
     import Logo from '@/components/Logo.svelte';
 
-    import { ready } from '@/stores/providers';
+    import { providersSync } from '@/stores/providers';
 
     prefs.array.format = 'separator';
 </script>

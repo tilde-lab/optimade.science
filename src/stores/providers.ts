@@ -1,11 +1,12 @@
 import { tick } from 'svelte';
 import { derived } from 'svelte/store';
-import { asyncable } from 'svelte-asyncable';
+import { asyncable, syncable } from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
 
 import type { Readable } from 'svelte/store';
 import type { Types } from 'optimade';
 import type { Asyncable } from 'svelte-asyncable';
+import type { Param } from 'svelte-pathfinder';
 
 import optimade from '@/services/optimade';
 
@@ -21,27 +22,20 @@ const providers: Asyncable<Types.Provider[]> = asyncable(async (): Promise<Types
 
 export default providers;
 
-export const ready: Readable<boolean> = derived(providers, ($providers, set) => {
-    $providers.then(() => set(true), () => set(false));
-}, false);
+export const providersSync: Readable<Types.Provider[]> = syncable(providers, []);
+
+export const selectedProviders: Readable<Param[]> = derived(query, ($query) => getSelectedProvidersIds($query.params.providers), []);
 
 async function retrieveProviderSelections(providers: Types.Provider[]) {
 
     // move next operations to the next tick to be sure all changes already applied
     await tick();
 
-    const ids = localStorage[lsProviderKey] ?
-        JSON.parse(localStorage.getItem(lsProviderKey)) :
-        providers.map(p => p.id);
+    const ids = localStorage[lsProviderKey] ? JSON.parse(localStorage.getItem(lsProviderKey)) : providers.map(p => p.id);
 
     query.update($query => {
-        if (typeof $query.params.providers === 'string') {
-            $query.params.providers = [$query.params.providers];
-        }
-
-        $query.params.providers = $query.params.providers && $query.params.providers.length ?
-            $query.params.providers.filter(id => ids.includes(id)) :
-            ids;
+        const selectedIds = getSelectedProvidersIds($query.params.providers);
+        $query.params.providers = selectedIds.length ? selectedIds.filter(id => ids.includes(id)) : ids;
         return $query;
     });
 }
@@ -49,3 +43,7 @@ async function retrieveProviderSelections(providers: Types.Provider[]) {
 query.subscribe($query => {
     $query.params.providers && localStorage.setItem(lsProviderKey, JSON.stringify($query.params.providers));
 });
+
+function getSelectedProvidersIds(providers) {
+    return providers ? (Array.isArray(providers) ? providers : [providers]) : [];
+}

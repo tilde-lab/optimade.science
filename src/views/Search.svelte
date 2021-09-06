@@ -7,7 +7,7 @@
     inline
     autofocus
 >
-    <span class="float-right" style="font-family:Courier;letter-spacing:0.5px;">filter=</span>
+    <span class="label">filter=</span>
     <span slot="iconRight">
         {#await $results}
             <Icon icon="loading" />
@@ -64,6 +64,7 @@
 </script>
 
 <style>
-    div.examples { padding-left: 9em; font-family:Courier;letter-spacing:0.5px; }
+    .label { float: right; font-family: Courier; letter-spacing: 0.5px; }
+    .examples { padding-left: 9em; font-family: Courier; letter-spacing: 0.5px; }
     /* NB to align div.examples > i & div.examples > button by height */
 </style>

@@ -1,8 +1,8 @@
 <div class="p-1">
     <Navbar>
         <div slot="center">
-            {#if !$ready || $query.params.filter}
-                <Logo spin={!$ready} />
+            {#if !$providersSync.length || $query.params.filter}
+                <Logo spin={!$providersSync.length} />
             {/if}
         </div>
         <nav slot="right">
@@ -33,7 +33,7 @@
 
     import Logo from '@/components/Logo.svelte';
 
-    import { ready } from '@/stores/providers';
+    import { providersSync } from '@/stores/providers';
 </script>
 
 <script lang="ts">
