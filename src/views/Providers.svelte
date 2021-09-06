@@ -1,5 +1,3 @@
-<svelte:options immutable={false} />
-
 <div bind:clientWidth={width}>
     {#await $providers}
         <Loader.Avatars
@@ -13,7 +11,6 @@
             <Popover pos="bottom">
                 <label slot="trigger">
                     <input
-                        bind:group={$query.params.providers}
                         name="providers"
                         id={item.id}
                         value={item.id}
@@ -22,7 +19,7 @@
                         on:click={onProviderSelect}
                     />
                     <Avatar
-                        status={$query.params.providers.includes(item.id) ? 'online' : 'offline'}
+                        status={$selectedProviders.includes(item.id) ? 'online' : 'offline'}
                         name={item.attributes.name}
                         id={item.id}
                         apiVersion={item.attributes.api_version}
@@ -44,7 +41,6 @@
 </div>
 
 <script lang="ts" context="module">
-    import { tick } from 'svelte';
     import { query } from 'svelte-pathfinder';
 
     import Grid from '@/layouts/Grid.svelte';
@@ -54,7 +50,7 @@
     import Avatar from '@/components/Avatar';
     import * as Loader from '@/components/loaders';
 
-    import providers from '@/stores/providers';
+    import providers, { selectedProviders, providersSync } from '@/stores/providers';
 
     import type { Size } from '@/types/size';
     import type { Cols } from '@/layouts/Grid.svelte';
@@ -77,25 +73,24 @@
         const id = e.target.id;
         if (!id) return;
 
-        await tick();
+        const selected = $selectedProviders.includes(id);
 
-        const allProviders = await $providers;
-        const selectedProviders = Array.isArray($query.params.providers) ? 
-                                    $query.params.providers : 
-                                    [$query.params.providers];
-
-        const selected = selectedProviders.includes(id);
+        if (selected) {
+            $query.params.providers = $selectedProviders.filter(pid => pid !== id);
+        } else {
+            $query.params.providers = [ ...$selectedProviders, id ];
+        }
 
         if (augmentationMode) {
-            if (selected && exclusiveId === id) {
+            if ( ! selected && exclusiveId === id) {
                 exclusiveId = null;
-                $query.params.providers = allProviders.map(({ id }) => id);
+                $query.params.providers = $providersSync.map(({ id }) => id);
                 augmentationMode = false;
             }
-        } else if ( ! selected) {
+        } else if (selected) {
             if (exclusiveId === id) {
                 exclusiveId = null;
-                $query.params.providers = allProviders.map(({ id }) => id);
+                $query.params.providers = $providersSync.map(({ id }) => id);
             } else {
                 $query.params.providers = [id];
                 exclusiveId = id;
