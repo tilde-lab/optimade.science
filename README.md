@@ -50,14 +50,21 @@ Don't close the terminal window to watch file changes and automatically apply to
 Sources file layout
 ------
 
-`assets` - static files etc.
-`components` - low-level modules
-`helpers` - auxiliary utils
-`layouts` - CSS framework modules
-`services` - Optimade API consumption
-`stores` - functionality extensions
+`assets` - static files
+
+`components` - low-level (dumb, pure, reusable) UI parts
+
+`helpers` - pure functions for the templates (that cannot be inlined)
+
+`layouts` - CSS framework components wrapped around the *slots* and providing the *props*
+
+`services` - singletons sharing the business logic across the app (e.g. Optimade API consumption)
+
+`stores` - shareable and reusable data flows
+
 `types` - TS definitions
-`views` - high-level (smarter) modules, cf. `components`
+
+`views` - smarter high-level multi-purpose UI parts, mostly not reusable, cf. `components`
 
 License
 ------
