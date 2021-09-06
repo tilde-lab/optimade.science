@@ -8,7 +8,7 @@ It fetches the OPTIMADE providers list, looks for the structure endpoints, and a
 
 Technically this is just the single file `index.html`, can be opened locally from anywhere, on any environment.
 
-[Spectre](https://picturepan2.github.io/spectre) is used as a CSS framework. A standalone [Optimade](https://www.npmjs.com/package/optimade) client written in isomorphic TypeScript is employed.
+[Spectre](https://picturepan2.github.io/spectre) is used as a CSS framework. A standalone [Optimade](https://github.com/tilde-lab/optimade-client) client written in isomorphic TypeScript is employed.
 
 Live demo
 ------
