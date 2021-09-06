@@ -47,6 +47,25 @@ npm run dev
 
 Don't close the terminal window to watch file changes and automatically apply to and reload the page.
 
+Sources file layout
+------
+
+`assets` - static files
+
+`components` - low-level (dumb, pure, reusable) UI parts
+
+`helpers` - pure functions for the templates (that cannot be inlined)
+
+`layouts` - CSS framework components wrapped around the *slots* and providing the *props*
+
+`services` - singletons sharing the business logic across the app (e.g. Optimade API consumption)
+
+`stores` - shareable and reusable data flows
+
+`types` - TS definitions
+
+`views` - smarter high-level multi-purpose UI parts, mostly not reusable, cf. `components`
+
 License
 ------
 
