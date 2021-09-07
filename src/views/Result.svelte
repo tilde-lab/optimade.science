@@ -19,12 +19,8 @@
     <div class="divider-vert" data-content="&rarr;" />
     <div class="column">
         <ModuleSelect bind:selected={module} />
-        <small class="form-text text-muted">
-            Use
-            <code>window.{moduleDataKey}</code>
-            to access Optimade JSON.
-        </small>
-        <Hero size="sm">
+        <br />
+        <Hero size="sm" bg="white">
             <div class="module">
                 <iframe
                     name="visualisationFrame"
@@ -44,8 +40,6 @@
     import Steps from '@/components/Steps';
     import * as JSON from '@/components/JSON';
 
-    import { moduleDataKey } from '@/config';
-
     const steps = [
         { label: 'Optimade JSON' },
         { label: 'Optimade client module' },
@@ -62,7 +56,6 @@
 
     $: if (iframe) {
         const message = data || code;
-        iframe.contentWindow[moduleDataKey] = data || code;
         iframe.onload = function () {
             // We wait untill we get a link with a visualisation file
             const timer = setInterval(() => {
@@ -70,10 +63,10 @@
 
                 // If we get a frame we send a custom message and clear interval
                 if (visualisationFrame) {
-                    visualisationFrame.postMessage('message', '*');
+                    visualisationFrame.postMessage(data || code, '*');
                     clearInterval(timer);
                 }
-            }, 100);
+            }, 500);
         };
     }
 </script>
