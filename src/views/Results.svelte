@@ -1,5 +1,6 @@
 <div bind:clientWidth={width}>
-    {#await $results}
+{#each $results as result, index}
+    {#await result}
         <Section heading="Searching...">
             <Loader.Cards
                 backgroundColor="#f3f3f3"
@@ -12,61 +13,60 @@
                 {cols}
             />
         </Section>
-    {:then results}
-        {#each results as [structures, provider], index}
-            <Section heading={provider.attributes.name}>
+    {:then [structures, provider]}
+        <Section heading={provider.attributes.name}>
 
-                {#if structures && structures.length}
-                    <Grid
-                        items={structures}
-                        {cols}
-                        let:rowIndex
-                        let:colIndex
-                        let:item
+            {#if structures && structures.length}
+                <Grid
+                    items={structures}
+                    {cols}
+                    let:rowIndex
+                    let:colIndex
+                    let:item
+                >
+
+                    {#if item}
+                    <Modal
+                        open={$fragment === `#${provider.id}-${item.id}`}
+                        on:toggle={clearFragmentOnClose}
                     >
-
-                        {#if item}
-                        <Modal
-                            open={$fragment === `#${provider.id}-${item.id}`}
-                            on:toggle={clearFragmentOnClose}
+                        <a
+                            id="{provider.id}-{item.id}"
+                            href="#{provider.id}-{item.id}"
+                            on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
+                            in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
                         >
-                            <a
-                                id="{provider.id}-{item.id}"
-                                href="#{provider.id}-{item.id}"
-                                on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
-                                in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
+                            <Card
+                                style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;"
                             >
-                                <Card
-                                    style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;"
+                                <span
+                                    slot="title"
+                                    class:text-xtiny={getTitle(item).length >= 150}
                                 >
-                                    <span
-                                        slot="title"
-                                        class:text-xtiny={getTitle(item).length >= 150}
-                                    >
-                                        {@html getTitle(item)}
-                                    </span>
-                                </Card>
-                            </a>
-                            <div slot="content">
-                                <IconButton
-                                    icon="icon-cross"
-                                    style="float: right; margin-top: -0.8rem;"
-                                    on:click={() => ($fragment = '')}
-                                />
-                                <Result data={item} />
-                            </div>
-                        </Modal>
-                        {/if}
+                                    {@html getTitle(item)}
+                                </span>
+                            </Card>
+                        </a>
+                        <div slot="content">
+                            <IconButton
+                                icon="icon-cross"
+                                style="float: right; margin-top: -0.8rem;"
+                                on:click={() => ($fragment = '')}
+                            />
+                            <Result data={item} />
+                        </div>
+                    </Modal>
+                    {/if}
 
-                    </Grid>
-                {:else}
-                    <div class="text-mute text-tiny text-center">
-                        No results
-                    </div>
-                {/if}
-            </Section>
-        {/each}
+                </Grid>
+            {:else}
+                <div class="text-mute text-tiny text-center">
+                    No results
+                </div>
+            {/if}
+        </Section>
     {/await}
+{/each}
 </div>
 
 <script lang="ts" context="module">

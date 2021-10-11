@@ -4,6 +4,7 @@
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
             count={cols}
+            radius={24}
             {width}
         />
     {:then items}
