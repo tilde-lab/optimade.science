@@ -9,7 +9,7 @@
 >
     <span class="label">filter=</span>
     <span slot="iconRight">
-        {#await $results}
+        {#await $searchAll}
             <Icon icon="loading" />
         {:then _}
             {#if $query.params.filter}
@@ -40,7 +40,7 @@
     import Button, { IconButton } from '@/components/Button';
     import Icon from '@/components/Icon';
 
-    import results from '@/stores/search';
+    import { searchAll } from '@/stores/search';
 
     const examples = [
         'nelements=1',
