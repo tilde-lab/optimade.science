@@ -2,6 +2,7 @@
   "name": "optimade.science",
   "private": true,
   "version": "1.0.5",
+  "license": "MIT",
   "scripts": {
     "build": "npm run clean && rollup -c && npm run size",
     "dev": "rollup -c -w",
@@ -90,5 +91,9 @@
     "optimade": "^1.2.1",
     "sirv-cli": "^1.0.0",
     "tinycolor2": "^1.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tilde-lab/optimade.science.git"
   }
 }
