@@ -14,22 +14,26 @@ import type { Asyncable } from 'svelte-asyncable';
 
 type StructuresByProviders = Array<Array<[Types.Structure, Types.Provider]>>;
 
-const getStructuresAll = debounce((providers: string[], filter: string, batch: boolean) => {
-    return optimade.getStructuresAll(providers, filter, batch) || [];
+const getStructuresAll = debounce((providers: string[], filter: string, page: number = 0, limit: number, batch: boolean) => {
+    return optimade.getStructuresAll(providers, filter, page, limit, batch) || [];
 }, searchDelay);
 
 const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresByProviders>(
-    [ query, selectedProviders ], 
-    ([ $query, $selectedProviders ], set) => {
+    [query, selectedProviders],
+    ([$query, $selectedProviders], set) => {
         if (!$query.params.filter) return set([]);
-        providers.get().then(() => getStructuresAll($selectedProviders, $query.params.filter, false)).then((results = []) => {
-            console.log(results);
-            set(results);
-        });
-    }, 
-    []
-);
+        providers.get()
+            .then(() => getStructuresAll(
+                $selectedProviders,
+                $query.params.filter,
+                $query.params.page,
+                $query.params.limit, false))
+            .then((results = []) => {
+                console.log(results);
+                set(results);
+            });
+    }, []);
 
-export const searchAll: Asyncable<StructuresByProviders> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(($search) => Promise.all($search), null, [ search ]);
+export const searchAll: Asyncable<StructuresByProviders> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(($search) => Promise.all($search), null, [search]);
 
 export default search;

@@ -1,4 +1,17 @@
 <div bind:clientWidth={width}>
+    {#if total > 10}
+        <nav class="p-sticky" style="top: 0; z-index: 100; background: white;">
+            <Section>
+                <Pagination
+                    perpage={false}
+                    {total}
+                    limit={100}
+                    bind:page={$query.params.page}
+                    rest={10}
+                />
+            </Section>
+        </nav>
+    {/if}
     {#each $results as result, index}
         {#await result}
             <Section heading="Searching...">
@@ -13,11 +26,15 @@
                     {cols}
                 />
             </Section>
-        {:then [structures, provider]}
+        {:then [apis, provider]}
             <Section heading={provider.attributes.name}>
-                {#if structures && structures.length}
+                {#if !apis || apis.some((a) => a instanceof Error || !a.data.length)}
+                    <div class="text-mute text-tiny text-center">
+                        No results
+                    </div>
+                {:else}
                     <Grid
-                        items={structures}
+                        items={apis[0].data}
                         {cols}
                         let:rowIndex
                         let:colIndex
@@ -66,10 +83,6 @@
                             </Modal>
                         {/if}
                     </Grid>
-                {:else}
-                    <div class="text-mute text-tiny text-center">
-                        No results
-                    </div>
                 {/if}
             </Section>
         {/await}
@@ -78,7 +91,8 @@
 
 <script lang="ts" context="module">
     import { fade } from 'svelte/transition';
-    import { fragment } from 'svelte-pathfinder';
+    import { query, fragment } from 'svelte-pathfinder';
+    import { Accordion, Pagination } from 'svelte-spectre';
 
     import Section from '@/layouts/Section.svelte';
     import Grid from '@/layouts/Grid.svelte';
@@ -98,6 +112,33 @@
 
 <script lang="ts">
     export let cols: Cols = 6;
+
+    let total = 0;
+    $: (async () => {
+        const fetchedProviders = await Promise.all($results);
+        const filteredProviders = fetchedProviders.filter(
+            ([apis, provider]) =>
+                apis &&
+                apis.some((a) => !(a instanceof Error) && a?.data.length)
+        );
+        const returned = filteredProviders.reduce((acc, [apis, provider]) => {
+            acc = acc.length
+                ? [...acc, apis[0].meta.data_returned]
+                : [apis[0].meta.data_returned];
+            return acc;
+        }, []);
+        total = returned.length && Math.max(...returned) / 10;
+        console.log(
+            filteredProviders,
+            returned,
+            returned.length && Math.max(...returned)
+        );
+    })();
+
+    function setPage(page: Param) {
+        page = page === 0 ? 1 : page;
+    }
+    $: setPage($query.params.page);
 
     let width: number;
 
@@ -158,5 +199,8 @@
     }
     .text-xtiny {
         font-size: 0.7em;
+    }
+    :global(.pagination) {
+        justify-content: center;
     }
 </style>
