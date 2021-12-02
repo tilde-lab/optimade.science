@@ -33,7 +33,7 @@
 {#if !$query.params.filter}
     <div class="examples text-center">
         <Badge color="light">
-            ↑<Button
+        <i>e.g.</i><Button
                 size="sm"
                 variant="link"
                 on:click={() => ($query.params.filter = example)}
