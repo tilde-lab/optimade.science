@@ -59,10 +59,10 @@
 <style lang="scss">
     @import 'spectre.css/src/modals';
     .modal-sm {
-        @extend .modal.modal-sm;
+        @extend .modal, .modal-sm;
     }
     .modal-lg {
-        @extend .modal.modal-lg;
+        @extend .modal, .modal-lg;
     }
     [slot='content'] {
         width: 100%;
