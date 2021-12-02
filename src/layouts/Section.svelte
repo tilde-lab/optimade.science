@@ -13,7 +13,7 @@
 
 <style>
     .content {
-        margin-top: 2rem;
+        /* margin-top: 2rem; */
     }
     .divider::after {
         color: #7a2dd0;

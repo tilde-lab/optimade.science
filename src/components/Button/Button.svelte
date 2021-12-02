@@ -58,14 +58,14 @@
         border-radius: 50%;
     }
     .btn.btn-xl {
-        @extend .btn.btn-lg;
+        @extend .btn, .btn-lg;
         height: $unit-12;
     }
     .btn.btn-action.btn-xl {
         width: $unit-12;
     }
     .btn.btn-xs {
-        @extend .btn.btn-sm;
+        @extend .btn, .btn-sm;
         height: $unit-5;
     }
     .btn.btn-action.btn-xs {
