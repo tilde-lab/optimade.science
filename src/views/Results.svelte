@@ -3,9 +3,8 @@
         <nav class="p-sticky" style="top: 0; z-index: 100; background: white;">
             <Section>
                 <Pagination
-                    perpage={false}
                     {total}
-                    limit={$query.params.limit}
+                    bind:limit={$query.params.limit}
                     bind:page={$query.params.page}
                     rest={7}
                 />
@@ -104,7 +103,7 @@
 
     import Result from '@/views/Result.svelte';
 
-    import results from '@/stores/search';
+    import results, { searchAll } from '@/stores/search';
 
     import type { Cols } from '@/layouts/Grid.svelte';
     import type { Types } from '@/services/optimade';
@@ -112,34 +111,55 @@
 
 <script lang="ts">
     export let cols: Cols = 6;
-    $query.params.limit = 10;
 
     let total = 0;
+    // limits = [10];
+
+    $query.params.page = 1;
+    $query.params.limit = 10;
+
     $: (async () => {
-        const fetchedProviders = await Promise.all($results);
+        // const fetchedProviders = await Promise.all($results);
+        const fetchedProviders = await $searchAll;
         const filteredProviders = fetchedProviders.filter(
             ([apis, provider]) =>
                 apis &&
                 apis.some((a) => !(a instanceof Error) && a?.data.length)
         );
-        const returned = filteredProviders.reduce((acc, [apis, provider]) => {
-            acc = acc.length
-                ? [...acc, apis[0].meta.data_returned]
-                : [apis[0].meta.data_returned];
-            return acc;
-        }, []);
-        total = returned.length && Math.max(...returned) / 100;
+        const returnedTotals = filteredProviders.reduce(
+            (acc, [apis, provider]) => {
+                acc = acc.length
+                    ? [...acc, apis[0].meta.data_returned]
+                    : [apis[0].meta.data_returned];
+                return acc;
+            },
+            []
+        );
+        // const returnedLimits = filteredProviders.reduce(
+        //     (acc, [apis, provider]) => {
+        //         acc = acc.length
+        //             ? [...acc, ...apis[0].meta.limits]
+        //             : [...apis[0].meta.limits];
+        //         return [...new Set(acc)];
+        //     },
+        //     []
+        // );
+        total = returnedTotals.length && Math.max(...returnedTotals) / 100;
+        // limits = returnedLimits;
+
         console.log(
             filteredProviders,
-            returned,
-            returned.length && Math.max(...returned)
+            returnedTotals,
+            returnedTotals.length && Math.max(...returnedTotals),
+            returnedLimits
         );
     })();
 
-    function setPage(page: Param) {
-        page = page === 0 ? 1 : page;
-    }
-    $: setPage($query.params.page);
+    // function setPage(page: Param) {
+    //     console.log(page === 0);
+    //     page = page === 0 ? 1 : page;
+    // }
+    // $: setPage($query.params.page);
 
     let width: number;
 
