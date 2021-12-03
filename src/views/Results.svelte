@@ -4,6 +4,7 @@
             <Section>
                 <Pagination
                     {total}
+                    perpage={false}
                     bind:limit={$query.params.limit}
                     bind:page={$query.params.page}
                     rest={7}
@@ -88,6 +89,8 @@
     {/each}
 </div>
 
+<svelte:window bind:innerWidth={windowWidth} />
+
 <script lang="ts" context="module">
     import { fade } from 'svelte/transition';
     import { query, fragment } from 'svelte-pathfinder';
@@ -110,9 +113,25 @@
 </script>
 
 <script lang="ts">
-    export let cols: Cols = 6;
+    let cols: Cols = 6;
 
-    let total = 0;
+    $: switch (true) {
+        case windowWidth <= 480:
+            cols = 2;
+            break;
+        case windowWidth <= 600:
+            cols = 3;
+            break;
+        case windowWidth <= 840:
+            cols = 4;
+            break;
+        default:
+            cols = 6;
+            break;
+    }
+
+    let total = 0,
+        windowWidth = 0;
 
     $query.params.page = 1;
     $query.params.limit = 10;
