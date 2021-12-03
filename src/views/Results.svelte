@@ -113,13 +113,11 @@
     export let cols: Cols = 6;
 
     let total = 0;
-    // limits = [10];
 
     $query.params.page = 1;
     $query.params.limit = 10;
 
     $: (async () => {
-        // const fetchedProviders = await Promise.all($results);
         const fetchedProviders = await $searchAll;
         const filteredProviders = fetchedProviders.filter(
             ([apis, provider]) =>
@@ -135,31 +133,8 @@
             },
             []
         );
-        // const returnedLimits = filteredProviders.reduce(
-        //     (acc, [apis, provider]) => {
-        //         acc = acc.length
-        //             ? [...acc, ...apis[0].meta.limits]
-        //             : [...apis[0].meta.limits];
-        //         return [...new Set(acc)];
-        //     },
-        //     []
-        // );
         total = returnedTotals.length && Math.max(...returnedTotals) / 100;
-        // limits = returnedLimits;
-
-        console.log(
-            filteredProviders,
-            returnedTotals,
-            returnedTotals.length && Math.max(...returnedTotals),
-            returnedLimits
-        );
     })();
-
-    // function setPage(page: Param) {
-    //     console.log(page === 0);
-    //     page = page === 0 ? 1 : page;
-    // }
-    // $: setPage($query.params.page);
 
     let width: number;
 
