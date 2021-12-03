@@ -5,9 +5,9 @@
                 <Pagination
                     perpage={false}
                     {total}
-                    limit={100}
+                    limit={$query.params.limit}
                     bind:page={$query.params.page}
-                    rest={10}
+                    rest={7}
                 />
             </Section>
         </nav>
@@ -30,7 +30,7 @@
             <Section heading={provider.attributes.name}>
                 {#if !apis || apis.some((a) => a instanceof Error || !a.data.length)}
                     <div class="text-mute text-tiny text-center">
-                        No results
+                        {apis[0] instanceof Error ? apis : 'No results'}
                     </div>
                 {:else}
                     <Grid
@@ -112,6 +112,7 @@
 
 <script lang="ts">
     export let cols: Cols = 6;
+    $query.params.limit = 10;
 
     let total = 0;
     $: (async () => {
@@ -127,7 +128,7 @@
                 : [apis[0].meta.data_returned];
             return acc;
         }, []);
-        total = returned.length && Math.max(...returned) / 10;
+        total = returned.length && Math.max(...returned) / 100;
         console.log(
             filteredProviders,
             returned,
