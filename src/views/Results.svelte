@@ -1,17 +1,4 @@
 <div bind:clientWidth={width}>
-    {#if total > 10}
-        <nav class="p-sticky" style="top: 0; z-index: 100; background: white;">
-            <Section>
-                <Pagination
-                    {total}
-                    perpage={false}
-                    bind:limit={$query.params.limit}
-                    bind:page={$query.params.page}
-                    rest={7}
-                />
-            </Section>
-        </nav>
-    {/if}
     {#each $results as result, index}
         {#await result}
             <Section heading="Searching...">
@@ -93,8 +80,7 @@
 
 <script lang="ts" context="module">
     import { fade } from 'svelte/transition';
-    import { query, fragment } from 'svelte-pathfinder';
-    import { Accordion, Pagination } from 'svelte-spectre';
+    import { fragment } from 'svelte-pathfinder';
 
     import Section from '@/layouts/Section.svelte';
     import Grid from '@/layouts/Grid.svelte';
@@ -106,7 +92,7 @@
 
     import Result from '@/views/Result.svelte';
 
-    import results, { searchAll } from '@/stores/search';
+    import results from '@/stores/search';
 
     import type { Cols } from '@/layouts/Grid.svelte';
     import type { Types } from '@/services/optimade';
@@ -130,30 +116,7 @@
             break;
     }
 
-    let total = 0,
-        windowWidth = 0;
-
-    $query.params.page = 1;
-    $query.params.limit = 10;
-
-    $: (async () => {
-        const fetchedProviders = await $searchAll;
-        const filteredProviders = fetchedProviders.filter(
-            ([apis, provider]) =>
-                apis &&
-                apis.some((a) => !(a instanceof Error) && a?.data.length)
-        );
-        const returnedTotals = filteredProviders.reduce(
-            (acc, [apis, provider]) => {
-                acc = acc.length
-                    ? [...acc, apis[0].meta.data_returned]
-                    : [apis[0].meta.data_returned];
-                return acc;
-            },
-            []
-        );
-        total = returnedTotals.length && Math.max(...returnedTotals) / 100;
-    })();
+    let windowWidth = 0;
 
     let width: number;
 
