@@ -1,4 +1,4 @@
-import { derived } from 'svelte/store';
+import { derived, get } from 'svelte/store';
 import { asyncable } from 'svelte-asyncable';
 import { query } from 'svelte-pathfinder';
 import debounce from 'debounce-promise';
@@ -35,14 +35,14 @@ const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresBy
     }, []);
 
 export const searchAll: Asyncable<StructuresByProviders> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(($search) => Promise.all($search), null, [search]);
-export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(async ($search) => {
-    const fetchedProviders = await Promise.all($search);
-    const filteredProviders = fetchedProviders.filter(
-        ([apis, provider]) =>
+export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProviders>], number>(async ($search) => {
+    const fetchedProviders: StructuresByProviders = await Promise.all($search);
+    const filteredProviders: StructuresByProviders = fetchedProviders.filter(
+        ([apis, _provider]) =>
             apis &&
             apis.some((a) => !(a instanceof Error) && a?.data.length)
     );
-    const returnedTotals: Array<number> = filteredProviders.reduce(
+    const returnedTotals: number[] = filteredProviders.reduce(
         (acc: number[], [apis, _provider]) => {
             const returned =
                 apis[0].meta.data_returned /
@@ -53,6 +53,18 @@ export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProvi
         []
     );
     return returnedTotals.length ? Math.max(...returnedTotals) : 0;
-}, null, [search]);
+}, 0, [search]);
+
+const page = get(query).params.page;
+
+export const total = derived<[Writable<StringParams>, Readable<Param[]>, Asyncable<number>], number>(
+    [query, selectedProviders, getTotal],
+    ([$query, $selectedProviders, $getTotal], set) => {
+        if (!$query.params.filter || !$selectedProviders) return set(0);
+        else if (page === $query.params.page) $getTotal.then((result) => {
+            console.log(result);
+            set(result);
+        });
+    }, 0);
 
 export default search;
