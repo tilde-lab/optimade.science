@@ -12,7 +12,7 @@ import type { Readable, Writable } from 'svelte/store';
 import type { Types } from '@/services/optimade';
 import type { Asyncable } from 'svelte-asyncable';
 
-type StructuresByProviders = Array<Array<[Types.ApisMap, Types.Provider]>>;
+type StructuresByProviders = Array<Array<[Types.StructuresResponse[], Types.Provider]>>;
 
 const getStructuresAll = debounce((providers: string[], filter: string, page: number = 0, limit: number, batch: boolean) => {
     return optimade.getStructuresAll(providers, filter, page, limit, batch) || [];
@@ -35,15 +35,15 @@ const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresBy
     }, []);
 
 export const searchAll: Asyncable<StructuresByProviders> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(($search) => Promise.all($search), null, [search]);
+
 export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProviders>], number>(async ($search) => {
-    const fetchedProviders: StructuresByProviders = await Promise.all($search);
-    const filteredProviders: StructuresByProviders = fetchedProviders.filter(
-        ([apis, _provider]) =>
-            apis &&
-            apis.some((a) => !(a instanceof Error) && a?.data.length)
+    const fetchedProviders = await Promise.all($search);
+    const filteredProviders = fetchedProviders.filter(
+        ([apis, _provider]: [Types.StructuresResponse[], Types.Provider]) =>
+            apis?.some((a) => !(a instanceof Error) && a?.data.length)
     );
-    const returnedTotals: number[] = filteredProviders.reduce(
-        (acc: number[], [apis, _provider]) => {
+    const returnedTotals = filteredProviders.reduce<number[]>(
+        (acc: number[], [apis, _provider]: [Types.StructuresResponse[], Types.Provider]) => {
             const returned =
                 apis[0].meta.data_returned /
                 (apis[0].meta.data_returned > 10000 ? 100 : 1);
