@@ -52,10 +52,11 @@ export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProvi
         },
         []
     );
+    console.log(returnedTotals);
     return returnedTotals.length ? Math.max(...returnedTotals) : 0;
 }, 0, [search]);
 
-const page = get(query).params.page;
+const page = get(query).params.page || 1;
 
 export const total = derived<[Writable<StringParams>, Readable<Param[]>, Asyncable<number>], number>(
     [query, selectedProviders, getTotal],
