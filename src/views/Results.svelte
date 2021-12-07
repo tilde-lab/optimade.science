@@ -1,21 +1,20 @@
 <div bind:clientWidth={width}>
-    {#await $results}
-        <Section heading="Searching...">
-            <Loader.Cards
-                backgroundColor="#f3f3f3"
-                foregroundColor="#ecebeb"
-                height={210}
-                rows={2}
-                w={125}
-                h={100}
-                {width}
-                {cols}
-            />
-        </Section>
-    {:then results}
-        {#each results as [structures, provider], index}
+    {#each $results as result, index}
+        {#await result}
+            <Section heading="Searching...">
+                <Loader.Cards
+                    backgroundColor="#f3f3f3"
+                    foregroundColor="#ecebeb"
+                    height={210}
+                    rows={2}
+                    w={125}
+                    h={100}
+                    {width}
+                    {cols}
+                />
+            </Section>
+        {:then [structures, provider]}
             <Section heading={provider.attributes.name}>
-
                 {#if structures && structures.length}
                     <Grid
                         items={structures}
@@ -24,40 +23,48 @@
                         let:colIndex
                         let:item
                     >
-
                         {#if item}
-                        <Modal
-                            open={$fragment === `#${provider.id}-${item.id}`}
-                            on:toggle={clearFragmentOnClose}
-                        >
-                            <a
-                                id="{provider.id}-{item.id}"
-                                href="#{provider.id}-{item.id}"
-                                on:click|preventDefault={() => ($fragment = `#${provider.id}-${item.id}`)}
-                                in:fade={{ delay: delay(index, rowIndex, colIndex, 25) }}
+                            <Modal
+                                open={$fragment ===
+                                    `#${provider.id}-${item.id}`}
+                                on:toggle={clearFragmentOnClose}
                             >
-                                <Card
-                                    style="min-height: 130px; text-align: center; font-family:Courier; letter-spacing:-1px;"
+                                <a
+                                    id="{provider.id}-{item.id}"
+                                    href="#{provider.id}-{item.id}"
+                                    on:click|preventDefault={() =>
+                                        ($fragment = `#${provider.id}-${item.id}`)}
+                                    in:fade={{
+                                        delay: delay(
+                                            index,
+                                            rowIndex,
+                                            colIndex,
+                                            25
+                                        ),
+                                    }}
                                 >
-                                    <span
-                                        slot="title"
-                                        class:text-xtiny={getTitle(item).length >= 150}
+                                    <Card
+                                        style="min-height: 130px; text-align: center;"
                                     >
-                                        {@html getTitle(item)}
-                                    </span>
-                                </Card>
-                            </a>
-                            <div slot="content">
-                                <IconButton
-                                    icon="icon-cross"
-                                    style="float: right; margin-top: -0.8rem;"
-                                    on:click={() => ($fragment = '')}
-                                />
-                                <Result data={item} />
-                            </div>
-                        </Modal>
+                                        <span
+                                            slot="title"
+                                            class:text-xtiny={getTitle(item)
+                                                .length >= 150}
+                                        >
+                                            {@html getTitle(item)}
+                                        </span>
+                                    </Card>
+                                </a>
+                                <div slot="content">
+                                    <IconButton
+                                        icon="icon-cross"
+                                        style="float: right; margin-top: -0.8rem;"
+                                        on:click={() => ($fragment = '')}
+                                    />
+                                    <Result data={item} />
+                                </div>
+                            </Modal>
                         {/if}
-
                     </Grid>
                 {:else}
                     <div class="text-mute text-tiny text-center">
@@ -65,8 +72,8 @@
                     </div>
                 {/if}
             </Section>
-        {/each}
-    {/await}
+        {/await}
+    {/each}
 </div>
 
 <script lang="ts" context="module">

@@ -4,6 +4,7 @@
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
             count={cols}
+            radius={24}
             {width}
         />
     {:then items}
@@ -19,7 +20,9 @@
                         on:click={onProviderSelect}
                     />
                     <Avatar
-                        status={$selectedProviders.includes(item.id) ? 'online' : 'offline'}
+                        status={$selectedProviders.includes(item.id)
+                            ? 'online'
+                            : 'offline'}
                         name={item.attributes.name}
                         id={item.id}
                         apiVersion={item.attributes.api_version}
@@ -50,7 +53,10 @@
     import Avatar from '@/components/Avatar';
     import * as Loader from '@/components/loaders';
 
-    import providers, { selectedProviders, providersSync } from '@/stores/providers';
+    import providers, {
+        selectedProviders,
+        providersSync,
+    } from '@/stores/providers';
 
     import type { Size } from '@/types/size';
     import type { Cols } from '@/layouts/Grid.svelte';
@@ -76,13 +82,15 @@
         const selected = $selectedProviders.includes(id);
 
         if (selected) {
-            $query.params.providers = $selectedProviders.filter(pid => pid !== id);
+            $query.params.providers = $selectedProviders.filter(
+                (pid) => pid !== id
+            );
         } else {
-            $query.params.providers = [ ...$selectedProviders, id ];
+            $query.params.providers = [...$selectedProviders, id];
         }
 
         if (augmentationMode) {
-            if ( ! selected && exclusiveId === id) {
+            if (!selected && exclusiveId === id) {
                 exclusiveId = null;
                 $query.params.providers = $providersSync.map(({ id }) => id);
                 augmentationMode = false;

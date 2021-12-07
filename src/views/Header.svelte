@@ -1,4 +1,4 @@
-<div class="p-1">
+<header class="p-1">
     <Navbar>
         <div slot="center">
             {#if !$providersSync.length || $query.params.filter}
@@ -12,7 +12,7 @@
                 </Button>
                 <div slot="content">
                     <IconButton
-                        icon="icon-cross"
+                        icon="cross"
                         style="float: right; margin-top: -0.8rem;"
                         on:click={() => (open = false)}
                     />
@@ -21,16 +21,14 @@
             </Modal>
         </nav>
     </Navbar>
-</div>
+</header>
 
 <script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
+    import { Button, IconButton, Navbar } from 'svelte-spectre';
 
-    import Navbar from '@/layouts/Navbar.svelte';
     import Modal from '@/layouts/Modal.svelte';
-    import Button, { IconButton } from '@/components/Button';
     import Result from '@/views/Result.svelte';
-
     import Logo from '@/components/Logo.svelte';
 
     import { providersSync } from '@/stores/providers';

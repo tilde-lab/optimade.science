@@ -1,29 +1,30 @@
 <svelte:window on:click={click} />
 
-<Container size="md">
-    <Header />
-    {#if $providersSync.length && !$query.params.filter}
-        <div class="my-2">
-            <Logo size="4x" />
-        </div>
-    {/if}
-    <Section>
-        <Search />
-    </Section>
-    <Section>
-        <Providers />
-    </Section>
-    <main>
-        <Results />
-    </main>
-</Container>
+<Spectre>
+    <Container>
+        <Header />
+        {#if $providersSync.length && !$query.params.filter}
+            <div class="my-2">
+                <Logo size="4x" />
+            </div>
+        {/if}
+        <Section>
+            <Search />
+        </Section>
+        <Section>
+            <Providers />
+        </Section>
+        <main>
+            <Results />
+        </main>
+    </Container>
+</Spectre>
 
 <footer>
     This
-    <a
-        href="https://github.com/tilde-lab/optimade.science"
-        target="_blank"
-    >open-source</a>
+    <a href="https://github.com/tilde-lab/optimade.science" target="_blank"
+        >open-source</a
+    >
     app is possible thanks to the
     <a href="http://www.optimade.org" target="_blank">OPTIMADE</a>
     standard &mdash; Open Databases Integration for Materials Design.
@@ -32,7 +33,8 @@
 <script lang="ts" context="module">
     import { click, prefs, query } from 'svelte-pathfinder';
 
-    import Container from '@/layouts/Container.svelte';
+    import { Container, Spectre } from 'svelte-spectre';
+
     import Section from '@/layouts/Section.svelte';
 
     import Header from '@/views/Header.svelte';
