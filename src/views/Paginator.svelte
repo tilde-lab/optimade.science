@@ -4,6 +4,7 @@
             <Pagination
                 bind:limit={$query.params.limit}
                 bind:page={$query.params.page}
+                limits={[10, 50, 100]}
                 total={$total}
                 rest={7}
             />
@@ -13,8 +14,8 @@
 
 <script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
-    import { Pagination } from 'svelte-spectre';
     import { total } from '@/stores/search';
+    import { Pagination } from 'svelte-spectre';
     import Section from '@/layouts/Section.svelte';
 </script>
 

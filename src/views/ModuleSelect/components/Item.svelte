@@ -4,11 +4,7 @@
             <span slot="title">{label}</span>
             <span slot="action">
                 {#if removable}
-                    <IconButton
-                        size="sm"
-                        icon="icon-delete"
-                        on:click={removeItem}
-                    />
+                    <IconButton size="sm" icon="delete" on:click={removeItem} />
                 {/if}
             </span>
         </Tile>
@@ -16,8 +12,7 @@
 {/if}
 
 <script lang="ts" context="module">
-    import Tile from '@/layouts/Tile.svelte';
-    import { IconButton } from '@/components/Button';
+    import { IconButton, Tile } from 'svelte-spectre';
 
     import modules, { builtinModulesSync } from '@/stores/modules';
 

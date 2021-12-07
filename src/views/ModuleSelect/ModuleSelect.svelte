@@ -35,4 +35,6 @@
         $builtinModulesSync.includes(item.value)
             ? moduleGroups.builtin
             : moduleGroups.local;
+
+    $: console.log($builtinModulesSync);
 </script>

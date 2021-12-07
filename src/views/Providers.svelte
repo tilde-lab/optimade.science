@@ -8,49 +8,53 @@
             {width}
         />
     {:then items}
-        <Grid {items} {cols} style="justify-content: center;" let:item>
-            <Popover pos="bottom">
-                <label slot="trigger">
-                    <input
-                        name="providers"
-                        id={item.id}
-                        value={item.id}
-                        disabled={!item.attributes.base_url}
-                        type="checkbox"
-                        on:click={onProviderSelect}
-                    />
-                    <Avatar
-                        status={$selectedProviders.includes(item.id)
-                            ? 'online'
-                            : 'offline'}
-                        name={item.attributes.name}
-                        id={item.id}
-                        apiVersion={item.attributes.api_version}
-                        len={3}
-                        {size}
-                    />
-                </label>
-                <Card>
-                    <span slot="title" class="h6">{item.attributes.name}</span>
-                    <span slot="subtitle" class="text-small text-gray">
-                        {item.attributes.homepage || ''}
-                    </span>
-                    <span class="text-small">{item.attributes.description}</span
-                    >
-                </Card>
-            </Popover>
+        <Grid align="center" justify="center">
+            {#each items as item}
+                <Col col="1">
+                    <Popover side="bottom">
+                        <label class="text-center">
+                            <input
+                                name="providers"
+                                id={item.id}
+                                value={item.id}
+                                disabled={!item.attributes.base_url}
+                                type="checkbox"
+                                on:click={onProviderSelect}
+                            />
+                            <Avatar
+                                status={$selectedProviders.includes(item.id)
+                                    ? 'online'
+                                    : 'offline'}
+                                name={item.attributes.name}
+                                add={item.attributes.api_version}
+                                id={item.id}
+                                apiVersion={item.attributes.api_version}
+                                len={4}
+                                {size}
+                            />
+                        </label>
+                        <Card slot="content">
+                            <span slot="title" class="h6"
+                                >{item.attributes.name}</span
+                            >
+                            <span slot="subtitle" class="text-small text-gray">
+                                {item.attributes.homepage || ''}
+                            </span>
+                            <span class="text-small"
+                                >{item.attributes.description}</span
+                            >
+                        </Card>
+                    </Popover>
+                </Col>
+            {/each}
         </Grid>
     {/await}
 </div>
 
 <script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
+    import { Avatar, Card, Col, Grid, Popover } from 'svelte-spectre';
 
-    import Grid from '@/layouts/Grid.svelte';
-    import Popover from '@/layouts/Popover.svelte';
-    import Card from '@/layouts/Card.svelte';
-
-    import Avatar from '@/components/Avatar';
     import * as Loader from '@/components/loaders';
 
     import providers, {
@@ -58,10 +62,10 @@
         providersSync,
     } from '@/stores/providers';
 
-    import type { Size } from '@/types/size';
-    import type { Cols } from '@/layouts/Grid.svelte';
+    import type { Size } from 'svelte-spectre';
+    import { SIZE } from 'svelte-spectre';
 
-    import { SIZE } from '@/types/const';
+    type Cols = 12 | 6 | 4 | 3 | 2 | 1;
 
     const cols: Cols = 12;
     const size: Size = 'lg';
@@ -115,5 +119,8 @@
     label {
         display: block;
         cursor: pointer;
+    }
+    .api-version {
+        position: absolute;
     }
 </style>

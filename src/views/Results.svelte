@@ -5,10 +5,10 @@
                 <Loader.Cards
                     backgroundColor="#f3f3f3"
                     foregroundColor="#ecebeb"
-                    height={210}
+                    height={270}
                     rows={2}
                     w={125}
-                    h={100}
+                    h={125}
                     {width}
                     {cols}
                 />
@@ -20,55 +20,46 @@
                         {apis[0] instanceof Error ? apis : 'No results'}
                     </div>
                 {:else}
-                    <Grid
-                        items={apis[0].data}
-                        {cols}
-                        let:rowIndex
-                        let:colIndex
-                        let:item
-                    >
-                        {#if item}
-                            <Modal
-                                open={$fragment ===
-                                    `#${provider.id}-${item.id}`}
-                                on:toggle={clearFragmentOnClose}
-                            >
-                                <a
-                                    id="{provider.id}-{item.id}"
-                                    href="#{provider.id}-{item.id}"
-                                    on:click|preventDefault={() =>
-                                        ($fragment = `#${provider.id}-${item.id}`)}
-                                    in:fade={{
-                                        delay: delay(
-                                            index,
-                                            rowIndex,
-                                            colIndex,
-                                            25
-                                        ),
-                                    }}
+                    <Grid stack>
+                        {#each apis[0].data as item, i}
+                            <Col col="2" md="3" sm="4" xs="6">
+                                <Modal
+                                    open={$fragment ===
+                                        `#${provider.id}-${item.id}`}
+                                    on:toggle={clearFragmentOnClose}
                                 >
-                                    <Card
-                                        style="min-height: 130px; text-align: center;"
+                                    <a
+                                        id="{provider.id}-{item.id}"
+                                        href="#{provider.id}-{item.id}"
+                                        on:click|preventDefault={() =>
+                                            ($fragment = `#${provider.id}-${item.id}`)}
+                                        in:fade={{
+                                            delay: delay(index, i, 25),
+                                        }}
                                     >
-                                        <span
-                                            slot="title"
-                                            class:text-xtiny={getTitle(item)
-                                                .length >= 150}
+                                        <Card
+                                            style="min-height: 130px; text-align: center;"
                                         >
-                                            {@html getTitle(item)}
-                                        </span>
-                                    </Card>
-                                </a>
-                                <div slot="content">
-                                    <IconButton
-                                        icon="icon-cross"
-                                        style="float: right; margin-top: -0.8rem;"
-                                        on:click={() => ($fragment = '')}
-                                    />
-                                    <Result data={item} />
-                                </div>
-                            </Modal>
-                        {/if}
+                                            <span
+                                                slot="title"
+                                                class:text-xtiny={getTitle(item)
+                                                    .length >= 150}
+                                            >
+                                                {@html getTitle(item)}
+                                            </span>
+                                        </Card>
+                                    </a>
+                                    <div slot="content">
+                                        <IconButton
+                                            icon="cross"
+                                            style="float: right; margin-top: -0.8rem;"
+                                            on:click={() => ($fragment = '')}
+                                        />
+                                        <Result data={item} />
+                                    </div>
+                                </Modal>
+                            </Col>
+                        {/each}
                     </Grid>
                 {/if}
             </Section>
@@ -81,47 +72,47 @@
 <script lang="ts" context="module">
     import { fade } from 'svelte/transition';
     import { fragment } from 'svelte-pathfinder';
+    import { Card, Col, Grid, IconButton } from 'svelte-spectre';
 
     import Section from '@/layouts/Section.svelte';
-    import Grid from '@/layouts/Grid.svelte';
-    import Card from '@/layouts/Card.svelte';
     import Modal from '@/layouts/Modal.svelte';
 
-    import { IconButton } from '@/components/Button';
     import * as Loader from '@/components/loaders';
 
     import Result from '@/views/Result.svelte';
 
     import results from '@/stores/search';
 
-    import type { Cols } from '@/layouts/Grid.svelte';
     import type { Types } from '@/services/optimade';
+
+    type Cols = 12 | 6 | 4 | 3 | 2 | 1;
 </script>
 
 <script lang="ts">
-    let cols: Cols = 6;
+    let cols: Cols = 6,
+        windowWidth = 0,
+        width: number;
 
-    $: switch (true) {
-        case windowWidth <= 480:
-            cols = 2;
-            break;
-        case windowWidth <= 600:
-            cols = 3;
-            break;
-        case windowWidth <= 840:
-            cols = 4;
-            break;
-        default:
-            cols = 6;
-            break;
-    }
-
-    let windowWidth = 0;
-
-    let width: number;
-
-    function delay(i: number, j: number, k: number, m: number = 100) {
-        return i * m * 10 + j * cols * m + k * m;
+    function delay(index: number, i: number, m: number = 100) {
+        switch (true) {
+            case windowWidth <= 480:
+                cols = 2;
+                break;
+            case windowWidth <= 600:
+                cols = 3;
+                break;
+            case windowWidth <= 840:
+                cols = 4;
+                break;
+            default:
+                cols = 6;
+                break;
+        }
+        return (
+            index * m * 10 +
+            Math.trunc(i / cols) * cols * m +
+            Math.trunc(i % cols) * m
+        );
     }
 
     function clearFragmentOnClose({ detail: open }) {
