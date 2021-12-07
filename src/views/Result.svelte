@@ -42,7 +42,7 @@
 
     const steps = [
         { label: 'Optimade JSON' },
-        { label: 'Optimade client module' },
+        { label: 'Optimade module' },
     ];
 </script>
 
@@ -63,7 +63,7 @@
 
                 // If we get a frame we send a custom message and clear interval
                 if (visualisationFrame) {
-                    visualisationFrame.postMessage(data || code, '*');
+                    visualisationFrame.postMessage(message, '*');
                     clearInterval(timer);
                 }
             }, 500);
