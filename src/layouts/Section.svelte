@@ -1,4 +1,4 @@
-<section class="mt-2 py-1" style="margin-bottom: 2.5vmin;">
+<section style="margin: 2vmin auto 6vmin;">
     {#if heading}
         <div
             class="divider text-center text-dark pb-2"
@@ -15,10 +15,12 @@
 </script>
 
 <style>
+    .content {
+        margin-top: 2rem;
+    }
     .divider::after {
-        /* color: #7a2dd0 !important; */
-        color: inherit !important;
+        color: #7a2dd0 !important;
         letter-spacing: 1.5px;
-        font-size: 100% !important;
+        font-size: 1.05em !important;
     }
 </style>

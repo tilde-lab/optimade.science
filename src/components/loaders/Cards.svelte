@@ -4,8 +4,6 @@
             <rect
                 x={j * (w + x)}
                 y={i * (h + y)}
-                rx="8"
-                ry="8"
                 width={w}
                 height={h}
             />

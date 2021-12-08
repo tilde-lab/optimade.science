@@ -2,7 +2,7 @@
     <FormGroup>
         <Input
             bind:value={$query.params.filter}
-            placeholder="start typing filter..."
+            placeholder="filter="
             name="filter"
             type="search"
             width="12"
@@ -31,15 +31,13 @@
 </Form>
 
 {#if !$query.params.filter}
-    <div class="examples text-center">
-        <Badge color="light">
-            <i>e.g.</i><Button
-                size="sm"
-                variant="link"
-                on:click={() => ($query.params.filter = example)}
-                >{example}</Button
-            >
-        </Badge>
+    <div class="examples text-left">
+        <i>e.g.</i><Button
+            size="md"
+            variant="link"
+            on:click={() => ($query.params.filter = example)}
+            >{example}</Button
+        >
     </div>
 {/if}
 

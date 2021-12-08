@@ -5,10 +5,10 @@
                 <Loader.Cards
                     backgroundColor="#f3f3f3"
                     foregroundColor="#ecebeb"
-                    height={270}
+                    height={290}
                     rows={2}
                     w={125}
-                    h={125}
+                    h={130}
                     {width}
                     {cols}
                 />
@@ -16,7 +16,7 @@
         {:then [apis, provider]}
             <Section heading={provider.attributes.name}>
                 {#if !apis || apis.some((a) => a instanceof Error || !a.data.length)}
-                    <div class="text-mute text-tiny text-center">
+                    <div class="text-mute text-center">
                         {apis[0] instanceof Error ? apis : 'No results'}
                     </div>
                 {:else}
@@ -152,14 +152,13 @@
     a {
         display: block;
         color: initial;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.5s ease-in-out;
     }
     a:hover,
     a:active,
     a:focus,
     a:visited {
-        color: initial;
-        text-decoration: none;
+        text-decoration: none !important;
     }
     a:hover {
         transform: scale(1.1);
