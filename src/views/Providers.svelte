@@ -22,11 +22,9 @@
                                 on:click={onProviderSelect}
                             />
                             <Avatar
-                                status={$selectedProviders.includes(item.id)
-                                    ? 'online'
-                                    : 'offline'}
-                                name={item.attributes.name}
-                                add={item.attributes.api_version}
+                                custom
+                                status={statusing(item)}
+                                name={naming(item)}
                                 id={item.id}
                                 apiVersion={item.attributes.api_version}
                                 len={4}
@@ -54,6 +52,7 @@
 <script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
     import { Avatar, Card, Col, Grid, Popover } from 'svelte-spectre';
+    import { getPredefinedInitials } from '@/helpers/getPredefinedInitials';
 
     import * as Loader from '@/components/loaders';
 
@@ -78,6 +77,21 @@
 
     let exclusiveId = null;
     let augmentationMode = false;
+
+    function statusing(item) {
+        return $selectedProviders.includes(item.id) ? 'online' : 'offline';
+    }
+
+    function naming(item: { [key]: string }) {
+        const words = item.attributes.name
+            .replace('.', '/')
+            .match(/\b(\w)|([A-Z])|(\/)/g);
+        const initials = getPredefinedInitials(
+            item.id,
+            words.slice(0, 3).join('').toUpperCase()
+        );
+        return `${initials.toUpperCase()} v${item.attributes.api_version}`;
+    }
 
     async function onProviderSelect(e) {
         const id = e.target.id;

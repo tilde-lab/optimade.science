@@ -82,5 +82,8 @@
 <style lang="scss">
     .examples {
         margin-top: -0.4rem;
+        i {
+            vertical-align: middle;
+        }
     }
 </style>

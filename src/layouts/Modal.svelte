@@ -34,6 +34,7 @@
 
 <script lang="ts" context="module">
     import MorphingModal from 'svelte-morphing-modal';
+    import { Modal } from 'svelte-spectre';
 
     export const SIZE = {
         sm: 320,
