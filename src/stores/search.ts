@@ -29,7 +29,6 @@ const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresBy
                 $query.params.page,
                 $query.params.limit, false))
             .then((results = []) => {
-                console.log(results);
                 set(results);
             });
     }, []);
@@ -52,7 +51,6 @@ export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProvi
         },
         []
     );
-    console.log(returnedTotals);
     return returnedTotals.length ? Math.max(...returnedTotals) : 0;
 }, 0, [search]);
 
@@ -63,7 +61,6 @@ export const total = derived<[Writable<StringParams>, Readable<Param[]>, Asyncab
     ([$query, $selectedProviders, $getTotal], set) => {
         if (!$query.params.filter || !$selectedProviders) return set(0);
         else if (page === $query.params.page) $getTotal.then((result) => {
-            console.log(result);
             set(result);
         });
     }, 0);
