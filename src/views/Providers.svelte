@@ -3,7 +3,7 @@
         <Loader.Avatars
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
-            count={cols}
+            count={12}
             radius={24}
             {width}
         />
@@ -23,12 +23,12 @@
                             />
                             <Avatar
                                 custom
-                                status={statusing(item)}
+                                status={$selectedProviders && statusing(item)}
                                 name={naming(item)}
                                 id={item.id}
                                 apiVersion={item.attributes.api_version}
                                 len={4}
-                                {size}
+                                size="lg"
                             />
                         </label>
                         <Card slot="content">
@@ -61,28 +61,19 @@
         providersSync,
     } from '@/stores/providers';
 
-    import type { Size } from 'svelte-spectre';
-    import { SIZE } from 'svelte-spectre';
-
-    type Cols = 12 | 6 | 4 | 3 | 2 | 1;
-
-    const cols: Cols = 12;
-    const size: Size = 'lg';
-    const height: number = SIZE[size];
-    const radius: number = height / 2;
+    import type { Types } from 'optimade';
 </script>
 
 <script lang="ts">
-    let width: number = 0;
+    let width: number = 0,
+        exclusiveId = null,
+        augmentationMode = false;
 
-    let exclusiveId = null;
-    let augmentationMode = false;
-
-    function statusing(item) {
+    function statusing(item: Types.Provider) {
         return $selectedProviders.includes(item.id) ? 'online' : 'offline';
     }
 
-    function naming(item: { [key]: string }) {
+    function naming(item: Types.Provider) {
         const words = item.attributes.name
             .replace('.', '/')
             .match(/\b(\w)|([A-Z])|(\/)/g);
@@ -93,7 +84,7 @@
         return `${initials.toUpperCase()} v${item.attributes.api_version}`;
     }
 
-    async function onProviderSelect(e) {
+    async function onProviderSelect(e: Event) {
         const id = e.target.id;
         if (!id) return;
 
@@ -133,8 +124,5 @@
     label {
         display: block;
         cursor: pointer;
-    }
-    .api-version {
-        position: absolute;
     }
 </style>

@@ -1,4 +1,4 @@
-<Form horizontal>
+<Form>
     <FormGroup>
         <Input
             bind:value={$query.params.filter}

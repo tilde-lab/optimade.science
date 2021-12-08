@@ -84,12 +84,10 @@
     import results from '@/stores/search';
 
     import type { Types } from '@/services/optimade';
-
-    type Cols = 12 | 6 | 4 | 3 | 2 | 1;
 </script>
 
 <script lang="ts">
-    let cols: Cols = 6,
+    let cols: number = 6,
         windowWidth = 0,
         width: number;
 
