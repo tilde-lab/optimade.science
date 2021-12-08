@@ -85,6 +85,9 @@
     }
 
     async function onProviderSelect(e: Event) {
+        $query.params.page = 1;
+        $query.params.limit = 10;
+
         const id = e.target.id;
         if (!id) return;
 

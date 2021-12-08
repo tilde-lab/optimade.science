@@ -23,7 +23,7 @@
     $query.params.page = 1;
     $query.params.limit = 10;
 
-    $: if (!$query.params.filter && !$query.params.providers) {
+    $: if (!$query.params.filter) {
         $query.params.page = 1;
         $query.params.limit = 10;
     }
