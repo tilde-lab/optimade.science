@@ -1,4 +1,4 @@
-<Form horizontal>
+<Form>
     <FormGroup>
         <Input
             bind:value={$query.params.filter}
@@ -33,7 +33,7 @@
 {#if !$query.params.filter}
     <div class="examples text-center">
         <Badge color="light">
-        <i>e.g.</i><Button
+            <i>e.g.</i><Button
                 size="sm"
                 variant="link"
                 on:click={() => ($query.params.filter = example)}
@@ -82,5 +82,8 @@
 <style lang="scss">
     .examples {
         margin-top: -0.4rem;
+        i {
+            vertical-align: middle;
+        }
     }
 </style>

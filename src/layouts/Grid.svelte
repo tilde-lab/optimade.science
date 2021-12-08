@@ -6,7 +6,7 @@
         class="columns"
     >
         {#each row as item, colIndex (item)}
-            <div class="column col-{col} my-1">
+            <div class="column col-{col} my-2">
                 <slot {item} {rowIndex} {colIndex} />
             </div>
         {/each}
@@ -14,7 +14,7 @@
 {/each}
 
 <script lang="ts" context="module">
-    export type Cols = 12 | 6 | 4 | 2 | 1;
+    export type Cols = 12 | 6 | 4 | 3 | 2 | 1;
 </script>
 
 <script lang="ts">

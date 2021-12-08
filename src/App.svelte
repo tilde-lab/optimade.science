@@ -14,6 +14,7 @@
         <Section>
             <Providers />
         </Section>
+        <Paginator />
         <main>
             <Results />
         </main>
@@ -40,6 +41,7 @@
     import Header from '@/views/Header.svelte';
     import Search from '@/views/Search.svelte';
     import Results from '@/views/Results.svelte';
+    import Paginator from '@/views/Paginator.svelte';
     import Providers from '@/views/Providers.svelte';
 
     import Logo from '@/components/Logo.svelte';
