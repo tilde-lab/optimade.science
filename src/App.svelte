@@ -52,33 +52,21 @@
 </script>
 
 <style lang="scss">
-    :global {
-        @import 'spectre.css/src/normalize';
-        @import 'spectre.css/src/base';
-        @import 'spectre.css/src/typography';
-        @import 'spectre.css/src/layout';
-        @import 'spectre.css/src/toasts';
-        @import 'spectre.css/src/animations';
-        @import 'spectre.css/src/utilities';
-    }
-
     footer {
         position: fixed;
         bottom: 0;
         left: 0;
+        right: 0;
         z-index: 999;
         width: 100%;
-        height: 32px;
-        line-height: 32px;
         text-align: center;
-        font-size: 0.95em;
-        color: #333;
-        background: #f6f6f6;
-        border-top: 1px solid #999;
+        font-size: 0.75rem;
+        color: #3b4351;
+        background: #f1f3f5;
+        padding: 0.75rem;
     }
     footer a {
         text-decoration: none;
-        color: #333;
-        border-bottom: 1px solid #333;
+        color: #3b4351;
     }
 </style>

@@ -10,33 +10,8 @@
     <slot />
     <Modal slot="content" size="fs" custom on:close={() => (open = false)}>
         <slot name="header" slot="header" />
-        <div class="content">
-            <slot name="content" />
-        </div>
-        <!-- <slot slot="footer" /> -->
+        <slot name="content" />
     </Modal>
-    <!-- <div
-        slot="content"
-        class:modal-fs={fullscreen}
-        class="modal-{size}"
-        id="modal-{mid}"
-    >
-        <div class="modal-container" {style}>
-            <div class="modal-header">
-                <div class="modal-title h5">
-                    <slot name="header" />
-                </div>
-            </div>
-            <div class="modal-body" {style}>
-                <div class="content">
-                    <slot name="content" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <slot name="footer" />
-            </div>
-        </div>
-    </div> -->
 </MorphingModal>
 
 <script lang="ts" context="module">
@@ -63,27 +38,3 @@
     $: width = fullscreen ? '100%' : `${SIZE[size]}px`;
     $: style = `min-width: ${width}; min-height: ${height};`;
 </script>
-
-<style lang="scss">
-    @import 'spectre.css/src/modals';
-    :global(.spectre .modal-body) {
-        flex: 1;
-    }
-    :global(.spectre .modal-fs) {
-        padding: 0 !important;
-    }
-    :global(.spectre .modal-fs .modal-container) {
-        width: 100vw !important;
-        height: 100vh !important;
-    }
-    .modal-sm {
-        @extend .modal, .modal-sm;
-    }
-    .modal-lg {
-        @extend .modal, .modal-lg;
-    }
-    [slot='content'] {
-        width: 100%;
-        height: 100%;
-    }
-</style>

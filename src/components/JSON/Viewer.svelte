@@ -1,25 +1,18 @@
-<pre class="code" data-lang="JSON">
-    <code>
-        <IconButton
-            size="sm"
-            icon="icon-copy"
-            style="position: absolute; top: 5px; left: 5px;"
-            title="Copy JSON to clipboard"
-            on:click={() => copy(json)}
-        />
-        <TreeView
-            {...treeViewOptions}
-            {...$$restProps}
-            {value}
-        />
-    </code>
-</pre>
+<Code lang="JSON">
+    <IconButton
+        size="sm"
+        icon="copy"
+        style="position: absolute; top: 5px; left: 5px;"
+        title="Copy JSON to clipboard"
+        on:click={() => copy(json)}
+    />
+    <TreeView {...treeViewOptions} {...$$restProps} {value} />
+</Code>
 
 <script lang="ts" context="module">
     import copy from 'copy-to-clipboard';
     import TreeView from 'svelte-json-tree-view';
-
-    import { IconButton } from '@/components/Button';
+    import { Code, IconButton } from 'svelte-spectre';
 
     const treeViewOptions = {
         readonly: true,
@@ -35,7 +28,3 @@
 
     $: json = JSON.stringify(value);
 </script>
-
-<style lang="scss">
-    @import 'spectre.css/src/codes';
-</style>

@@ -17,7 +17,7 @@
             <Section heading={provider.attributes.name}>
                 {#if !apis || apis.some((a) => a instanceof Error || !a.data.length)}
                     <div class="text-mute text-center">
-                        {apis[0] instanceof Error ? apis : 'No results'}
+                        {apis && apis[0] instanceof Error ? apis : 'No results'}
                     </div>
                 {:else}
                     <Grid stack>

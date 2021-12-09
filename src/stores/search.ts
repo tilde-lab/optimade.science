@@ -61,7 +61,6 @@ export const total = derived<[Writable<StringParams>, Readable<Param[]>, Asyncab
     ([$query, $selectedProviders, $getTotal], set) => {
         if (!$query.params.filter || !$selectedProviders) return set(0);
         else if (page === $query.params.page || $selectedProviders) $getTotal.then((result) => {
-            console.log(result, maxMin(10000, 1, result));
             set(maxMin(10000, 1, result));
         });
     }, 0);
