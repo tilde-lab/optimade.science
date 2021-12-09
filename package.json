@@ -89,7 +89,7 @@
     "copy-to-clipboard": "^3.3.1",
     "debounce-promise": "^3.1.2",
     "optimade": "^2.0.3",
-    "sirv-cli": "^1.0.0",
+    "sirv-cli": "^1.0.0"
   },
   "repository": {
     "type": "git",
