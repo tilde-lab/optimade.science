@@ -19,6 +19,7 @@
                             size="sm"
                             icon="cross"
                             style="display: flex;"
+                            type="button"
                             on:click={() => ($query.params.filter = '')}
                         />
                     {:else}
@@ -35,8 +36,7 @@
         <i>e.g.</i><Button
             size="md"
             variant="link"
-            on:click={() => ($query.params.filter = example)}
-            >{example}</Button
+            on:click={() => ($query.params.filter = example)}>{example}</Button
         >
     </div>
 {/if}

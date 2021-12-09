@@ -8,7 +8,14 @@
     on:adjust
 >
     <slot />
-    <div
+    <Modal slot="content" size="fs" custom on:close={() => (open = false)}>
+        <slot name="header" slot="header" />
+        <div class="content">
+            <slot name="content" />
+        </div>
+        <!-- <slot slot="footer" /> -->
+    </Modal>
+    <!-- <div
         slot="content"
         class:modal-fs={fullscreen}
         class="modal-{size}"
@@ -29,7 +36,7 @@
                 <slot name="footer" />
             </div>
         </div>
-    </div>
+    </div> -->
 </MorphingModal>
 
 <script lang="ts" context="module">
@@ -59,6 +66,16 @@
 
 <style lang="scss">
     @import 'spectre.css/src/modals';
+    :global(.spectre .modal-body) {
+        flex: 1;
+    }
+    :global(.spectre .modal-fs) {
+        padding: 0 !important;
+    }
+    :global(.spectre .modal-fs .modal-container) {
+        width: 100vw !important;
+        height: 100vh !important;
+    }
     .modal-sm {
         @extend .modal, .modal-sm;
     }

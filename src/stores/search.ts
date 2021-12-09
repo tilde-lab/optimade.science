@@ -43,9 +43,8 @@ export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProvi
     );
     const returnedTotals = filteredProviders.reduce<number[]>(
         (acc: number[], [apis, _provider]: [Types.StructuresResponse[], Types.Provider]) => {
-            const returned =
-                apis[0].meta.data_returned /
-                (apis[0].meta.data_returned > 10000 ? 100 : 1);
+            const returned = apis[0].meta.data_returned;
+            //  / (apis[0].meta.data_returned > 10000 ? 100 : 1);
             acc = acc.length ? [...acc, returned] : [returned];
             return acc;
         },
@@ -55,13 +54,15 @@ export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProvi
 }, 0, [search]);
 
 const page = get(query).params.page || 1;
+const maxMin = (max: number, min: number, val: number) => Math.min(max, Math.max(min, val));
 
 export const total = derived<[Writable<StringParams>, Readable<Param[]>, Asyncable<number>], number>(
     [query, selectedProviders, getTotal],
     ([$query, $selectedProviders, $getTotal], set) => {
         if (!$query.params.filter || !$selectedProviders) return set(0);
-        else if (page === $query.params.page) $getTotal.then((result) => {
-            set(result);
+        else if (page === $query.params.page || $selectedProviders) $getTotal.then((result) => {
+            console.log(result, maxMin(10000, 1, result));
+            set(maxMin(10000, 1, result));
         });
     }, 0);
 

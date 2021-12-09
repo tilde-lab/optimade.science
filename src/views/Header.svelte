@@ -11,11 +11,6 @@
                     My modules
                 </Button>
                 <div slot="content">
-                    <IconButton
-                        icon="cross"
-                        style="float: right; margin-top: -0.8rem;"
-                        on:click={() => (open = false)}
-                    />
                     <Result />
                 </div>
             </Modal>
@@ -25,7 +20,7 @@
 
 <script lang="ts" context="module">
     import { query } from 'svelte-pathfinder';
-    import { Button, IconButton, Navbar } from 'svelte-spectre';
+    import { Button, IconButton, Navbar, Steps } from 'svelte-spectre';
 
     import Modal from '@/layouts/Modal.svelte';
     import Result from '@/views/Result.svelte';
@@ -36,4 +31,5 @@
 
 <script lang="ts">
     let open: boolean = false;
+    const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade module' }];
 </script>

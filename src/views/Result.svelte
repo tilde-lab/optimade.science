@@ -46,10 +46,7 @@
     import ModuleSelect from '@/views/ModuleSelect/ModuleSelect.svelte';
     import * as JSON from '@/components/JSON';
 
-    const steps = [
-        { label: 'Optimade JSON' },
-        { label: 'Optimade module' },
-    ];
+    const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade module' }];
 </script>
 
 <script lang="ts">

@@ -50,11 +50,6 @@
                                         </Card>
                                     </a>
                                     <div slot="content">
-                                        <IconButton
-                                            icon="cross"
-                                            style="float: right; margin-top: -0.8rem;"
-                                            on:click={() => ($fragment = '')}
-                                        />
                                         <Result data={item} />
                                     </div>
                                 </Modal>
@@ -72,7 +67,7 @@
 <script lang="ts" context="module">
     import { fade } from 'svelte/transition';
     import { fragment } from 'svelte-pathfinder';
-    import { Card, Col, Grid, IconButton } from 'svelte-spectre';
+    import { Card, Col, Grid } from 'svelte-spectre';
 
     import Section from '@/layouts/Section.svelte';
     import Modal from '@/layouts/Modal.svelte';
