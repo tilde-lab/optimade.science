@@ -83,7 +83,7 @@
     "ts-jest": "^26.4.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.3",
-    "svelte-spectre": "github:tilde-lab/svelte-spectre"
+    "svelte-spectre": "^0.2.1"
   },
   "dependencies": {
     "copy-to-clipboard": "^3.3.1",
