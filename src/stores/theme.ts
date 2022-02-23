@@ -1,11 +1,12 @@
 import { writable } from 'svelte/store';
 
+const darkMedia = window.matchMedia('(prefers-color-scheme: dark)')
+
 export const darkTheme = writable(
-    JSON.parse(sessionStorage.getItem('optimade_darkTheme'))
+    JSON.parse(sessionStorage.getItem('optimade_darkTheme')) ?? darkMedia.matches
 );
 darkTheme.subscribe((val) => sessionStorage.setItem('optimade_darkTheme', val));
 
-const darkMedia = window.matchMedia('(prefers-color-scheme: dark)')
 
 function handleMediaChange(event: { matches: boolean; }) {
     darkTheme.set(event.matches)
