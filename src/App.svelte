@@ -1,8 +1,8 @@
 <svelte:window on:click={click} />
 
 <Spectre>
+    <Header />
     <Container>
-        <Header />
         {#if $providersSync.length && !$query.params.filter}
             <div class="my-2">
                 <Logo size="4x" />
@@ -19,9 +19,10 @@
             <Results />
         </main>
     </Container>
+    <Footer />
 </Spectre>
 
-<footer>
+<!-- <footer>
     This
     <a href="https://github.com/tilde-lab/optimade.science" target="_blank"
         >open-source</a
@@ -29,8 +30,7 @@
     app is possible thanks to the
     <a href="http://www.optimade.org" target="_blank">OPTIMADE</a>
     standard &mdash; Open Databases Integration for Materials Design.
-</footer>
-
+</footer> -->
 <script lang="ts" context="module">
     import { click, prefs, query } from 'svelte-pathfinder';
 
@@ -39,6 +39,7 @@
     import Section from '@/layouts/Section.svelte';
 
     import Header from '@/views/Header.svelte';
+    import Footer from '@/views/Footer.svelte';
     import Search from '@/views/Search.svelte';
     import Results from '@/views/Results.svelte';
     import Paginator from '@/views/Paginator.svelte';
@@ -52,18 +53,27 @@
 </script>
 
 <style lang="scss">
-    footer {
-        position: fixed;
-        bottom: 0;
-        z-index: 999;
-        text-align: center;
-        font-size: 0.75rem;
-        color: #3b4351;
-        background: #f1f3f5;
-        padding: 0.75rem;
-    }
-    footer a {
-        text-decoration: none;
-        color: #3b4351;
-    }
+    // footer {
+    //     position: fixed;
+    //     bottom: 0;
+    //     z-index: 999;
+    //     text-align: center;
+    //     font-size: 0.75rem;
+    //     background: #f1f1fc;
+    //     padding: 0.75rem;
+    //     width: 100%;
+    // }
+    // footer a {
+    //     text-decoration: none;
+    // }
+    // @media (prefers-color-scheme: dark) {
+    //     footer {
+    //         background: #343a51;
+    //     }
+    // }
+    // [color-scheme='dark'] {
+    //     footer {
+    //         background: #343a51;
+    //     }
+    // }
 </style>
