@@ -24,7 +24,7 @@
         <Col xs="12">
             <ModuleSelect bind:selected={module} />
             <br />
-            <Hero size="sm" bg="light">
+            <Hero size="sm" bg={$darkTheme ? 'dark' : 'gray'}>
                 <div class="module">
                     <iframe
                         name="visualisationFrame"
@@ -42,6 +42,7 @@
 
 <script lang="ts" context="module">
     import { Col, Divider, Grid, Hero, Input, Steps } from 'svelte-spectre';
+    import { darkTheme } from '@/stores/theme';
 
     import ModuleSelect from '@/views/ModuleSelect/ModuleSelect.svelte';
     import * as JSON from '@/components/JSON';

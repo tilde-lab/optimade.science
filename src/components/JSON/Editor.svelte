@@ -15,3 +15,7 @@
 <script lang="ts">
     export let code: string = '';
 </script>
+
+<style lang="scss" global>
+    @import 'code';
+</style>

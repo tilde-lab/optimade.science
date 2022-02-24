@@ -1,5 +1,5 @@
 {#if $total > 10}
-    <nav class="p-sticky" style="top: 0; z-index: 100; background: white;">
+    <nav class="p-sticky" style="top: 0; z-index: 100;">
         <Section>
             <Pagination
                 bind:limit={$query.params.limit}
@@ -28,3 +28,24 @@
         $query.params.limit = 10;
     }
 </script>
+
+<style lang="scss">
+    nav {
+        background: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+        nav {
+            background: #252b33;
+        }
+    }
+    :global([color-scheme='dark']) {
+        nav {
+            background: #252b33;
+        }
+    }
+    :global([color-scheme='light']) {
+        nav {
+            background: #fff;
+        }
+    }
+</style>
