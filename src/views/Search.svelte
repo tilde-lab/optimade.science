@@ -1,7 +1,7 @@
 <Form>
     <FormGroup>
         <Input
-            bind:value={$query.params.filter}
+            bind:value={search}
             placeholder="filter="
             name="filter"
             type="search"
@@ -13,14 +13,14 @@
             <svelte:fragment slot="iconRight">
                 {#await $searchAll}
                     <IconButton loading />
-                {:then _}
+                {:then}
                     {#if $query.params.filter}
                         <IconButton
                             size="sm"
                             icon="cross"
                             style="display: flex;"
                             type="button"
-                            on:click={() => ($query.params.filter = '')}
+                            on:click={clearSearch}
                         />
                     {:else}
                         <Icon icon="search" />
@@ -29,17 +29,16 @@
             </svelte:fragment>
         </Input>
     </FormGroup>
-</Form>
-
-{#if !$query.params.filter}
-    <div class="examples text-left">
-        <i>e.g.</i><Button
-            size="md"
-            variant="link"
-            on:click={() => ($query.params.filter = example)}>{example}</Button
+    {#if search}
+        <Badge>
+            filter={$query.params.filter}
+        </Badge>
+    {:else}
+        <Button size="md" variant="link" on:click={() => (search = example)}>
+            <i class="text-gray">e.g.</i>&nbsp {example}</Button
         >
-    </div>
-{/if}
+    {/if}
+</Form>
 
 <script lang="ts" context="module">
     import { onMount } from 'svelte';
@@ -56,11 +55,13 @@
 
     import { searchAll } from '@/stores/search';
 
+    import { guess } from '@/services/optimade';
+
     const examples = [
         'nelements=1',
         'elements HAS "Ti"',
         'elements HAS ALL "C","N","O","H"',
-        //'spacegroup="I4/mcm"',
+        // 'spacegroup="I4/mcm"',
         'elements HAS "Ti" AND nelements>3',
         'chemical_formula_reduced="Li7Sn2"',
         'chemical_formula_anonymous="ABC"',
@@ -68,20 +69,19 @@
 </script>
 
 <script lang="ts">
-    let example = examples[0];
+    let example = examples[0],
+        search = $query.params.filter;
+
     onMount(() => {
         const interval: number = setInterval(() => {
             example = examples[Math.floor(Math.random() * examples.length)];
         }, 2000);
         return () => clearInterval(interval);
     });
-</script>
 
-<style lang="scss">
-    .examples {
-        margin-top: -0.4rem;
-        i {
-            vertical-align: middle;
-        }
+    function clearSearch() {
+        $query.params.filter = search = '';
     }
-</style>
+
+    $: $query.params.filter = guess(search) || search;
+</script>
