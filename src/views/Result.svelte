@@ -3,7 +3,7 @@
 </div>
 <div class="pt-2">
     <Grid>
-        <Col xs="12">
+        <Col col="6" sm="12">
             {#if data}
                 <Input bind:value={filterText} placeholder="Field name..." />
                 <small class="form-text text-muted">
@@ -21,7 +21,7 @@
             text={windowWidth <= 600 ? '↓' : '→'}
             align={windowWidth <= 600 ? 'horizontal center' : 'vertical'}
         />
-        <Col xs="12">
+        <Col col="5" sm="12">
             <ModuleSelect bind:selected={module} />
             <br />
             <Hero size="sm" bg={$darkTheme ? 'dark' : 'gray'}>

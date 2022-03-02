@@ -2,7 +2,7 @@
     <IconButton
         size="sm"
         icon="copy"
-        style="position: absolute; top: 5px; left: 5px;"
+        style="position: absolute !important; top: 5px; left: 5px;"
         title="Copy JSON to clipboard"
         on:click={() => copy(json)}
     />
@@ -28,3 +28,9 @@
 
     $: json = JSON.stringify(value);
 </script>
+
+<style lang="scss">
+    :global(.jsonView) {
+        user-select: text;
+    }
+</style>
