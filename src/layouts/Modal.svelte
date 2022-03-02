@@ -33,8 +33,5 @@
     export let fullscreen: boolean = true;
     export let height: string = '100%';
 
-    const mid: number = Date.now();
-
     $: width = fullscreen ? '100%' : `${SIZE[size]}px`;
-    $: style = `min-width: ${width}; min-height: ${height};`;
 </script>
