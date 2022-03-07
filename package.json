@@ -61,7 +61,7 @@
     "rollup-plugin-import-resolver": "^1.0.4",
     "rollup-plugin-inline-svg": "^2.0.0",
     "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-node-builtins": "^2.0.0",
+    "rollup-plugin-node-builtins": "2.0.0",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
