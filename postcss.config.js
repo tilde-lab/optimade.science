@@ -8,7 +8,6 @@ module.exports = {
 			prefix: '_',
 			extensions: ['.scss', '.css']
 		}),
-		require('precss')(),
 		require('postcss-preset-env'),
 		require('postcss-flexbugs-fixes'),
 		!dev && require('autoprefixer'),
