@@ -32,12 +32,22 @@
                             />
                         </label>
                         <Card slot="content">
+                            <img
+                                class="provider-logo"
+                                src={item.attributes.img}
+                                alt={item.attributes.name}
+                            />
                             <span slot="title" class="h6"
                                 >{item.attributes.name}</span
                             >
-                            <span slot="subtitle" class="text-small text-gray">
+                            <a
+                                slot="subtitle"
+                                href={item.attributes.homepage || ''}
+                                target="_blank"
+                                class="text-small text-gray"
+                            >
                                 {item.attributes.homepage || ''}
-                            </span>
+                            </a>
                             <span class="text-small"
                                 >{item.attributes.description}</span
                             >
@@ -81,6 +91,11 @@
             item.id,
             words.slice(0, 3).join('').toUpperCase()
         );
+        const logos = ['COD', 'MP', 'MPDS', 'NMD', 'OPT', 'TCO'];
+        item.attributes.img = `/assets/providers/${
+            logos.includes(initials) ? initials : 'mcloud'
+        }.png`;
+
         return `${initials.toUpperCase()} v${item.attributes.api_version}`;
     }
 
@@ -127,5 +142,8 @@
     label {
         display: block;
         cursor: pointer;
+    }
+    .provider-logo {
+        max-width: 100%;
     }
 </style>
