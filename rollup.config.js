@@ -13,7 +13,7 @@ import svg from 'rollup-plugin-inline-svg';
 import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
 import css from 'rollup-plugin-css-only';
-import copy from 'rollup-plugin-copy'
+import copy from 'rollup-plugin-copy';
 
 const {
 	dev,
