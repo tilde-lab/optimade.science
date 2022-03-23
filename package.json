@@ -15,11 +15,6 @@
     "clean": "rm -rf ./dist",
     "surge": "surge --project ./dist --domain optimade.surge.sh"
   },
-  "git": {
-    "scripts": {
-      "pre-push": "npm run build && npm run surge"
-    }
-  },
   "engines": {
     "node": ">= 8"
   },
