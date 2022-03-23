@@ -86,7 +86,7 @@ export default {
 			targets: [
 				{ src: 'src/assets/providers', dest: 'dist/assets' }
 			],
-			// hook: 'writeBundle'
+			hook: 'writeBundle'
 		})
 	],
 	watch: { clearScreen: false, },

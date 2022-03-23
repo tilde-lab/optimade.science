@@ -22,14 +22,14 @@
             align={windowWidth <= 600 ? 'horizontal center' : 'vertical'}
         />
         <Col col="5" sm="12">
-            <ModuleSelect bind:selected={module} />
+            <ModuleSelect bind:selectedValue={module} />
             <br />
             <Hero size="sm" bg={$darkTheme ? 'dark' : 'gray'}>
                 <div class="module">
                     <iframe
                         name="visualisationFrame"
                         bind:this={iframe}
-                        src={module?.value}
+                        src={module}
                         title="Module window"
                     />
                 </div>
