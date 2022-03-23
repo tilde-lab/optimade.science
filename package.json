@@ -17,7 +17,7 @@
   },
   "git": {
     "scripts": {
-      "pre-push": "nopm run build && npm run surge"
+      "pre-push": "npm run build && npm run surge"
     }
   },
   "engines": {
