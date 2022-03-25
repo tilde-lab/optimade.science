@@ -79,7 +79,7 @@
     "svelte-pathfinder": "^3.2.3",
     "svelte-preprocess": "^4.0.0",
     "svelte-select": "^3.13.0",
-    "svelte-spectre": "^0.2.1",
+    "svelte-spectre": "^0.2.5",
     "ts-jest": "^26.4.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.3"
