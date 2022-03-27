@@ -1,18 +1,16 @@
 {#await $modules then items}
-    <Select
-        bind:selectedValue={selected}
-        {items}
+    <Autocomplete
         {groupBy}
-        {Item}
-        isCreatable={true}
+        bind:selected
+        creatable={true}
+        predefined={items}
         placeholder="Select module or enter module URL"
-        noOptionsMessage="No modules added"
+        empty="No modules added"
     />
 {/await}
 
 <script lang="ts" context="module">
-    import Select from '@/components/Select';
-    import Item from './components/Item.svelte';
+    import { Autocomplete } from 'svelte-spectre';
 
     import modules, { builtinModulesSync } from '@/stores/modules';
 
@@ -20,19 +18,22 @@
 </script>
 
 <script lang="ts">
-    export let selected = null;
+    let selected = [];
 
-    $: if (selected) {
+    export let selectedValue: string;
+
+    $: if (selected.length) {
+        selectedValue = selected[0].value;
         modules.update(($modules: string[]) => {
-            if (!$modules.includes(selected.value)) {
-                $modules.unshift(selected.value);
+            if (!$modules.includes(selectedValue)) {
+                $modules.unshift(selectedValue);
             }
             return $modules;
         });
     }
 
-    $: groupBy = (item) =>
-        $builtinModulesSync.includes(item.value)
+    const groupBy = (item) =>
+        $builtinModulesSync.includes(item?.value)
             ? moduleGroups.builtin
             : moduleGroups.local;
 </script>
