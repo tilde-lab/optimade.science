@@ -84,6 +84,7 @@
     }
 
     function naming(item: Types.Provider) {
+
         const words = item.attributes.name
             .replace('.', '/')
             .match(/\b(\w)|([A-Z])|(\/)/g);
@@ -91,7 +92,9 @@
             item.id,
             words.slice(0, 3).join('').toUpperCase()
         );
-        const logos = ['COD', 'MP', 'MPDS', 'NMD', 'OPT', 'TCO'];
+
+        const logos = ['COD', 'MP', 'MPDS', 'NMD', 'OPT', 'TCO', '2DM'];
+
         item.attributes.img = `/assets/providers/${
             logos.includes(initials) ? initials : 'mcloud'
         }.png`;
@@ -144,6 +147,8 @@
         cursor: pointer;
     }
     .provider-logo {
-        max-width: 100%;
+        max-width: 75%;
+        display: block;
+        margin: 0 auto 1em;
     }
 </style>
