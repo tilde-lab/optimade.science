@@ -33,7 +33,7 @@
     }
 
     const groupBy = (item: { value: string }): string =>
-        $builtinModulesSync.includes(item?.value)
+        $builtinModulesSync.includes(item.value)
             ? moduleGroups.builtin
             : moduleGroups.local;
 </script>

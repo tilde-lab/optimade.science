@@ -32,8 +32,8 @@
     $: removable = !item.isCreator && !$builtinModulesSync.includes(item.value);
 
     function removeItem() {
-        modules.update(($modules: string[]) =>
-            $modules.filter((m) => m !== item.value)
+        modules.update(async ($modules: Promise<string[]>) =>
+            (await $modules).filter((m) => m !== item.value)
         );
     }
 </script>
