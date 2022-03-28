@@ -18,7 +18,7 @@
 </footer>
 
 <script lang="ts">
-    import { Col, Grid, Container, Navbar, Switch } from 'svelte-spectre';
+    import { Col, Grid, Container, Switch } from 'svelte-spectre';
 
     import { nodeAttribute } from '@/helpers/dom';
 

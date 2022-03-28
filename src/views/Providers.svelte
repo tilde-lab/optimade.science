@@ -76,7 +76,7 @@
 
 <script lang="ts">
     let width: number = 0,
-        exclusiveId = null,
+        exclusiveId: null = null,
         augmentationMode = false;
 
     function statusing(item: Types.Provider) {
@@ -84,7 +84,6 @@
     }
 
     function naming(item: Types.Provider) {
-
         const words = item.attributes.name
             .replace('.', '/')
             .match(/\b(\w)|([A-Z])|(\/)/g);
@@ -102,7 +101,7 @@
         return `${initials.toUpperCase()} v${item.attributes.api_version}`;
     }
 
-    async function onProviderSelect(e: Event) {
+    async function onProviderSelect(e: CustomEvent) {
         $query.params.page = 1;
         $query.params.limit = 10;
 

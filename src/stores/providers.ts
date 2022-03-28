@@ -31,7 +31,7 @@ async function retrieveProviderSelections(providers: Types.Provider[]) {
     // move next operations to the next tick to be sure all changes already applied
     await tick();
 
-    const ids = localStorage[lsProviderKey] ? JSON.parse(localStorage.getItem(lsProviderKey)) : providers.map(p => p.id);
+    const ids = localStorage[lsProviderKey] ? JSON.parse(localStorage.getItem(lsProviderKey) as string) : providers.map(p => p.id);
 
     query.update($query => {
         const selectedIds = getSelectedProvidersIds($query.params.providers);
@@ -44,6 +44,6 @@ query.subscribe($query => {
     $query.params.providers && localStorage.setItem(lsProviderKey, JSON.stringify($query.params.providers));
 });
 
-function getSelectedProvidersIds(providers) {
+function getSelectedProvidersIds(providers: Param) {
     return providers ? (Array.isArray(providers) ? providers : [providers]) : [];
 }

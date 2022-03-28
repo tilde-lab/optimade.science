@@ -7,7 +7,7 @@ import { providersUrl, corsProxyUrl } from '@/config';
 
 const guesser = nlp();
 
-export function guess(search) {
+export function guess(search: any) {
     if (search) {
         const result = guesser.guess(search);
         return guesser.to_optimade(result);

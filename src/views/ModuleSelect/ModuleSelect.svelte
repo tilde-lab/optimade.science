@@ -18,21 +18,21 @@
 </script>
 
 <script lang="ts">
-    let selected = [];
+    let selected: any[] = [];
 
     export let selectedValue: string;
 
     $: if (selected.length) {
         selectedValue = selected[0].value;
-        modules.update(($modules: string[]) => {
-            if (!$modules.includes(selectedValue)) {
-                $modules.unshift(selectedValue);
+        modules.update(async ($modules: Promise<string[]>) => {
+            if (!(await $modules).includes(selectedValue)) {
+                (await $modules).unshift(selectedValue);
             }
             return $modules;
         });
     }
 
-    const groupBy = (item) =>
+    const groupBy = (item: { value: string }): string =>
         $builtinModulesSync.includes(item?.value)
             ? moduleGroups.builtin
             : moduleGroups.local;
