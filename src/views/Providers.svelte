@@ -8,9 +8,14 @@
             {width}
         />
     {:then items}
-        <Grid align="center" justify="center">
+        <Grid
+            align="center"
+            justify="center"
+            oneline={$media.sm}
+            gapless={$media.sm}
+        >
             {#each items as item}
-                <Col col="1">
+                <Col col={$media.sm ? '' : 1}>
                     <Popover side="bottom">
                         <label class="text-center">
                             <input
@@ -63,6 +68,7 @@
     import { query } from 'svelte-pathfinder';
     import { Avatar, Card, Col, Grid, Popover } from 'svelte-spectre';
     import { getPredefinedInitials } from '@/helpers/getPredefinedInitials';
+    import { media } from '@/stores/media';
 
     import * as Loader from '@/components/loaders';
 
@@ -138,6 +144,10 @@
 </script>
 
 <style>
+    :global(.spectre .columns.col-oneline) {
+        max-width: 95.5vw;
+        justify-content: start;
+    }
     input[type='checkbox'] {
         display: none;
     }
