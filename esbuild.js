@@ -46,8 +46,8 @@ build({
 
 		}),
 		eslintPlugin(),
-		html({ in: 'src/index.html', out: 'dist/index.html', dev: DEV }),
 		copy({ from: './src/assets', to: '../assets' }),
+		html({ in: 'src/index.html', out: 'dist/index.html', dev: DEV }),
 	]
 
 }).then(bundle => {

@@ -7,7 +7,7 @@
 	"scripts": {
 		"build": "rm -rf dist/build && node esbuild",
 		"dev": "node esbuild --dev",
-		"start": "npx derver --production --port=5000 public",
+		"start": "npx derver --production --port=5000 dist",
 		"format": "prettier --write 'src/**/*.{ts,md,svelte,json,html,css,scss}'",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"lint": "eslint src/**/*.{ts,js,svelte}"
