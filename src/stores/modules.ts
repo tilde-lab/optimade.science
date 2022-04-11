@@ -10,15 +10,18 @@ export const builtinModules: Asyncable<string[]> = asyncable(() => getJSON(suppo
 
 export const builtinModulesSync: Readable<string[]> = syncable(builtinModules, []);
 
-const modules: Asyncable<string[]> = asyncable(async ($builtinModules) => {
+const modules: Asyncable<string[]> = asyncable(
+    async ($builtinModules) => {
+        const builtinModules = (await $builtinModules) as string[];
 
-    const builtinModules = (await $builtinModules) as string[];
+        const localModules = JSON.parse(localStorage.getItem(lsModulesKey) || '[]');
 
-    const localModules = JSON.parse(localStorage.getItem(lsModulesKey) || '[]');
-
-    return localModules.concat(builtinModules.filter(m => !localModules.includes(m)));
-}, (modules = []) => {
-    localStorage.setItem(lsModulesKey, JSON.stringify(modules));
-}, [builtinModules]);
+        return localModules.concat(builtinModules.filter((m) => !localModules.includes(m)));
+    },
+    (modules = []) => {
+        localStorage.setItem(lsModulesKey, JSON.stringify(modules));
+    },
+    [builtinModules]
+);
 
 export default modules;

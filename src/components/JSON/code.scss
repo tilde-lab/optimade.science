@@ -1,4 +1,5 @@
 // code.scss
+@import 'vars.scss';
 
 .codejar-linenumbers {
     position: absolute !important;
@@ -14,34 +15,17 @@
     width: auto !important;
 }
 
-$light-color: #fff !default;
-$dark-color: #303742 !default;
-$code-color: #d73e48 !default;
-$primary-color: #5755d9 !default;
-$highlight-color: #ffe9b3 !default;
-
-$bg-color: lighten($dark-color, 75%) !default;
-$gray-color: lighten($dark-color, 55%) !default;
-$body-font-color: lighten($dark-color, 5%) !default;
-$dark-highlight: darken($highlight-color, 50%);
-$dark-text: darken($light-color, 5%);
-
-$mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Courier, monospace !default;
-
-$unit-h: 0.1rem !default;
-$border-radius: $unit-h !default;
-
 code {
     font-size: 85% !important;
-    &[class*="language-"] {
+    &[class*='language-'] {
         padding: 1rem;
         display: block;
         overflow-x: auto;
     }
 }
 
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*='language-'],
+pre[class*='language-'] {
     color: lighten($body-font-color, 10%) !important;
     background: $bg-color !important;
     font-family: $mono-font-family !important;
@@ -50,17 +34,17 @@ pre[class*="language-"] {
     text-shadow: none !important;
 }
 
-pre[class*="language-"]::selection,
-pre[class*="language-"] ::selection,
-code[class*="language-"]::selection,
-code[class*="language-"] ::selection {
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+code[class*='language-']::selection,
+code[class*='language-'] ::selection {
     text-shadow: none;
     background: $highlight-color !important;
 }
 
 @media print {
-    code[class*="language-"],
-    pre[class*="language-"] {
+    code[class*='language-'],
+    pre[class*='language-'] {
         text-shadow: none !important;
     }
 }
@@ -140,16 +124,16 @@ code[class*="language-"] ::selection {
 }
 
 @media (prefers-color-scheme: dark) {
-    code[class*="language-"],
-    pre[class*="language-"] {
+    code[class*='language-'],
+    pre[class*='language-'] {
         color: $dark-text;
         background: $dark-color !important;
     }
 
-    pre[class*="language-"]::selection,
-    pre[class*="language-"] ::selection,
-    code[class*="language-"]::selection,
-    code[class*="language-"] ::selection {
+    pre[class*='language-']::selection,
+    pre[class*='language-'] ::selection,
+    code[class*='language-']::selection,
+    code[class*='language-'] ::selection {
         background: rgba($dark-highlight, 20%);
     }
 
@@ -173,17 +157,17 @@ code[class*="language-"] ::selection {
         color: $gray-color;
     }
 }
-[color-scheme="dark"] {
-    code[class*="language-"],
-    pre[class*="language-"] {
+[color-scheme='dark'] {
+    code[class*='language-'],
+    pre[class*='language-'] {
         color: $dark-text;
         background: $dark-color;
     }
 
-    pre[class*="language-"]::selection,
-    pre[class*="language-"] ::selection,
-    code[class*="language-"]::selection,
-    code[class*="language-"] ::selection {
+    pre[class*='language-']::selection,
+    pre[class*='language-'] ::selection,
+    code[class*='language-']::selection,
+    code[class*='language-'] ::selection {
         background: rgba($dark-highlight, 20%);
     }
 
