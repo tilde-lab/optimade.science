@@ -1,0 +1,86 @@
+@import '../vars.scss';
+
+.json-container {
+    ::selection {
+        text-shadow: none;
+        background: $highlight-color;
+    }
+    .line {
+        margin: 4px 0;
+        display: flex;
+        justify-content: flex-start;
+        &.click {
+            cursor: pointer;
+            &:hover {
+                background-color: $dark-secondary;
+            }
+        }
+    }
+
+    .caret-icon {
+        width: 18px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .empty-icon {
+        width: 18px;
+    }
+
+    .json-type {
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+
+    .json-key {
+        color: $primary-color;
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+
+    .json-index {
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+
+    .json-value {
+        margin-left: 8px;
+    }
+
+    .json-boolean,
+    .json-object,
+    .json-number {
+        color: $code-color;
+    }
+
+    .json-string {
+        color: inherit;
+    }
+
+    .json-size {
+        margin-right: 4px;
+        margin-left: 4px;
+        color: $gray-color-dark;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .fas {
+        display: inline-block;
+        border-style: solid;
+        width: 0;
+        height: 0;
+    }
+
+    .caret-down {
+        border-width: 6px 5px 0 5px;
+        border-color: $gray-color-dark transparent;
+    }
+
+    .caret-right {
+        border-width: 5px 0 5px 6px;
+        border-color: transparent transparent transparent $gray-color-dark;
+    }
+}

@@ -1,39 +1,30 @@
-{#await $modules then items}
-    <Autocomplete
-        {groupBy}
-        bind:selected
-        creatable={true}
-        predefined={items}
-        placeholder="Select module or enter module URL"
-        empty="No modules added"
-    />
+{#await $modules then predefined}
+	<Autocomplete {groupBy} {predefined} bind:selected creatable placeholder="Select module or enter module URL" empty="No modules added" />
 {/await}
 
 <script lang="ts" context="module">
-    import { Autocomplete } from 'svelte-spectre';
+	import { Autocomplete } from 'svelte-spectre';
 
-    import modules, { builtinModulesSync } from '@/stores/modules';
+	import modules, { builtinModulesSync } from '@/stores/modules';
 
-    import { moduleGroups } from '@/config';
+	import { moduleGroups } from '@/config';
 </script>
 
 <script lang="ts">
-    let selected: any[] = [];
+	let selected: any[] = [];
 
-    export let selectedValue: string;
+	export let selectedValue: string;
 
-    $: if (selected.length) {
-        selectedValue = selected[0].value;
-        modules.update(async ($modules: Promise<string[]>) => {
-            if (!(await $modules).includes(selectedValue)) {
-                (await $modules).unshift(selectedValue);
-            }
-            return $modules;
-        });
-    }
+	$: selectedValue = selected[0]?.value;
 
-    const groupBy = (item: { value: string }): string =>
-        $builtinModulesSync.includes(item.value)
-            ? moduleGroups.builtin
-            : moduleGroups.local;
+	$: if (selectedValue) {
+		modules.update(async ($modules) => {
+			if (!(await $modules).includes(selectedValue)) {
+				(await $modules).unshift(selectedValue);
+			}
+			return $modules;
+		});
+	}
+
+	const groupBy = (item: { value: string }): string => ($builtinModulesSync.includes(item.value) ? moduleGroups.builtin : moduleGroups.local);
 </script>

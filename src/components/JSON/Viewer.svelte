@@ -1,74 +1,77 @@
 <Code lang="JSON">
-    <IconButton
-        size="sm"
-        icon="copy"
-        style="position: absolute !important; top: 5px; left: 5px;"
-        title="Copy JSON to clipboard"
-        on:click={() => copy(json)}
-    />
-    <TreeView {...treeViewOptions} {...$$restProps} {value} />
+	<IconButton size="sm" icon="copy" style="position: absolute !important; top: 5px; left: 5px;" title="Copy JSON to clipboard" on:click={() => copy(json)} />
+	<section use:jsonViewer={filter} />
 </Code>
 
 <script lang="ts" context="module">
-    import copy from 'copy-to-clipboard';
-    import TreeView from 'svelte-json-tree-view';
-    import { Code, IconButton } from 'svelte-spectre';
-
-    const treeViewOptions = {
-        readonly: true,
-        withRootName: false,
-        readonlyWhenFiltering: true,
-        alwaysShowRoot: true,
-        showCountOfObjectOrArray: true,
-    };
+	import jsontree from './jsontree/jsontree';
+	import { Code, IconButton } from 'svelte-spectre';
 </script>
 
 <script lang="ts">
-    export let value: {} | [] | null = null;
+	export let value: string | object | null = null,
+		filter = '';
 
-    $: json = JSON.stringify(value);
+	$: json = JSON.stringify(value);
+
+	const copy = (value: string) => navigator.clipboard.writeText(value);
+
+	function jsonViewer(node: HTMLElement, filter = '') {
+		const tree = jsontree.renderJSON(json, node);
+
+		function update(filter: string) {
+			if (filter) jsontree.filter(tree, filter);
+			else jsontree.collapse(tree);
+		}
+		function destroy() {
+			jsontree.destroy(tree);
+		}
+		return { update, destroy };
+	}
 </script>
 
-<style lang="scss">
-    :global(.jsonView) {
-        user-select: text;
-        color: #3b4351;
-        :global(.name) {
-            color: #5755d9;
-        }
-        :global(.value.null),
-        :global(.value.undefined) {
-            color: #bcc3ce;
-        }
-        :global(.value.boolean),
-        :global(.value.string),
-        :global(.value.number) {
-            color: #d73e48;
-        }
-        :global(.name:hover),
-        :global(.value:hover) {
-            background-color: #ffe9b3;
-        }
-    }
+<style lang="scss" global>
+	@import 'jsontree/jsontree.scss';
 
-    @media (prefers-color-scheme: dark) {
-        :global(.jsonView) {
-            color: #bcc3ce;
-            :global(.value.null),
-            :global(.value.undefined) {
-                color: #3b4351;
-            }
-        }
-    }
-    :global([color-scheme='dark']) {
-        :global(.jsonView) {
-            color: #bcc3ce;
-            :global(.value.null),
-            :global(.value.undefined) {
-                color: #3b4351;
-            }
-        }
-    }
-    :global([color-scheme='light']) {
-    }
+	:global(.jsonView) {
+		user-select: text;
+		color: #3b4351;
+		:global(.name) {
+			color: #5755d9;
+		}
+		:global(.value.null),
+		:global(.value.undefined) {
+			color: #bcc3ce;
+		}
+		:global(.value.boolean),
+		:global(.value.string),
+		:global(.value.number) {
+			color: #d73e48;
+		}
+		:global(.name:hover),
+		:global(.value:hover) {
+			background-color: #ffe9b3;
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(.jsonView) {
+			color: #bcc3ce;
+			:global(.value.null),
+			:global(.value.undefined) {
+				color: #3b4351;
+			}
+		}
+	}
+	:global([color-scheme='dark']) {
+		:global(.jsonView) {
+			color: #bcc3ce;
+			:global(.value.null),
+			:global(.value.undefined) {
+				color: #3b4351;
+			}
+		}
+	}
+	:global([color-scheme='light']) {
+	}
 </style>

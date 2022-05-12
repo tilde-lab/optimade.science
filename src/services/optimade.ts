@@ -14,11 +14,10 @@ export function guess(search: any) {
     }
 }
 
-const optimade = new Optimade({ providersUrl, corsProxyUrl, });
+const optimade = new Optimade({ providersUrl, corsProxyUrl });
 
 optimade.providers = prefetched.providers;
 optimade.apis = prefetched.apis;
-
 
 export default optimade;
 

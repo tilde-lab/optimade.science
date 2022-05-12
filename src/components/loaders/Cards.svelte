@@ -1,30 +1,28 @@
 <ContentLoader {width} {height} {...$$restProps} {...colors}>
-    {#each { length: rows } as _, i}
-        {#each { length: cols } as _, j}
-            <rect x={j * (w + x)} y={i * (h + y)} width={w} height={h} />
-        {/each}
-    {/each}
+	{#each { length: rows } as _, i}
+		{#each { length: cols } as _, j}
+			<rect x={j * (w + x)} y={i * (h + y)} width={w} height={h} />
+		{/each}
+	{/each}
 </ContentLoader>
 
 <script lang="ts" context="module">
-    import ContentLoader from 'svelte-content-loader';
-    import { darkTheme } from '@/stores/theme';
+	import ContentLoader from 'svelte-content-loader';
+	import { darkTheme } from '@/stores/theme';
 </script>
 
 <script lang="ts">
-    export let width: number = 100;
-    export let height: number = 100;
-    export let rows: number = 1;
-    export let cols: number = 12;
-    export let w: number = 220;
-    export let h: number = 220;
+	export let width: number = 100;
+	export let height: number = 100;
+	export let rows: number = 1;
+	export let cols: number = 12;
+	export let w: number = 220;
+	export let h: number = 220;
 
-    let x: number;
-    let y: number;
+	let x: number;
+	let y: number;
 
-    $: x = (width - cols * w) / cols + cols / 2;
-    $: y = (height - rows * h) / rows + rows / 2;
-    $: colors = $darkTheme
-        ? { primaryColor: '#303742', secondaryColor: '#252b33' }
-        : {};
+	$: x = (width - cols * w) / cols + cols / 2;
+	$: y = (height - rows * h) / rows + rows / 2;
+	$: colors = $darkTheme ? { primaryColor: '#303742', secondaryColor: '#252b33' } : {};
 </script>
