@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import { build } from 'esbuild';
 import { derver } from 'derver';
 import svelte from 'esbuild-svelte';
