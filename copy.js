@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 import { cpSync } from 'fs';
 import { join, dirname } from 'path';
 
