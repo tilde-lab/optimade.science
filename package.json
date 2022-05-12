@@ -1,9 +1,14 @@
 {
-	"name": "optimade-esbuild",
-	"version": "1.0.0",
-	"description": "Starter for new Svelte application with ESBuild bundler ",
+	"name": "optimade.science",
+	"version": "2.0.0",
+	"private": true,
+	"license": "MIT",
 	"main": "index.js",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/tilde-lab/optimade.science.git"
+	},
 	"scripts": {
 		"build": "rm -rf dist/build && node esbuild",
 		"dev": "node esbuild --dev",
@@ -68,7 +73,6 @@
 			"node_modules"
 		]
 	},
-	"license": "MIT",
 	"devDependencies": {
 		"@tsconfig/svelte": "^3.0.0",
 		"@types/eslint": "^8.4.2",
