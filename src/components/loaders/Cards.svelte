@@ -8,7 +8,7 @@
 
 <script lang="ts" context="module">
 	import ContentLoader from 'svelte-content-loader';
-	import { media } from '@/stores/media';
+	import { darkTheme } from '@/stores/theme';
 </script>
 
 <script lang="ts">
@@ -24,5 +24,5 @@
 
 	$: x = (width - cols * w) / cols + cols / 2;
 	$: y = (height - rows * h) / rows + rows / 2;
-	$: colors = $media.dark ? { primaryColor: '#303742', secondaryColor: '#252b33' } : {};
+	$: colors = $darkTheme ? { primaryColor: '#303742', secondaryColor: '#252b33' } : {};
 </script>

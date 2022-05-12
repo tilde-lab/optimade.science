@@ -7,7 +7,7 @@
 				<a href="http://www.optimade.org" target="_blank">OPTIMADE</a> standard &mdash; Open Databases Integration for Materials Design.
 			</Col>
 			<Col col="auto">
-				<Switch bind:value={$media.dark}>Dark theme</Switch>
+				<Switch bind:value={$darkTheme}>Dark theme</Switch>
 			</Col>
 		</Grid>
 	</Container>
@@ -18,9 +18,9 @@
 
 	import { nodeAttribute } from '@/helpers/dom';
 
-	import { media } from '@/stores/media';
+	import { darkTheme } from '@/stores/theme';
 
-	$: nodeAttribute(document.documentElement, 'color-scheme', $media.dark ? 'dark' : 'light');
+	$: nodeAttribute(document.documentElement, 'color-scheme', $darkTheme ? 'dark' : 'light');
 </script>
 
 <style lang="scss">
