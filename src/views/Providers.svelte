@@ -55,7 +55,7 @@
 
 <script lang="ts">
 	let width = 0,
-		exclusiveId: null = null,
+		exclusiveId: null,
 		augmentationMode = false;
 
 	function statusing(item: Types.Provider) {

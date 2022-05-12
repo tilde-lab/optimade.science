@@ -38,7 +38,7 @@
 </script>
 
 <script lang="ts">
-	export let data: {} | null | undefined = null,
+	export let data: Record<string, never> | null | undefined = null,
 		windowWidth = 0;
 
 	let code: string;

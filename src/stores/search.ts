@@ -32,13 +32,13 @@ const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresBy
     []
 );
 
-export const searchAll: Asyncable<StructuresByProviders> = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(
+export const searchAll = asyncable<[Readable<StructuresByProviders>], StructuresByProviders>(
     ($search) => Promise.all($search),
     null,
     [search]
 );
 
-export const getTotal: Asyncable<number> = asyncable<[Readable<StructuresByProviders>], number>(
+export const getTotal = asyncable<[Readable<StructuresByProviders>], number>(
     async ($search) => {
         const fetchedProviders: [Types.StructuresResponse[], Types.Provider][] = await Promise.all($search);
         const filteredProviders = fetchedProviders.filter(([apis, _provider]: [Types.StructuresResponse[], Types.Provider]) =>
