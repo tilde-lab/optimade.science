@@ -22,15 +22,6 @@
 	<Footer />
 </Spectre>
 
-<!-- <footer>
-    This
-    <a href="https://github.com/tilde-lab/optimade.science" target="_blank"
-        >open-source</a
-    >
-    app is possible thanks to the
-    <a href="http://www.optimade.org" target="_blank">OPTIMADE</a>
-    standard &mdash; Open Databases Integration for Materials Design.
-</footer> -->
 <script lang="ts" context="module">
 	import { click, prefs, query } from 'svelte-pathfinder';
 

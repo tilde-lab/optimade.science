@@ -1,4 +1,6 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, mkdir, writeFile } from 'fs/promises';
+import { dirname } from 'path';
+import { constants } from 'fs';
 
 export default function html(options = {}) {
 	return {
@@ -18,6 +20,13 @@ export default function html(options = {}) {
 					html = html
 						.replace('</head>', () => `<style>\n${css.text}</style>\n</head>`)
 						.replace('</body>', () => `<script>\n${js.text}</script>\n</body>`);
+				}
+
+				const dirpath = dirname(options.out);
+				try {
+					await access(dirpath, constants.R_OK | constants.W_OK);
+				} catch {
+					mkdir(dirpath);
 				}
 
 				await writeFile(options.out, html, { encoding: 'utf8' });

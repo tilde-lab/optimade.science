@@ -11,7 +11,7 @@
 		"url": "git://github.com/tilde-lab/optimade.science.git"
 	},
 	"scripts": {
-		"build": "rm -rf dist/build && node esbuild",
+		"build": "rm -rf dist && node esbuild",
 		"dev": "node esbuild --dev",
 		"start": "npx derver --production --port=5000 dist",
 		"format": "prettier --write 'src/**/*.{ts,md,svelte,json,html,css,scss}'",
