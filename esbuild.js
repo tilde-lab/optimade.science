@@ -16,7 +16,7 @@ build({
 	minify: !DEV,
 	incremental: DEV,
 	sourcemap: DEV && 'inline',
-	loader: { '.svg': 'text' },
+	loader: { '.png': 'dataurl' },
 	legalComments: 'none',
 	logLevel: 'debug',
 	mainFields: [
@@ -46,7 +46,7 @@ build({
 
 		}),
 		eslintPlugin(),
-		copy({ from: './src/assets', to: '../assets' }),
+		copy({ from: './src/assets/logo.svg', to: '../logo.svg' }),
 		html({ in: 'src/index.html', out: 'dist/index.html', dev: DEV }),
 	]
 

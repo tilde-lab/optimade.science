@@ -47,16 +47,38 @@
 	import { media } from '@/stores/media';
 
 	import * as Loader from '@/components/loaders';
-
 	import providers, { selectedProviders, providersSync } from '@/stores/providers';
 
+	// @ts-ignore
+	import mcloud from '@/assets/providers/mcloud.png';
+	// @ts-ignore
+	import COD from '@/assets/providers/COD.png';
+	// @ts-ignore
+	import MP from '@/assets/providers/MP.png';
+	// @ts-ignore
+	import MPDS from '@/assets/providers/MPDS.png';
+	// @ts-ignore
+	import NMD from '@/assets/providers/NMD.png';
+	// @ts-ignore
+	import OPT from '@/assets/providers/OPT.png';
+	// @ts-ignore
+	import TCO from '@/assets/providers/TCO.png';
+	// @ts-ignore
+	import DM2 from '@/assets/providers/DM2.png';
+
 	import type { Types } from 'optimade';
+
+	interface Logos {
+		[key: string]: string;
+	}
 </script>
 
 <script lang="ts">
 	let width = 0,
 		exclusiveId: null,
 		augmentationMode = false;
+
+	const logos: Logos = { COD: COD, MP: MP, MPDS: MPDS, NMD: NMD, OPT: OPT, TCO: TCO, '2DM': DM2 };
 
 	function statusing(item: Types.Provider) {
 		return $selectedProviders.includes(item.id) ? 'online' : 'offline';
@@ -66,9 +88,7 @@
 		const words = item.attributes.name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
 		const initials = getPredefinedInitials(item.id, words.slice(0, 3).join('').toUpperCase());
 
-		const logos = ['COD', 'MP', 'MPDS', 'NMD', 'OPT', 'TCO', '2DM'];
-
-		item.attributes.img = `/assets/providers/${logos.includes(initials) ? initials : 'mcloud'}.png`;
+		item.attributes.img = logos[initials] ? logos[initials] : mcloud;
 
 		return `${initials.toUpperCase()} v${item.attributes.api_version}`;
 	}
