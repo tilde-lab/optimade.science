@@ -8,7 +8,7 @@
 			</div>
 			<nav slot="right">
 				<Modal bind:open>
-					<Button on:click={() => (open = true)} variant="primary">My modules</Button>
+					<Button on:click={() => (open = true)} variant="primary">Optimade apps</Button>
 					<div slot="content">
 						<Result />
 					</div>
@@ -31,5 +31,5 @@
 
 <script lang="ts">
 	let open = false;
-	const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade module' }];
+	const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade app' }];
 </script>

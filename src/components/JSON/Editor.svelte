@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-	export let code: string = '';
+	export let code: string = 'Paste Optimade JSON here';
 </script>
 
 <style lang="scss" global>

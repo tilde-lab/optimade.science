@@ -1,5 +1,5 @@
 {#await $modules then predefined}
-	<Autocomplete {groupBy} {predefined} bind:selected creatable placeholder="Select module or enter module URL" empty="No modules added" />
+	<Autocomplete {groupBy} {predefined} bind:selected creatable placeholder="Select app or enter app URL" empty="No apps added" />
 {/await}
 
 <script lang="ts" context="module">

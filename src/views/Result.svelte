@@ -18,7 +18,7 @@
 			<br />
 			<Hero size="sm" bg={$darkTheme ? 'dark' : 'gray'}>
 				<div class="module">
-					<iframe name="visualisationFrame" bind:this={iframe} src={module} title="Module window" />
+					<iframe name="visualisationFrame" bind:this={iframe} src={module} title="App window" />
 				</div>
 			</Hero>
 		</Col>
@@ -34,7 +34,7 @@
 
 	import { media } from '@/stores/media';
 
-	const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade module' }];
+	const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade app' }];
 </script>
 
 <script lang="ts">
