@@ -6,7 +6,7 @@
 			{#each items as item}
 				<Col col={$media.sm ? '' : 1}>
 					<Popover side="bottom">
-						<label class="text-center">
+						<label class="text-center mb-2">
 							<input
 								name="providers"
 								id={item.id}
