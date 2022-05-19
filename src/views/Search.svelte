@@ -15,7 +15,7 @@
 		</Input>
 	</FormGroup>
 	{#if search}
-		<Badge>
+		<Badge color="secondary">
 			filter={$query.params.filter}
 		</Badge>
 	{:else}
