@@ -3,7 +3,7 @@
 </div>
 <div class="pt-2">
 	<Grid>
-		<Col col="6" md="12">
+		<Col md="12">
 			{#if data}
 				<Input bind:value={filter} placeholder="Field name..." />
 				<small class="form-text text-muted"> Filter data object by field name. </small>
@@ -12,8 +12,8 @@
 				<JSON.Editor style="width: 100%; height: 400px; margin-top: 0;" on:change={(e) => (code = e.detail)} />
 			{/if}
 		</Col>
-		<Divider text={windowWidth <= 600 ? '↓' : '→'} align={windowWidth <= 600 ? 'horizontal center' : 'vertical'} />
-		<Col col="5" md="12">
+		<Divider text={$media.md ? '↓' : '→'} align={$media.md ? 'horizontal center' : 'vertical'} />
+		<Col md="12">
 			<ModuleSelect bind:selectedValue={module} />
 			<br />
 			<Hero size="sm" bg={$darkTheme ? 'dark' : 'gray'}>
@@ -25,8 +25,6 @@
 	</Grid>
 </div>
 
-<svelte:window bind:innerWidth={windowWidth} />
-
 <script lang="ts" context="module">
 	import { Col, Divider, Grid, Hero, Input, Steps } from 'svelte-spectre';
 	import { darkTheme } from '@/stores/theme';
@@ -34,12 +32,13 @@
 	import ModuleSelect from '@/views/ModuleSelect/ModuleSelect.svelte';
 	import * as JSON from '@/components/JSON';
 
+	import { media } from '@/stores/media';
+
 	const steps = [{ label: 'Optimade JSON' }, { label: 'Optimade app' }];
 </script>
 
 <script lang="ts">
-	export let data: Record<string, never> | null | undefined = null,
-		windowWidth = 0;
+	export let data: Record<string, never> | null | undefined = null;
 
 	let code: string;
 	let module: any;
@@ -76,5 +75,8 @@
 		position: absolute;
 		top: 0;
 		width: 100%;
+	}
+	:global(.modal-fs .modal-container .modal-body .columns hr) {
+		font-weight: bold;
 	}
 </style>

@@ -32,6 +32,9 @@ pre[class*='language-'] {
     border-radius: $border-radius !important;
     line-height: 1.5 !important;
     text-shadow: none !important;
+    overflow-wrap: anywhere !important;
+    overflow-y: inherit !important;
+    white-space: pre-wrap !important; 
 }
 
 pre[class*='language-']::selection,
@@ -169,6 +172,41 @@ code[class*='language-'] ::selection {
     code[class*='language-']::selection,
     code[class*='language-'] ::selection {
         background: rgba($dark-highlight, 20%);
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+        color: $gray-color;
+    }
+
+    .token.punctuation {
+        color: $gray-color;
+    }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+        color: $gray-color;
+    }
+}
+
+[color-scheme='light'] {
+    code[class*='language-'],
+    pre[class*='language-'] {
+        color: lighten($body-font-color, 10%) !important;
+        background: $bg-color !important;
+    }
+
+    pre[class*='language-']::selection,
+    pre[class*='language-'] ::selection,
+    code[class*='language-']::selection,
+    code[class*='language-'] ::selection {
+        background: $highlight-color !important;
     }
 
     .token.comment,

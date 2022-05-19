@@ -1,5 +1,28 @@
 @import '../vars.scss';
 
+[color-scheme='light'] {
+    .json-container {
+        .line { 
+            &.click { 
+                &:hover {
+                    background-color: $secondary-color;
+                }
+            }
+        }
+    }
+}
+@media (prefers-color-scheme: dark) {
+    .json-container {
+        .line { 
+            &.click { 
+                &:hover {
+                    background-color: $secondary-color;
+                }
+            }
+        }
+    }
+}
+
 .json-container {
     ::selection {
         text-shadow: none;
