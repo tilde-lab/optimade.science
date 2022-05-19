@@ -76,4 +76,7 @@
 		top: 0;
 		width: 100%;
 	}
+	:global(.modal-fs .modal-container .modal-body .columns hr) {
+		font-weight: bold;
+	}
 </style>
