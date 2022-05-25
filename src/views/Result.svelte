@@ -17,7 +17,7 @@
 			<ModuleSelect bind:selectedValue={module} />
 			<br />
 			<div class="module">
-				<iframe name="visualisationFrame" bind:this={iframe} src={module} title="App window" />
+				<iframe name="visualisationFrame" bind:this={iframe} src={module} title="App window" frameborder=0 scrolling="no" />
 			</div>
 		</Col>
 	</Grid>
@@ -73,7 +73,7 @@
 		top: 0;
 		width: 100%;
 	}
-	:global(.modal-fs .modal-container .modal-body .columns hr) {
-		font-weight: bold;
+	:global(.modal-fs .modal-container .modal-body .columns hr)::after {
+		font-size: 1.5em;
 	}
 </style>
