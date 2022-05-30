@@ -62,9 +62,13 @@
 	// @ts-ignore
 	import OPT from '@/assets/providers/OPT.png';
 	// @ts-ignore
-	import TCO from '@/assets/providers/TCO.png';
+	import TCOD from '@/assets/providers/TCOD.png';
 	// @ts-ignore
 	import DM2 from '@/assets/providers/DM2.png';
+	// @ts-ignore
+	import aflow from '@/assets/providers/aflow.png';
+	// @ts-ignore
+	import jarvis from '@/assets/providers/jarvis.png';
 
 	import type { Types } from 'optimade';
 
@@ -78,7 +82,7 @@
 		exclusiveId: null,
 		augmentationMode = false;
 
-	const logos: Logos = { COD: COD, MP: MP, MPDS: MPDS, NMD: NMD, OPT: OPT, TCO: TCO, '2DM': DM2 };
+	const logos: Logos = { AFL: aflow, COD: COD, JAR: jarvis, MP: MP, MPDS: MPDS, NMD: NMD, OPT: OPT, TCO: TCOD, '2DM': DM2 };
 
 	function statusing(item: Types.Provider) {
 		return $selectedProviders.includes(item.id) ? 'online' : 'offline';

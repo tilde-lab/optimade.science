@@ -4,7 +4,7 @@
 			<Col>
 				This <a href="https://github.com/tilde-lab/optimade.science" target="_blank">open-source</a>
 				app is possible thanks to the
-				<a href="http://www.optimade.org" target="_blank">OPTIMADE</a> standard &mdash; Open Databases Integration for Materials Design.
+				<a href="http://www.optimade.org" target="_blank">OPTIMADE</a> standard.<br />No cookies or trackers are used.
 			</Col>
 			<Col col="auto">
 				<Switch bind:value={$darkTheme}>Dark theme</Switch>

@@ -1,5 +1,5 @@
 {#await $modules then options}
-	<Select {options} bind:value={selectedValue} placeholder="Select app or enter app URL" style="margin: 0 0 1em" />
+	<Select {options} bind:value={selectedValue} placeholder="Select app" style="margin: 0 0 1em" />
 {/await}
 
 <script lang="ts" context="module">
