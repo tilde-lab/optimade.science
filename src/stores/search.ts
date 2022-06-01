@@ -15,7 +15,7 @@ import type { Asyncable } from 'svelte-asyncable';
 type StructuresByProviders = Array<Array<[Types.StructuresResponse[], Types.Provider]>>;
 
 const getStructuresAll = debounce((providers: string[], filter: string, page = 0, limit: number, batch: boolean) => {
-    return optimade.getStructuresAll(providers, filter, page, limit, batch) || [];
+    return optimade.getStructuresAll({ providers, filter, page, limit, batch }) || [];
 }, searchDelay);
 
 const search = derived<[Writable<StringParams>, Readable<Param[]>], StructuresByProviders>(
