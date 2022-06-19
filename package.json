@@ -78,11 +78,11 @@
 		"@tsconfig/svelte": "^3.0.0",
 		"@types/debounce-promise": "^3.1.4",
 		"@types/eslint": "^8.4.2",
-		"@types/node": "^17.0.35",
-		"@typescript-eslint/eslint-plugin": "^5.26.0",
-		"@typescript-eslint/parser": "^5.26.0",
+		"@types/node": "^17.0.38",
+		"@typescript-eslint/eslint-plugin": "^5.27.0",
+		"@typescript-eslint/parser": "^5.27.0",
 		"derver": "^0.5.3",
-		"esbuild": "^0.14.39",
+		"esbuild": "^0.14.42",
 		"esbuild-plugin-eslinter": "^0.1.2",
 		"esbuild-svelte": "^0.7.0",
 		"eslint": "^8.16.0",
@@ -106,7 +106,7 @@
 	},
 	"dependencies": {
 		"debounce-promise": "^3.1.2",
-		"optimade": "^2.0.5",
+		"optimade": "^2.1.0",
 		"optimade-mpds-nlp": "^0.1.3"
 	}
 }
