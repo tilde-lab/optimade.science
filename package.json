@@ -106,7 +106,7 @@
 	},
 	"dependencies": {
 		"debounce-promise": "^3.1.2",
-		"optimade": "^2.0.5",
+		"optimade": "^2.1.0",
 		"optimade-mpds-nlp": "^0.1.3"
 	}
 }
