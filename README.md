@@ -1,7 +1,8 @@
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science?ref=badge_shield)
-
 OPTIMADE dot Science
 ==========
+
+[![DOI](https://zenodo.org/badge/190895428.svg)](https://doi.org/10.5281/zenodo.7693406)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science?ref=badge_shield)
 
 This is a minimalistic in-browser OPTIMADE client, written in [Svelte](https://svelte.dev) and TypeScript.
 It fetches the OPTIMADE providers list, looks for the structure endpoints, and allows sequential querying against all of them, aggregating the results together.
