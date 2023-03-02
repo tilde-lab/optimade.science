@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: optimade.science
+type: software
+license: MIT
+authors:
+  - given-names: Pavel
+    family-names: Malyshev
+  - given-names: Alexander
+    family-names: Volkov
+  - given-names: Evgeny
+    family-names: Blokhin
+    orcid: 'https://orcid.org/0000-0002-5333-3947'
+doi: 10.5281/zenodo.7693406
+url: 'https://github.com/tilde-lab/optimade.science'
+keywords:
+  - chemoinformatics
+  - materials science
+  - materials informatics
+  - materials platform
+  - materials design
+  - materials genome
+  - optimade
