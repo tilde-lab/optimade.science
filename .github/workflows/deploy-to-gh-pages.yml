@@ -16,6 +16,10 @@ jobs:
         run: |
           npm install
 
+      - name: Prefetch providers
+        run: |
+          npm prefetch
+
       - name: Build
         run: |
           npm run build

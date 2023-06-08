@@ -11,6 +11,7 @@
 		"url": "git://github.com/tilde-lab/optimade.science.git"
 	},
 	"scripts": {
+		"prefetch": "node node_modules/optimade/prefetch.js",
 		"build": "rm -rf dist && node esbuild",
 		"dev": "node esbuild --dev",
 		"start": "npx derver --production --port=5000 dist",
