@@ -18,7 +18,7 @@ jobs:
 
       - name: Prefetch providers
         run: |
-          npm prefetch
+          npm run prefetch
 
       - name: Build
         run: |
