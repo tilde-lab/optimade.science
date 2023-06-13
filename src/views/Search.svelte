@@ -8,7 +8,7 @@
 					{#if $query.params.filter}
 						<IconButton size="sm" icon="cross" style="display: flex;" type="button" on:click={clearSearch} />
 					{:else}
-						<Icon icon="search" />
+						<Icon icon="search" color="primary" />
 					{/if}
 				{/await}
 			</svelte:fragment>

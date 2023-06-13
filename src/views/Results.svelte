@@ -27,6 +27,7 @@
 											<span slot="title" class:text-xtiny={getTitle(item).length >= 150}>
 												{@html getTitle(item)}
 											</span>
+											<Icon icon="download" size="1x" color="secondary" />
 										</Card>
 									</a>
 									<div slot="content">
@@ -47,7 +48,7 @@
 <script lang="ts" context="module">
 	import { fade } from 'svelte/transition';
 	import { fragment } from 'svelte-pathfinder';
-	import { Card, Col, Grid } from 'svelte-spectre';
+	import { Card, Col, Grid, Icon } from 'svelte-spectre';
 
 	import Section from '@/layouts/Section.svelte';
 	import Modal from '@/layouts/Modal.svelte';

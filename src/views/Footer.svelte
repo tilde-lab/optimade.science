@@ -16,7 +16,7 @@
 <script lang="ts">
 	import { Col, Grid, Container, Switch } from 'svelte-spectre';
 
-	import { nodeAttribute } from '@/helpers/dom';
+	import { nodeAttribute } from '@/helpers/helpers';
 
 	import { darkTheme } from '@/stores/theme';
 

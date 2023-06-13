@@ -17,8 +17,8 @@
 							/>
 							<Avatar
 								custom
-								status={$selectedProviders && statusing(item)}
-								name={naming(item)}
+								status={$selectedProviders && getStatus(item)}
+								name={getName(item)}
 								id={item.id}
 								apiVersion={item.attributes.api_version}
 								len={4}
@@ -26,12 +26,9 @@
 							/>
 						</label>
 						<Card slot="content">
-							<img class="provider-logo" src={item.attributes.img} alt={item.attributes.name} />
-							<span slot="title" class="h6">{item.attributes.name}</span>
-							<a slot="subtitle" href={item.attributes.homepage || ''} target="_blank" class="text-small text-gray">
-								{item.attributes.homepage || ''}
-							</a>
-							<span class="text-small">{item.attributes.description}</span>
+							<a slot="subtitle" href={item.attributes.homepage || ''} target="_blank"><img class="provider-logo" src={providerLogos[item.id] || OPT} alt={item.attributes.name} /></a>
+							<div slot="title" class="h6 text-center my-2"><a href={item.attributes.homepage || ''} target="_blank">{item.attributes.name}</a></div>
+							<div class="text-tiny text-center">{item.attributes.description}<br />Base URL: <a href={item.attributes.base_url} target="_blank">{item.attributes.base_url}</a></div>
 						</Card>
 					</Popover>
 				</Col>
@@ -43,7 +40,6 @@
 <script lang="ts" context="module">
 	import { query } from 'svelte-pathfinder';
 	import { Avatar, Card, Col, Grid, Popover } from 'svelte-spectre';
-	import { getPredefinedInitials } from '@/helpers/getPredefinedInitials';
 	import { media } from '@/stores/media';
 
 	import * as Loader from '@/components/loaders';
@@ -62,8 +58,6 @@
 	// @ts-ignore
 	import OPT from '@/assets/providers/OPT.png';
 	// @ts-ignore
-	import TCOD from '@/assets/providers/TCOD.png';
-	// @ts-ignore
 	import DM2 from '@/assets/providers/DM2.png';
 	// @ts-ignore
 	import aflow from '@/assets/providers/aflow.png';
@@ -80,21 +74,35 @@
 <script lang="ts">
 	let width = 0,
 		exclusiveId: null,
-		augmentationMode = false;
+		augmentationMode: boolean = false;
 
-	const logos: Logos = { AFL: aflow, COD: COD, JAR: jarvis, MP: MP, MPDS: MPDS, NMD: NMD, OPT: OPT, TCO: TCOD, '2DM': DM2 };
+	const providerLogos: Logos = {
+		'2dtopo': mcloud,
+		'aflow': aflow,
+		'cod': COD,
+		'curated-cofs': mcloud,
+		'jarvis': jarvis,
+		'mc2d': mcloud,
+		'mc3d': mcloud,
+		'mp': MP,
+		'mpds': MPDS,
+		'nmd': NMD,
+		'pyrene-mofs': mcloud,
+		'scdm': mcloud,
+		'stoceriaitf': mcloud,
+		'tc-applicability': mcloud,
+		'tcod': COD,
+		'tin-antimony-sulfoiodide': mcloud,
+		'twodmatpedia': DM2,
+	};
 
-	function statusing(item: Types.Provider) {
+	function getStatus(item: Types.Provider) {
 		return $selectedProviders.includes(item.id) ? 'online' : 'offline';
 	}
 
-	function naming(item: Types.Provider) {
-		const words = item.attributes.name.replace('.', '/').match(/\b(\w)|([A-Z])|(\/)/g);
-		const initials = getPredefinedInitials(item.id, words.slice(0, 3).join('').toUpperCase());
-
-		item.attributes.img = logos[initials] ? logos[initials] : mcloud;
-
-		return `${initials.toUpperCase()} v${item.attributes.api_version}`;
+	function getName(item: Types.Provider) {
+		const shortname = (item.id.length < 7 ? item.id : item.id.substr(0, 6)).replace('-', '');
+		return `${shortname} v${item.attributes.api_version}`;
 	}
 
 	async function onProviderSelect(e: CustomEvent) {
