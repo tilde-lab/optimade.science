@@ -4,10 +4,9 @@ OPTIMADE dot Science
 [![DOI](https://zenodo.org/badge/190895428.svg)](https://doi.org/10.5281/zenodo.7693406)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftilde-lab%2Foptimade.science?ref=badge_shield)
 
-This is a minimalistic in-browser OPTIMADE client, written in [Svelte](https://svelte.dev) and TypeScript.
-It fetches the OPTIMADE providers list, looks for the structure endpoints, and allows sequential querying against all of them, aggregating the results together.
+This is a minimalistic in-browser OPTIMADE aggregator, written in TypeScript language on top of the [Svelte](https://svelte.dev) frontend framework. It fetches the official OPTIMADE providers list, looks for the structure endpoints, and allows simultaneous querying against all of them, collecting the results together at the single webpage.
 
-Technically this is just the single file `index.html`, can be opened locally from anywhere, on any environment.
+Technically this is just the single file `index.html`, highly-portable, can be opened from anywhere, on any environment (e.g. at the smartphone or locally from the USB-stick).
 
 [Svelte-Spectre](https://kit.metis.science) (based on [Spectre CSS framework](https://picturepan2.github.io/spectre)) is used as a user interface kit. A standalone [Optimade client](https://github.com/tilde-lab/optimade-client) written in isomorphic TypeScript is employed.
 
