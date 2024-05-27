@@ -94,7 +94,7 @@
 		"prismjs": "^1.28.0",
 		"sass": "^1.54.4",
 		"svelte": "^3.49.0",
-		"svelte-asyncable": "^2.1.0",
+		"svelte-asyncable": "2.1.1",
 		"svelte-check": "^2.8.0",
 		"svelte-code-editor": "^1.0.1",
 		"svelte-content-loader": "^1.1.3",
