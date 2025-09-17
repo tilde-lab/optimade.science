@@ -1,6 +1,6 @@
 <Form>
 	<FormGroup>
-		<Input bind:value={search} placeholder="filter=" name="filter" type="search" width="12" size="lg" inline autofocus>
+		<Input bind:value={search} placeholder="filter=" name="filter" type="text" width="12" size="lg" inline autofocus>
 			<svelte:fragment slot="iconRight">
 				{#await $searchAll}
 					<IconButton loading />
