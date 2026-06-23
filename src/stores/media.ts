@@ -5,8 +5,8 @@ export type Queries = {
 };
 
 type MediaObject = {
-    [key: string]: MediaQueryList
-}
+    [key: string]: MediaQueryList;
+};
 
 const queries: Queries = {
     xs: '(max-width: 480px)',
@@ -23,7 +23,7 @@ const queries: Queries = {
     touch: '(hover: none)',
 };
 
-export const media: Readable<Queries> = mediaStore(queries)
+export const media: Readable<Queries> = mediaStore(queries);
 
 function mediaStore(queries: Queries = {}) {
     return readable({}, (set) => {
@@ -46,6 +46,6 @@ function mediaStore(queries: Queries = {}) {
 
         update();
 
-        return () => mqs = {};
+        return () => (mqs = {});
     });
 }

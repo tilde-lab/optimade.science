@@ -9,11 +9,29 @@ import type { Asyncable } from 'svelte-asyncable';
 import type { Param } from 'svelte-pathfinder';
 
 import optimade from '@/services/optimade';
+import { lsProviderKey, lsCustomProviderKey } from '@/config';
 
-import { lsProviderKey } from '@/config';
+// Importing custom-providers for its module-load side effect: it hydrates
+// optimade.providers['custom'] and optimade.apis['custom'] synchronously
+// from localStorage before the providers asyncable below resolves.
+import '@/stores/custom-providers';
+
+function hasCustomDefinition(): boolean {
+    try {
+        return !!localStorage.getItem(lsCustomProviderKey);
+    } catch {
+        return false;
+    }
+}
 
 const providers: Asyncable<Types.Provider[]> = asyncable(async (): Promise<Types.Provider[]> => {
     const providers: Types.Provider[] = Object.values(optimade.providers || (await optimade.getProviders()));
+
+    // Ensure the hydrated custom provider (if any) is present in the merged
+    // array even if optimade.providers was re-seeded from prefetched.json.
+    if (optimade.providers && optimade.providers['custom'] && !providers.some((p) => p.id === 'custom')) {
+        providers.push(optimade.providers['custom']);
+    }
 
     retrieveProviderSelections(providers);
 
@@ -32,9 +50,14 @@ async function retrieveProviderSelections(providers: Types.Provider[]) {
 
     const ids = localStorage[lsProviderKey] ? JSON.parse(localStorage.getItem(lsProviderKey) as string) : providers.map((p) => p.id);
 
+    // Keep the `custom` id in the allowed set iff a custom provider definition
+    // exists in localStorage, so a URL like ?providers=custom resolves correctly
+    // across reloads and is dropped when the user has never added one.
+    const allowedIds = hasCustomDefinition() && !ids.includes('custom') ? [...ids, 'custom'] : ids;
+
     query.update(($query) => {
         const selectedIds = getSelectedProvidersIds($query.params.providers);
-        $query.params.providers = selectedIds.length ? selectedIds.filter((id) => ids.includes(id)) : ids;
+        $query.params.providers = selectedIds.length ? selectedIds.filter((id) => allowedIds.includes(id)) : allowedIds;
         return $query;
     });
 }
