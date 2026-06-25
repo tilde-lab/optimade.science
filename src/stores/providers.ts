@@ -9,34 +9,39 @@ import type { Asyncable } from 'svelte-asyncable';
 import type { Param } from 'svelte-pathfinder';
 
 import optimade from '@/services/optimade';
-import { lsProviderKey, lsCustomProviderKey } from '@/config';
+import customProviders, { hasCustomDefinition } from '@/stores/custom-providers';
+import { lsProviderKey } from '@/config';
 
-// Importing custom-providers for its module-load side effect: it hydrates
-// optimade.providers['custom'] and optimade.apis['custom'] synchronously
-// from localStorage before the providers asyncable below resolves.
-import '@/stores/custom-providers';
+const providers: Asyncable<Types.Provider[]> = asyncable(
+    async ($customProvider: Promise<Types.Provider | null>): Promise<Types.Provider[]> => {
+        // The dependency is an asyncable, so its value arrives as a Promise.
+        const customProvider = await $customProvider;
 
-function hasCustomDefinition(): boolean {
-    try {
-        return !!localStorage.getItem(lsCustomProviderKey);
-    } catch {
-        return false;
-    }
-}
+        // Ensure optimade.providers reflects the latest custom provider
+        // (either hydrated on load or set by addCustomProvider). On first
+        // run, customProvider is null and we may need to fetch providers.
+        if (customProvider) {
+            if (!optimade.providers) {
+                optimade.providers = {};
+            }
+            optimade.providers['custom'] = customProvider;
+        }
 
-const providers: Asyncable<Types.Provider[]> = asyncable(async (): Promise<Types.Provider[]> => {
-    const providers: Types.Provider[] = Object.values(optimade.providers || (await optimade.getProviders()));
+        const providers: Types.Provider[] = Object.values(optimade.providers || (await optimade.getProviders()));
 
-    // Ensure the hydrated custom provider (if any) is present in the merged
-    // array even if optimade.providers was re-seeded from prefetched.json.
-    if (optimade.providers && optimade.providers['custom'] && !providers.some((p) => p.id === 'custom')) {
-        providers.push(optimade.providers['custom']);
-    }
+        // Ensure the hydrated custom provider (if any) is present in the merged
+        // array even if optimade.providers was re-seeded from prefetched.json.
+        if (optimade.providers && optimade.providers['custom'] && !providers.some((p) => p.id === 'custom')) {
+            providers.push(optimade.providers['custom']);
+        }
 
-    retrieveProviderSelections(providers);
+        retrieveProviderSelections(providers);
 
-    return providers;
-}, null);
+        return providers;
+    },
+    null,
+    [customProviders]
+);
 
 export default providers;
 

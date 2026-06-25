@@ -13,6 +13,14 @@ interface CustomProviderRecord {
     apis: Types.Api[];
 }
 
+function hasCustomDefinition(): boolean {
+    try {
+        return !!localStorage.getItem(lsCustomProviderKey);
+    } catch {
+        return false;
+    }
+}
+
 function readStored(): CustomProviderRecord | null {
     try {
         const raw = localStorage.getItem(lsCustomProviderKey);
@@ -63,6 +71,8 @@ export default customProviders;
 
 export const customId = CUSTOM_ID;
 
+export { hasCustomDefinition };
+
 export async function addCustomProvider(url: string): Promise<Types.Provider> {
     const base_url = url.trim();
     if (!base_url) {
@@ -80,6 +90,19 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
         },
     };
 
+    // Clear any previous custom provider state so a re-add overwrites cleanly
+    // rather than accumulating stale api entries in optimade.apis[CUSTOM_ID].
+    // Save the previous state so a failed re-add can restore it instead of
+    // leaving the user with no custom provider at all.
+    const prevProvider = optimade.providers && optimade.providers[CUSTOM_ID];
+    const prevApis = optimade.apis ? optimade.apis[CUSTOM_ID] : undefined;
+    if (optimade.apis) {
+        optimade.apis[CUSTOM_ID] = [];
+    }
+    if (optimade.providers && optimade.providers[CUSTOM_ID]) {
+        delete optimade.providers[CUSTOM_ID];
+    }
+
     await optimade.addProvider(provider);
 
     const stored = optimade.providers && optimade.providers[CUSTOM_ID];
@@ -89,12 +112,18 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
     if (!stored || !enriched) {
         // addProvider swallows internal errors; treat a missing api_version / apis
         // entry as a registration failure so the modal can surface it and we do
-        // not persist an unusable definition.
+        // not persist an unusable definition. Restore the previous custom
+        // provider (if any) so a failed re-add does not destroy a working one.
         if (optimade.providers) {
-            delete optimade.providers[CUSTOM_ID];
+            if (prevProvider) {
+                optimade.providers[CUSTOM_ID] = prevProvider;
+            } else {
+                delete optimade.providers[CUSTOM_ID];
+            }
         }
-        delete optimade.apis[CUSTOM_ID];
-        customProviders.set(null);
+        if (optimade.apis) {
+            optimade.apis[CUSTOM_ID] = prevApis || [];
+        }
         throw new Error('Could not reach an OPTIMADE API at that URL. Check the URL and that the server allows CORS.');
     }
 

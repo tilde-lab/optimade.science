@@ -39,8 +39,6 @@
 					</Popover>
 				</Col>
 			{/each}
-		</Grid>
-		<Grid align="center" justify="center" oneline={$media.sm} gapless={$media.sm}>
 			<Col col={$media.sm ? '' : 1}>
 				<button type="button" class="text-center mb-2 use-new-tile" on:click={() => (modalOpen = true)} aria-label="Add custom provider">
 					<Avatar custom name="use new" id="use-new" len={4} size="lg" />
