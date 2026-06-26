@@ -68,17 +68,17 @@ function pickApiFromInfo(info: Types.InfoResponse): Types.Api {
     return data;
 }
 
-async function probeQueryLimits(base_url: string, api: Types.Api): Promise<number[] | undefined> {
+async function probeQueryLimits(api: Types.Api): Promise<number[] | undefined> {
     const apiVersionUrl = OptimadeApiVersionUrl(api);
     const formula = `chemical_formula_anonymous="A2B"`;
-    const url = `${apiVersionUrl}/structures?filter=${formula}&page_limit=1000`;
+    const url = `${apiVersionUrl}/structures?filter=${formula}&page_limit=500`;
     try {
         const res = await fetchJson(url);
         if (res && res.errors) {
             const detail = Array.isArray(res.errors) ? res.errors[0]?.detail ?? '' : (res.errors as any).detail ?? '';
             const matches = String(detail).match(/\d+/g);
             if (matches) {
-                const limits = matches.map(Number).filter((n) => n < 1000);
+                const limits = matches.map(Number).filter((n) => n < 500);
                 if (limits.length) return limits;
             }
         }
@@ -207,7 +207,7 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
         // api_version is set from the /info meta (the server's declared
         // version). query_limits are probed best-effort via a sample query.
         const api_version = (info.meta && info.meta.api_version) || (api.attributes && api.attributes.api_version);
-        const query_limits = await probeQueryLimits(base_url, api);
+        const query_limits = await probeQueryLimits(api);
 
         provider.attributes = {
             ...provider.attributes,
