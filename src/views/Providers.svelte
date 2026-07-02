@@ -41,7 +41,7 @@
 			{/each}
 			<Col col={$media.sm ? '' : 1}>
 				<button type="button" class="text-center mb-2 use-new-tile" on:click={() => (modalOpen = true)} aria-label="Add custom provider">
-					<Avatar custom name="use new" id="use-new" len={4} size="lg" />
+					<Avatar custom name="&#10133;" id="use-new" len={4} size="lg" />
 				</button>
 			</Col>
 		</Grid>
