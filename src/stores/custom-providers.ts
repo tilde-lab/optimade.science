@@ -58,7 +58,7 @@ function pickApiFromInfo(info: Types.InfoResponse): Types.Api {
     return data;
 }
 
-async function probeQueryLimits(base_url: string, api_version: string): Promise<number[] | undefined> {
+async function probeQueryLimits(base_url: string): Promise<number[] | undefined> {
     const url = `${base_url}/structures?filter=chemical_formula_anonymous%3D%22A2B%22&page_limit=500`;
     try {
         const res = await fetchJson(url);
@@ -182,7 +182,7 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
         const api = pickApiFromInfo(info);
 
         const api_version = (info.meta && info.meta.api_version) || (api.attributes && api.attributes.api_version);
-        const query_limits = await probeQueryLimits(base_url, api_version);
+        const query_limits = await probeQueryLimits(base_url);
 
         const apiWithBaseUrl = withBaseUrl(api, base_url, api_version);
 
