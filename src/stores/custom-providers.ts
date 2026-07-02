@@ -6,10 +6,6 @@ import type { Types } from 'optimade';
 import optimade from '@/services/optimade';
 import { corsProxyUrl, lsCustomProviderKey } from '@/config';
 
-// Fetch JSON via the CORS proxy when the target origin would otherwise block
-// browser requests. Mirrors Optimade.wrapUrl so custom providers reach the
-// network through the same path as builtins. Uses plain fetch (not the
-// library's getJSON, which sets a User-Agent header that browsers forbid).
 function corsUrl(raw: string): string {
     if (!corsProxyUrl) return raw;
     return `${corsProxyUrl}/${raw.replace('://', '/').replace('//', '/')}`;
@@ -32,12 +28,6 @@ async function fetchJson(url: string): Promise<any> {
     return await res.json();
 }
 
-// Normalise a user-supplied base URL: trim trailing slashes. We intentionally
-// do NOT strip a trailing /v1 — some servers (e.g. gumar.tilde.pro) expose the
-// API directly under /v1, while others serve /info at the root. The library's
-// addProvider unconditionally appends /v1, which double-prefixes /v1/v1 for
-// such servers and 404s; here we probe /info at the given URL and, if that
-// fails, try the /v1 variant, so both shapes work.
 function normaliseBaseUrl(url: string): string {
     return url.replace(/\/+$/, '');
 }
@@ -68,10 +58,8 @@ function pickApiFromInfo(info: Types.InfoResponse): Types.Api {
     return data;
 }
 
-async function probeQueryLimits(api: Types.Api): Promise<number[] | undefined> {
-    const apiVersionUrl = OptimadeApiVersionUrl(api);
-    const formula = `chemical_formula_anonymous="A2B"`;
-    const url = `${apiVersionUrl}/structures?filter=${formula}&page_limit=500`;
+async function probeQueryLimits(base_url: string, api_version: string): Promise<number[] | undefined> {
+    const url = `${base_url}/structures?filter=chemical_formula_anonymous%3D%22A2B%22&page_limit=500`;
     try {
         const res = await fetchJson(url);
         if (res && res.errors) {
@@ -88,17 +76,15 @@ async function probeQueryLimits(api: Types.Api): Promise<number[] | undefined> {
     return undefined;
 }
 
-// Reimplemented locally because Optimade.apiVersionUrl is a static method on
-// the library class and handles the available_api_versions shape used by some
-// servers (object) vs others (array). Keeping a copy avoids relying on the
-// optimade singleton's private helpers.
-function OptimadeApiVersionUrl({ attributes: { api_version, available_api_versions } }: Types.Api): string {
-    let url = (available_api_versions as any)[api_version];
-    if (!url && Array.isArray(available_api_versions)) {
-        const api = (available_api_versions as any[]).find(({ version }) => version === api_version);
-        url = api && api.url;
-    }
-    return url;
+function withBaseUrl(api: Types.Api, base_url: string, api_version: string): Types.Api {
+    return {
+        ...api,
+        attributes: {
+            ...api.attributes,
+            api_version,
+            available_api_versions: [{ version: api_version, url: base_url }],
+        },
+    };
 }
 
 const CUSTOM_ID = 'custom';
@@ -137,15 +123,13 @@ function writeStored(record: CustomProviderRecord | null) {
     }
 }
 
-// Hydrate the optimade singleton synchronously on module load so the
-// custom provider tile renders and is selectable without a network probe.
 const initial = readStored();
 if (initial) {
     if (!optimade.providers) {
         optimade.providers = {};
     }
     optimade.providers[CUSTOM_ID] = initial.provider;
-    optimade.apis[CUSTOM_ID] = initial.apis || [];
+    optimade.apis[CUSTOM_ID] = (initial.apis || []).map((api) => withBaseUrl(api, initial.provider.attributes.base_url as string, api.attributes.api_version));
 }
 
 const customProviders: Asyncable<Types.Provider | null> = asyncable(
@@ -184,9 +168,6 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
             homepage: null,
         },
     };
-
-    // Save the previous custom provider state so a failed re-add can restore it
-    // instead of leaving the user with no custom provider at all.
     const prevProvider = optimade.providers && optimade.providers[CUSTOM_ID];
     const prevApis = optimade.apis ? optimade.apis[CUSTOM_ID] : undefined;
     if (optimade.apis) {
@@ -197,17 +178,13 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
     }
 
     try {
-        // Probe /info directly (with a /v1 fallback) rather than calling the
-        // library's addProvider, which unconditionally appends /v1 and thus
-        // produces /v1/v1/structures for servers like gumar.tilde.pro that
-        // already include /v1 in their base URL.
         const { info } = await probeInfo(base_url);
         const api = pickApiFromInfo(info);
 
-        // api_version is set from the /info meta (the server's declared
-        // version). query_limits are probed best-effort via a sample query.
         const api_version = (info.meta && info.meta.api_version) || (api.attributes && api.attributes.api_version);
-        const query_limits = await probeQueryLimits(api);
+        const query_limits = await probeQueryLimits(base_url, api_version);
+
+        const apiWithBaseUrl = withBaseUrl(api, base_url, api_version);
 
         provider.attributes = {
             ...provider.attributes,
@@ -219,10 +196,8 @@ export async function addCustomProvider(url: string): Promise<Types.Provider> {
             optimade.providers = {};
         }
         optimade.providers[CUSTOM_ID] = provider;
-        optimade.apis[CUSTOM_ID] = [api];
+        optimade.apis[CUSTOM_ID] = [apiWithBaseUrl];
     } catch (err) {
-        // Restore the previous custom provider (if any) on failure so a failed
-        // re-add does not destroy a working one.
         if (optimade.providers) {
             if (prevProvider) {
                 optimade.providers[CUSTOM_ID] = prevProvider;

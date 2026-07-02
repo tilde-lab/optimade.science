@@ -1,4 +1,5 @@
 <Modal bind:open size="md">
+	<span slot="default" class="add-provider-trigger" aria-hidden="true" />
 	<div slot="content">
 		<h3 class="h5">Add custom provider</h3>
 		<p class="text-gray text-small">
@@ -96,5 +97,11 @@
 	}
 	.form-input-hint {
 		margin-top: 0.3rem;
+	}
+	:global(.add-provider-trigger) {
+		display: inline-block;
+		width: 0;
+		height: 0;
+		overflow: hidden;
 	}
 </style>
