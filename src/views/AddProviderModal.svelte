@@ -3,7 +3,7 @@
 	<div slot="content">
 		<h3 class="h5">Add custom provider</h3>
 		<p class="text-gray text-small">
-			Enter the OPTIMADE base URL of a provider that is not listed above. The provider will be saved as <code>custom</code> and can be selected like any other.
+			Enter a base URL of a new provider not listed on <a href="https://providers.optimade.org" target="_blank">providers.optimade.org</a>.
 		</p>
 
 		<form on:submit|preventDefault={onSubmit}>
