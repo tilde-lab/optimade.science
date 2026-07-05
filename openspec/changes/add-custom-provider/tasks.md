@@ -46,3 +46,11 @@
 - [x] 8.2 Run `npm run lint` and resolve lint errors in `src/**/*.{ts,svelte}`.
 - [x] 8.3 Run `npm run format` to normalize formatting.
 - [ ] 8.4 Run `npm run dev` and manually verify: "use new" tile appears; modal opens; submitting a valid OPTIMADE base URL adds and selects the `custom` tile; reload preserves the tile and selection; reload without definition drops an orphan `?providers=custom`; a failed URL shows an error and keeps the modal open.
+
+## 9. Bugfix: providers asyncable not reactive to custom-provider additions
+
+- [x] 9.1 Wire the `customProviders` asyncable as a dependency of the `providers` asyncable (third `asyncable(getter, setter, stores)` argument) so that calling `customProviders.set(...)` re-resolves the `providers` store and `providersSync` / `Providers.svelte` re-render the new tile. Previously the getter had no reactive dependencies, so mutations to `optimade.providers['custom']` never triggered a re-render.
+- [x] 9.2 Ensure `hasCustomDefinition` is exported from `src/stores/custom-providers.ts` (moved out of `src/stores/providers.ts`) to avoid duplicate definition.
+- [x] 9.3 On re-add, clear `optimade.apis['custom']` and `optimade.providers['custom']` before calling `addProvider` so stale api entries do not accumulate.
+- [x] 9.4 On failed re-add, restore the previous custom provider state instead of destroying a working one.
+- [x] 9.5 Move the "use new" tile into the same `Grid` as the builtin tiles (trailing sibling after the `{#each}`), per design decision 6, instead of a separate `Grid` row.
