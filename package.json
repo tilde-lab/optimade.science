@@ -1,7 +1,7 @@
 {
 	"name": "optimade.science",
-	"description": "A 'sky-scanner' OPTIMADE browser-only GUI",
-	"version": "2.0.5",
+	"description": "A sky-scanner-alike OPTIMADE browser-only GUI",
+	"version": "2.0.6",
 	"private": true,
 	"license": "MIT",
 	"main": "index.js",
