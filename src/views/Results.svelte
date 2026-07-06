@@ -91,7 +91,11 @@
 
 	function getTitle(item: Types.Structure) {
 		return addSubTags(
-			item.attributes.chemical_formula_hill || item.attributes.chemical_formula_descriptive || item.attributes.chemical_formula_reduced || item.attributes._tcod_unreduced_formula || item.id.toString()
+			item.attributes.chemical_formula_hill ||
+				item.attributes.chemical_formula_descriptive ||
+				item.attributes.chemical_formula_reduced ||
+				item.attributes._tcod_unreduced_formula ||
+				item.id.toString()
 		);
 	}
 

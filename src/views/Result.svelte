@@ -17,7 +17,7 @@
 			<ModuleSelect bind:selectedValue={module} />
 			<br />
 			<div class="module">
-				<iframe name="visualisationFrame" bind:this={iframe} src={module} title="App window" frameborder=0 scrolling="no" />
+				<iframe name="visualisationFrame" bind:this={iframe} src={module} title="App window" frameborder="0" scrolling="no" />
 			</div>
 		</Col>
 	</Grid>

@@ -2,8 +2,8 @@
 
 [color-scheme='light'] {
     .json-container {
-        .line { 
-            &.click { 
+        .line {
+            &.click {
                 &:hover {
                     background-color: $secondary-color;
                 }
@@ -13,8 +13,8 @@
 }
 @media (prefers-color-scheme: dark) {
     .json-container {
-        .line { 
-            &.click { 
+        .line {
+            &.click {
                 &:hover {
                     background-color: $secondary-color;
                 }

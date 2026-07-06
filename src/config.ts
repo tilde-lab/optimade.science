@@ -6,5 +6,6 @@ export const moduleGroups = {
     local: 'Local apps',
 };
 export const lsProviderKey = 'optimade-providers';
+export const lsCustomProviderKey = 'optimade-custom-providers';
 export const lsModulesKey = 'optimade-modules-v2';
 export const searchDelay = 1250;
